@@ -1,0 +1,7 @@
+git add DESCRIPTION
+git add NAMESPACE
+git add R/
+git add inst/
+git add junk
+git add makefile
+git add man/
