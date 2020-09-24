@@ -24,7 +24,33 @@ igvWidget = R6Class("igvWidget",
         height = NULL,
         border = NULL,
         session = NULL,
-        currentGenomicRegion = NULL),
+        currentGenomicRegion = NULL,
+        digestTrackClickData = function(x){
+           printf("--- clackTrick")
+           print(x)
+           name.indices <- grep("name", names(x))
+           value.indices <- grep("value", names(x))
+           printf("=== name indices:")
+           print(name.indices)
+           printf("=== value indices:")
+           print(value.indices)
+           entity <- "no entity found"
+           if(length(name.indices) == length(value.indices)){
+              clickData <- as.character(x[value.indices])
+              names(clickData) <- as.character(x[name.indices])
+              printf("=== extracted clickData")
+              print(clickData)
+              nameVariable <- grep("name", names(clickData), ignore.case=TRUE, value=TRUE)
+              printf("=== nameVariable")
+              print(nameVariable)
+              if(nchar(nameVariable) == 4){
+                 entity <- clickData[[nameVariable]]
+                 printf("you clicked on entity '%s'", entity)
+                 } # there is a name field
+              } # the data structure returned from javascript has #name = #value fields
+           return(entity)
+           } # private method digestTrackClickData
+        ),
 
         #' @description
         #' Create a new igvWidget
@@ -37,6 +63,9 @@ igvWidget = R6Class("igvWidget",
         #' @return A new `igvWidget` object.
 
    public = list(
+
+      trackClickResult = NULL,
+
       initialize = function(id, genome, locus, width, height, border){
           private$id = id;
           private$genome = genome;
@@ -69,6 +98,16 @@ igvWidget = R6Class("igvWidget",
          printf("--- starting igvModule3$server")
          private$session = session;
 
+            # this public variable is a reactive function, by which clients
+            # can respond to igv.js track click events
+         self$trackClickResult = reactiveVal("")
+
+         observeEvent(input$trackClick, {
+            x <- input$trackClick
+            digested.result <- private$digestTrackClickData(x)
+            self$trackClickResult(digested.result)
+            })
+
          observeEvent(input[[sprintf("currentGenomicRegion.%s", private$id)]], {
            loc <- input[[sprintf("currentGenomicRegion.%s", private$id)]]
            private$currentGenomicRegion = loc
@@ -87,9 +126,19 @@ igvWidget = R6Class("igvWidget",
           }, # server
 
         #' @description
+        #' igv.js triggers an event when the track is clicked.  we parse that into an
+        #' "entity" as best we can:  a gene, a variant, a track block's chromLoc
+        #' @returns character string
+      getTrackClickEntity = function(){
+         return(private$trackClickEntity)
+         },
+
+        #' @description
         #' directs the igv browser to display, and zoom in on, the specified locus
         #' @param newLocus character string, either a recognized geneSymbol or  "chrom:start-end"
         #' @returns nothing
+
+
       setLocus = function(newLocus){
           printf("--- entering igvModule3 [%s] setLocus: '%s'", private$id, newLocus)
           showGenomicRegion(private$session, private$id, newLocus)
