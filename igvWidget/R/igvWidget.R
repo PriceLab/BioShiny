@@ -54,7 +54,7 @@ igvWidget = R6Class("igvWidget",
           tagList(
              div(
                igvShinyOutput(private$id, private$width, private$height),
-               style=sprintf("width: %dpx; height: %dpx; border: %s; overflow: scroll",
+               style=sprintf("width: %dpx; height: %dpx; border: %s; overflow: scroll; background-color: white;",
                              private$width+50, private$height+125, private$border))
              )
           },
