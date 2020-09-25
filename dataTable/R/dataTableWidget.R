@@ -39,6 +39,8 @@ dataTableWidget = R6Class("dataTableWidget",
 
    public = list(
 
+       tableSelection = NULL,   # a reactive value, see server() below
+
        initialize = function(id, tbl){
           printf("entering dataTableWidget::initialize")
           private$id = id;
@@ -64,10 +66,20 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param session  list (environment?) managed by Shiny
         #' @returns nothing
       server = function(input, output, session){
+
          private$session = session;
          private$input = input
          private$output = output
          if(!is.null(private$tbl)) self$setTable(private$tbl)
+
+         self$tableSelection = reactiveVal()
+         observeEvent(input[[sprintf("%s_rows_selected", private$id)]], ignoreInit=TRUE, {
+           row.numbers <- input[[sprintf("%s_rows_selected", private$id)]]
+           print("--- widget row selection made")
+           print(row.numbers)
+           self$tableSelection(row.numbers)
+           })
+
          }, # server
 
       setTable = function(tbl){
