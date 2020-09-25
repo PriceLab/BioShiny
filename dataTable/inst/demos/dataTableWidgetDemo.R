@@ -27,9 +27,7 @@ DataTableDemoApp = R6Class("app",
         ui = function(){
            fluidPage(
               wellPanel(style="width: 1000px;",
-                private$msgBox$ui(),
-                actionButton("randomTextButton", label="Generate random Text",
-                             style="margin-top: 40px; margin-left: 200px;")),
+                private$msgBox$ui()),
                 private$dtWidget.1$ui()
             )},
 

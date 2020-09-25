@@ -98,7 +98,7 @@ dataTableWidget = R6Class("dataTableWidget",
          } # setTable
 
      ) # public
-
-   ) # DataTableWidget class
+#----------------------------------------------------------------------------------------------------
+) # DataTableWidget class
 
 
