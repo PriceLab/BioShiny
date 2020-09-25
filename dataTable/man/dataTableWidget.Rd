@@ -21,6 +21,8 @@ R6 Class representing a simple text display widget
 \item \href{#method-ui}{\code{dataTableWidget$ui()}}
 \item \href{#method-server}{\code{dataTableWidget$server()}}
 \item \href{#method-setTable}{\code{dataTableWidget$setTable()}}
+\item \href{#method-selectRows}{\code{dataTableWidget$selectRows()}}
+\item \href{#method-clearSelection}{\code{dataTableWidget$clearSelection()}}
 \item \href{#method-clone}{\code{dataTableWidget$clone()}}
 }
 }
@@ -30,7 +32,7 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new dataTableWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$new(id, tbl)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$new(id, tbl, width, height, border = "0px;", pageLength = 10)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -38,17 +40,15 @@ Create a new dataTableWidget
 \describe{
 \item{\code{id}}{the html document div id}
 
-\item{\code{title}}{character}
+\item{\code{tbl}}{data.frame}
 
-\item{\code{boxWidth}}{integer, 200 by default}
+\item{\code{width}}{integer, 800 by default}
 
-\item{\code{boxHeight}}{integer, 30 by default}
+\item{\code{height}}{integer, 800 by default}
 
-\item{\code{fontSize}}{integer, 20 by default}
+\item{\code{border}}{string, "0px;" by default}
 
-\item{\code{fontColor}}{character, standard CSS rgb or name}
-
-\item{\code{backgroundColor}}{character, standard CSS rgb or name}
+\item{\code{pageLength}}{integer, 10 by default}
 }
 \if{html}{\out{</div>}}
 }
@@ -93,6 +93,24 @@ defines the event handlers used with the ui
 \subsection{Method \code{setTable()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$setTable(tbl)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-selectRows"></a>}}
+\if{latex}{\out{\hypertarget{method-selectRows}{}}}
+\subsection{Method \code{selectRows()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectRows(rowNumbers)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clearSelection"></a>}}
+\if{latex}{\out{\hypertarget{method-clearSelection}{}}}
+\subsection{Method \code{clearSelection()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$clearSelection()}\if{html}{\out{</div>}}
 }
 
 }

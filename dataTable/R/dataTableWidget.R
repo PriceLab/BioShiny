@@ -17,37 +17,47 @@ dataTableWidget = R6Class("dataTableWidget",
         output = NULL,
         session = NULL,
         tbl = NULL,
+        width = NULL,
+        height = NULL,
+        border = NULL,
+        pageLength = NULL,
         selectionPolicy = NULL,
         wrapLongTextInCells = NULL,
         searchString = NULL,
         rownames.to.display = NULL,
         searchOptions = NULL,
         DTclass = NULL,
-        selectionOption = NULL
+        selectionOption = NULL,
+        dataTableProxy = NULL
         ),
 
         #' @description
         #' Create a new dataTableWidget
         #' @param id the html document div id
-        #' @param title character
-        #' @param boxWidth integer, 200 by default
-        #' @param boxHeight integer, 30 by default
-        #' @param fontSize integer, 20 by default
-        #' @param fontColor character, standard CSS rgb or name
-        #' @param backgroundColor character, standard CSS rgb or name
+        #' @param tbl data.frame
+        #' @param width integer, 800 by default
+        #' @param height integer, 800 by default
+        #' @param border string, "0px;" by default
+        #' @param pageLength integer, 10 by default
         #' @return A new `dataTableWidget` object.
 
    public = list(
 
        tableSelection = NULL,   # a reactive value, see server() below
 
-       initialize = function(id, tbl){
+       initialize = function(id, tbl, width, height, border="0px;", pageLength=10){
           printf("entering dataTableWidget::initialize")
           private$id = id;
           private$tbl = tbl;
+
+          private$width = width;
+          private$height = height;
+          private$border = border;
+
+          private$pageLength = pageLength
           private$searchOptions = list();
           private$DTclass = "display"
-          private$selectionOption = list(selected=NULL)
+          private$selectionOption = list(mode="multiple", selected=NULL)
           },
 
         #' @description
@@ -55,7 +65,10 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
           tagList(
-             DT::DTOutput(private$id)
+              div(
+                 DT::DTOutput(private$id),
+                 style=sprintf("width: %dpx; height: %dpx; padding: 20px; border: %s; overflow: auto; background-color: white;",
+                               private$width+50, private$height+125, private$border))
              )
           }, # ui
 
@@ -91,11 +104,21 @@ dataTableWidget = R6Class("dataTableWidget",
                                          scrollX=TRUE,
                                          search=private$searchOptions,
                                          lengthMenu = c(3,5,10,50),
-                                         pageLength = 5,
+                                         pageLength = private$pageLength,
                                          paging=TRUE),
                             selection=private$selectionOption)
           })  # renderDataTable
-         } # setTable
+         private$dataTableProxy <- dataTableProxy(private$id)
+         }, # setTable
+
+      selectRows = function(rowNumbers){
+         printf("DTW::selectRows: %s", paste(rowNumbers, collapse=","))
+         selectRows(private$dataTableProxy, rowNumbers, ignore.selectable = TRUE)
+         }, # selectRows
+
+      clearSelection = function(){
+         selectRows(private$dataTableProxy, NULL)
+         } # selectRows
 
      ) # public
 #----------------------------------------------------------------------------------------------------
