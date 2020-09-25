@@ -17,7 +17,9 @@ msgBoxWidget = R6Class("msgBoxWidget",
         fontSize = NULL,
         fontColor = NULL,
         backgroundColor = NULL,
-        session = NULL
+        session = NULL,
+        input = NULL,
+        output = NULL
         ),
 
         #' @description
@@ -70,11 +72,14 @@ msgBoxWidget = R6Class("msgBoxWidget",
         #' @param session  list (environment?) managed by Shiny
         #' @returns nothing
       server = function(input, output, session){
-         printf("--- starting igvModule3$server")
          private$session = session;
+         private$input = input
+         private$output = output
+         }, # server
 
-         output[[private$id]] <- renderText(newContent())
-         } # server
+      setText = function(newText){
+         private$output[[private$id]] <- renderText(newText)
+         }
 
      ) # public
   ) # class
