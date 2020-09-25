@@ -67,34 +67,34 @@ igvDemoApp = R6Class("app",
                private$current.igv.instance$setLocus(newLocus)
                })
 
-            observeEvent(input$trackClick, {
-               x <- input$trackClick
-               printf("--- clackTrick")
-               print(x)
-               name.indices <- grep("name", names(x))
-               value.indices <- grep("value", names(x))
-               printf("=== name indices:")
-               print(name.indices)
-               printf("=== value indices:")
-               print(value.indices)
-               entity <- "no entity found"
-               if(length(name.indices) == length(value.indices)){
-                  clickData <- as.character(x[value.indices])
-                  names(clickData) <- as.character(x[name.indices])
-                                       # use grep so that "name" and "Name" and "NAME" are all equally discoverable
-                  printf("=== extracted clickData")
-                  print(clickData)
-                  nameVariable <- grep("name", names(clickData), ignore.case=TRUE, value=TRUE)
-                  printf("=== nameVariable")
-                  print(nameVariable)
-                  if(nchar(nameVariable) == 4){
-                     entity <- clickData[[nameVariable]]
-                     printf("you clicked on entity '%s'", entity)
-                     } # there is a name field
-               } # the data structure returned from javascript has #name = #value fields
-               printf("returning selected entity")
-               print(entity)
-               })
+           # observeEvent(input$trackClick, {
+           #    x <- input$trackClick
+           #    printf("--- clackTrick")
+           #    print(x)
+           #    name.indices <- grep("name", names(x))
+           #    value.indices <- grep("value", names(x))
+           #    printf("=== name indices:")
+           #    print(name.indices)
+           #    printf("=== value indices:")
+           #    print(value.indices)
+           #    entity <- "no entity found"
+           #    if(length(name.indices) == length(value.indices)){
+           #       clickData <- as.character(x[value.indices])
+           #       names(clickData) <- as.character(x[name.indices])
+           #                            # use grep so that "name" and "Name" and "NAME" are all equally discoverable
+           #       printf("=== extracted clickData")
+           #       print(clickData)
+           #       nameVariable <- grep("name", names(clickData), ignore.case=TRUE, value=TRUE)
+           #       printf("=== nameVariable")
+           #       print(nameVariable)
+           #       if(nchar(nameVariable) == 4){
+           #          entity <- clickData[[nameVariable]]
+           #          printf("you clicked on entity '%s'", entity)
+           #          } # there is a name field
+           #    } # the data structure returned from javascript has #name = #value fields
+           #    printf("returning selected entity")
+           #    print(entity)
+           #    })
 
             observeEvent(input$getLocusButton, {
                printf("--- locus button event")
