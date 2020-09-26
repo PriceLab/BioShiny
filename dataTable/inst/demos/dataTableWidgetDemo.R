@@ -20,7 +20,7 @@ DataTableDemoApp = R6Class("app",
             printf("initializing demo")
             private$msgBox =  msgBoxWidget$new(id="box1", title="table selection", boxWidth=600)
             private$tbl = mtcars
-            private$dtWidget.1 = dataTableWidget$new(id="tbl.1", private$tbl)
+            private$dtWidget.1 = dataTableWidget$new(id="tbl.1", private$tbl, width=800, height=500)
             },
 
         #------------------------------------------------------------
@@ -38,9 +38,9 @@ DataTableDemoApp = R6Class("app",
             private$msgBox$server(input, output, session)
             private$dtWidget.1$server(input, output, session)
             observe({
-               row.numbers <- private$dtWidget.1$tableSelection()
-               row.names <- rownames(private$tbl)[row.numbers]
-               print(row.names)
+               row.names <- private$dtWidget.1$tableSelection()
+               #row.names <- rownames(private$tbl)[row.numbers]
+               #print(row.names)
                private$msgBox$setText(paste(row.names, collapse=", "))
                })
             } # server

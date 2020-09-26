@@ -64,11 +64,11 @@ dataTableWidget = R6Class("dataTableWidget",
         #' defines the html structure of this widget
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
-          tagList(
-              div(
-                 DT::DTOutput(private$id),
-                 style=sprintf("width: %dpx; height: %dpx; padding: 20px; border: %s; overflow: auto; background-color: white;",
-                               private$width+50, private$height+125, private$border))
+         tagList(
+            div(
+               DT::DTOutput(private$id),
+               style=sprintf("width: %dpx; height: %dpx; padding: 20px; border: %s; overflow: auto; background-color: white;",
+                             private$width+50, private$height+125, private$border))
              )
           }, # ui
 
@@ -86,12 +86,17 @@ dataTableWidget = R6Class("dataTableWidget",
          if(!is.null(private$tbl)) self$setTable(private$tbl)
 
          self$tableSelection = reactiveVal()
-         observeEvent(input[[sprintf("%s_rows_selected", private$id)]], ignoreInit=TRUE, {
-           row.numbers <- input[[sprintf("%s_rows_selected", private$id)]]
-           print("--- widget row selection made")
-           print(row.numbers)
-           self$tableSelection(row.numbers)
-           })
+         observeEvent(input[[sprintf("%s_rows_selected", private$id)]], ignoreInit=TRUE, ignoreNULL=FALSE, {
+            row.numbers <- input[[sprintf("%s_rows_selected", private$id)]]
+            #print("--- widget row selection made")
+            #print(row.numbers)
+            if(all(is.null(row.numbers)))
+               newValue <- integer(0)
+            else
+               newValue <- rownames(private$tbl)[row.numbers]
+            #printf("returning these row names: %s", paste(newValue, collapse=","))
+            self$tableSelection(newValue)
+            })
 
          }, # server
 

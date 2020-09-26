@@ -10,7 +10,7 @@ roxy:
 install:
 	R CMD INSTALL .
 
-demo:
+demo1:
 	(cd inst/demos; R -f dataTableWidgetDemo.R)
 
 demo2:

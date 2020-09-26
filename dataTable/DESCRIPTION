@@ -1,8 +1,8 @@
 Package: dataTableWidget
 Type: Package
 Title: dataTableWidget
-Version: 1.0.0
-Date: 2020-09-24
+Version: 1.0.1
+Date: 2020-09-25
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6, DT

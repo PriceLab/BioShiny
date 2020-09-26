@@ -70,8 +70,7 @@ DataTableDemoApp = R6Class("app",
                 })
 
             observe({
-               row.numbers <- private$dtWidget.1$tableSelection()
-               row.names <- rownames(private$tbl)[row.numbers]
+               row.names <- private$dtWidget.1$tableSelection()
                print(row.names)
                private$msgBox$setText(paste(row.names, collapse=", "))
                })
