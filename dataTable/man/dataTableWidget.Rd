@@ -32,7 +32,14 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new dataTableWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$new(id, tbl, width, height, border = "0px;", pageLength = 10)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$new(
+  id,
+  tbl,
+  width = "95\%",
+  height = "500px",
+  border = "0px;",
+  pageLength = 10
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -42,11 +49,11 @@ Create a new dataTableWidget
 
 \item{\code{tbl}}{data.frame}
 
-\item{\code{width}}{integer, 800 by default}
+\item{\code{width}}{character, "800px;" by default.  "100%;" can be useful.}
 
-\item{\code{height}}{integer, 800 by default}
+\item{\code{height}}{integer, "600px;" by default, percentage heights do not work.}
 
-\item{\code{border}}{string, "0px;" by default}
+\item{\code{border}}{string, "0px;" by default, "1px blue solid; border-radius: 5px;" useful.}
 
 \item{\code{pageLength}}{integer, 10 by default}
 }

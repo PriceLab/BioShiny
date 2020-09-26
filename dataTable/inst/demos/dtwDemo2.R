@@ -20,8 +20,8 @@ DataTableDemoApp = R6Class("app",
             printf("initializing demo")
             private$msgBox =  msgBoxWidget$new(id="box1", title="table selection", boxWidth=600)
             private$tbl = mtcars
-            private$dtWidget.1 = dataTableWidget$new(id="tbl.1", private$tbl, width=800,
-                                                     height=600, border="1px red solid; border-radius: 5px;",
+            private$dtWidget.1 = dataTableWidget$new(id="tbl.1", private$tbl, width="80%",
+                                                     height="300px", border="1px red solid; border-radius: 5px;",
                                                      pageLength=12)
             },
 

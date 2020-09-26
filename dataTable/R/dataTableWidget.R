@@ -19,6 +19,8 @@ dataTableWidget = R6Class("dataTableWidget",
         tbl = NULL,
         width = NULL,
         height = NULL,
+        pixel.width = NULL,
+        pixel.height = NULL,
         border = NULL,
         pageLength = NULL,
         selectionPolicy = NULL,
@@ -28,16 +30,23 @@ dataTableWidget = R6Class("dataTableWidget",
         searchOptions = NULL,
         DTclass = NULL,
         selectionOption = NULL,
-        dataTableProxy = NULL
+        dataTableProxy = NULL,
+        parseSizeString = function(x){
+            if(is.numeric(x)) return(x);
+            if(grepl("px", x))
+               return(as.numeric(sub("px", "", x)))
+            if(grepl("%", x))
+               return(900)
+            } # parseSizeString
         ),
 
         #' @description
         #' Create a new dataTableWidget
         #' @param id the html document div id
         #' @param tbl data.frame
-        #' @param width integer, 800 by default
-        #' @param height integer, 800 by default
-        #' @param border string, "0px;" by default
+        #' @param width character, "800px;" by default.  "100%;" can be useful.
+        #' @param height integer, "600px;" by default, percentage heights do not work.
+        #' @param border string, "0px;" by default, "1px blue solid; border-radius: 5px;" useful.
         #' @param pageLength integer, 10 by default
         #' @return A new `dataTableWidget` object.
 
@@ -45,14 +54,18 @@ dataTableWidget = R6Class("dataTableWidget",
 
        tableSelection = NULL,   # a reactive value, see server() below
 
-       initialize = function(id, tbl, width, height, border="0px;", pageLength=10){
+       initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10){
           printf("entering dataTableWidget::initialize")
           private$id = id;
           private$tbl = tbl;
 
           private$width = width;
           private$height = height;
+          private$pixel.width = private$parseSizeString(width);
+          private$pixel.height = private$parseSizeString(height);
+
           private$border = border;
+          printf("dtw dimensions: %s x %s", private$width, private$height)
 
           private$pageLength = pageLength
           private$searchOptions = list();
@@ -67,8 +80,8 @@ dataTableWidget = R6Class("dataTableWidget",
          tagList(
             div(
                DT::DTOutput(private$id),
-               style=sprintf("width: %dpx; height: %dpx; padding: 20px; border: %s; overflow: auto; background-color: white;",
-                             private$width+50, private$height+125, private$border))
+               style=sprintf("width: %s; height: %s; padding: 20px; border: %s; overflow: auto; background-color: white;",
+                             private$pixel.width+10, private$pixel.height+150, private$border))
              )
           }, # ui
 
