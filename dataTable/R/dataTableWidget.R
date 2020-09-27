@@ -23,6 +23,7 @@ dataTableWidget = R6Class("dataTableWidget",
         pixel.height = NULL,
         border = NULL,
         pageLength = NULL,
+        lengthMenu = NULL,
         selectionPolicy = NULL,
         wrapLongTextInCells = NULL,
         searchString = NULL,
@@ -48,13 +49,17 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param height integer, "600px;" by default, percentage heights do not work.
         #' @param border string, "0px;" by default, "1px blue solid; border-radius: 5px;" useful.
         #' @param pageLength integer, 10 by default
+        #' @param wrapLines logical, FALSE by default, gives more rows on screen
+        #' @param selectionMode character, "single", "none", or "multiple", "single" by default
+        #' @param lengthMenu integers specifies page length options (# of rows onscreen). default (5,10,25,50)
         #' @return A new `dataTableWidget` object.
 
    public = list(
 
        tableSelection = NULL,   # a reactive value, see server() below
 
-       initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10){
+       initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10,
+                             wrapLines=FALSE, selectionMode="single", lengthMenu=c(5,10,25,50)){
           printf("entering dataTableWidget::initialize")
           private$id = id;
           private$tbl = tbl;
@@ -68,9 +73,12 @@ dataTableWidget = R6Class("dataTableWidget",
           printf("dtw dimensions: %s x %s", private$width, private$height)
 
           private$pageLength = pageLength
+          private$lengthMenu = lengthMenu
           private$searchOptions = list();
           private$DTclass = "display"
-          private$selectionOption = list(mode="multiple", selected=NULL)
+          if(!wrapLines)
+              private$DTclass = paste0(private$DTclass, " nowrap")
+          private$selectionOption = list(mode=selectionMode, selected=NULL)
           },
 
         #' @description
@@ -81,7 +89,7 @@ dataTableWidget = R6Class("dataTableWidget",
             div(
                DT::DTOutput(private$id),
                style=sprintf("width: %s; height: %s; padding: 20px; border: %s; overflow: auto; background-color: white;",
-                             private$pixel.width+10, private$pixel.height+150, private$border))
+                             private$width, private$height, private$border))
              )
           }, # ui
 
@@ -121,7 +129,7 @@ dataTableWidget = R6Class("dataTableWidget",
                             options=list(dom='<lfip<t>>',
                                          scrollX=TRUE,
                                          search=private$searchOptions,
-                                         lengthMenu = c(3,5,10,50),
+                                         lengthMenu = private$lengthMenu,
                                          pageLength = private$pageLength,
                                          paging=TRUE),
                             selection=private$selectionOption)

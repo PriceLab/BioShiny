@@ -38,7 +38,10 @@ Create a new dataTableWidget
   width = "95\%",
   height = "500px",
   border = "0px;",
-  pageLength = 10
+  pageLength = 10,
+  wrapLines = FALSE,
+  selectionMode = "single",
+  lengthMenu = c(5, 10, 25, 50)
 )}\if{html}{\out{</div>}}
 }
 
@@ -56,6 +59,12 @@ Create a new dataTableWidget
 \item{\code{border}}{string, "0px;" by default, "1px blue solid; border-radius: 5px;" useful.}
 
 \item{\code{pageLength}}{integer, 10 by default}
+
+\item{\code{wrapLines}}{logical, FALSE by default, gives more rows on screen}
+
+\item{\code{selectionMode}}{character, "single", "none", or "multiple", "single" by default}
+
+\item{\code{lengthMenu}}{integers specifies page length options (# of rows onscreen). default (5,10,25,50)}
 }
 \if{html}{\out{</div>}}
 }
