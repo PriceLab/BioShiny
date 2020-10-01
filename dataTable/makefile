@@ -2,7 +2,7 @@ default:
 	@echo "targets:"
 	@echo "   roxy: build roxygen documentation and NAMESPACE"
 	@echo "   install"
-	@echo "   demo"
+	@echo "   demo1 demo2 studio.1 studio.2"
 
 roxy:
 	R -e "devtools::document()"

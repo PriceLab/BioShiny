@@ -1,3 +1,5 @@
+printf <- function(...) print(noquote(sprintf(...)))
+
 #' R6 Class representing a simple text display widget
 #'
 #' @title dataTableWidget
@@ -114,7 +116,7 @@ dataTableWidget = R6Class("dataTableWidget",
             if(all(is.null(row.numbers)))
                newValue <- integer(0)
             else
-               newValue <- rownames(private$tbl)[row.numbers]
+               newValue <- row.numbers
             #printf("returning these row names: %s", paste(newValue, collapse=","))
             self$tableSelection(newValue)
             })
