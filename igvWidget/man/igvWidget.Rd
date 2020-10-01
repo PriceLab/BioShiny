@@ -8,6 +8,8 @@ shiny code which, wnen invoked (almost always by the shinyApp function, returns 
 
 nothing
 
+character string
+
 nothing
 
 a "chrom:start-end" string (or, in rare circumstances, a geneSymbol)
@@ -35,6 +37,7 @@ This class provides the igv.js genome browser in a classic object-oriented-progr
 \item \href{#method-new}{\code{igvWidget$new()}}
 \item \href{#method-ui}{\code{igvWidget$ui()}}
 \item \href{#method-server}{\code{igvWidget$server()}}
+\item \href{#method-getTrackClickEntity}{\code{igvWidget$getTrackClickEntity()}}
 \item \href{#method-setLocus}{\code{igvWidget$setLocus()}}
 \item \href{#method-getLocus}{\code{igvWidget$getLocus()}}
 \item \href{#method-displayBedTrack}{\code{igvWidget$displayBedTrack()}}
@@ -50,7 +53,7 @@ This class provides the igv.js genome browser in a classic object-oriented-progr
 \subsection{Method \code{new()}}{
 Create a new igvWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{igvWidget$new(id, genome, locus, width, height, border)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{igvWidget$new(id, genome, locus, width = "95\%", height = "500px", border)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -104,6 +107,17 @@ defines the event handlers used with the ui
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getTrackClickEntity"></a>}}
+\if{latex}{\out{\hypertarget{method-getTrackClickEntity}{}}}
+\subsection{Method \code{getTrackClickEntity()}}{
+igv.js triggers an event when the track is clicked.  we parse that into an
+"entity" as best we can:  a gene, a variant, a track block's chromLoc
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{igvWidget$getTrackClickEntity()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setLocus"></a>}}

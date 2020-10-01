@@ -66,7 +66,7 @@ igvWidget = R6Class("igvWidget",
 
       trackClickResult = NULL,
 
-      initialize = function(id, genome, locus, width, height, border){
+      initialize = function(id, genome, locus, width="95%", height="500px", border){
           private$id = id;
           private$genome = genome;
           private$locus = locus;
@@ -83,8 +83,8 @@ igvWidget = R6Class("igvWidget",
           tagList(
              div(
                igvShinyOutput(private$id, private$width, private$height),
-               style=sprintf("width: %dpx; height: %dpx; border: %s; overflow: scroll; background-color: white;",
-                             private$width+50, private$height+125, private$border))
+               style=sprintf("width: %s; height: %s; border: %s; overflow: scroll; background-color: white;",
+                             private$width, private$height, private$border))
              )
           },
 
