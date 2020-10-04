@@ -95,7 +95,7 @@ igvWidget = R6Class("igvWidget",
         #' @param session  list (environment?) managed by Shiny
         #' @returns nothing
       server = function(input, output, session){
-         printf("--- starting igvModule3$server")
+         printf("--- starting igvWidget$server")
          private$session = session;
 
             # this public variable is a reactive function, by which clients
@@ -104,8 +104,23 @@ igvWidget = R6Class("igvWidget",
 
          observeEvent(input$trackClick, {
             x <- input$trackClick
-            digested.result <- private$digestTrackClickData(x)
-            self$trackClickResult(digested.result)
+            printf("==== track click seen in igvWidget.R")
+            print(x)
+            printf("==========================================")
+            save(x, file="debug-track-click.RData")
+            name.indices <- grep("name", names(x))
+            value.indices <- grep("value", names(x))
+            values <- x[value.indices]
+            values <- gsub("&nbsp;", "", values)
+            tbl <- data.frame(value=values)
+            row.names <- as.character(x[name.indices])
+            row.names <- gsub(":", "", row.names)
+            row.names <- gsub("&nbsp;", "", row.names)
+            row.names <- make.names(row.names, unique=TRUE)
+            rownames(tbl) <- row.names[seq_len(length(values))]
+            printf("------- tbl.click:");
+            print(tbl)
+            self$trackClickResult(tbl)
             })
 
          observeEvent(input[[sprintf("currentGenomicRegion.%s", private$id)]], {
@@ -140,7 +155,7 @@ igvWidget = R6Class("igvWidget",
 
 
       setLocus = function(newLocus){
-          printf("--- entering igvModule3 [%s] setLocus: '%s'", private$id, newLocus)
+          printf("--- entering igvWidget [%s] setLocus: '%s'", private$id, newLocus)
           showGenomicRegion(private$session, private$id, newLocus)
           },
 
@@ -217,12 +232,14 @@ igvWidget = R6Class("igvWidget",
         #'
         #' @returns nothing
       displayGwasTrack = function(trackName, tbl.gwas, deleteTracksOfSameName=TRUE){
+          printf("=== igvWidget$displayGwasTrack %s, %d rows", trackName, nrow(tbl.gwas))
           loadGwasTrack(private$session, private$id, trackName, tbl.gwas, deleteTracksOfSameName)
-          }
+          },
+
       # (15 sep 2020: fails in igv.min.js: zv.getChromosomeName, cannot read toLowerCase of undefined
-      #displaySegTrack = function(trackName, tbl, deleteTracksOfSameName=TRUE){
-      #   loadSegTrack(private$session, private$id, trackName, tbl, deleteTracksOfSameName)
-      #   }
+      displaySegTrack = function(trackName, tbl, deleteTracksOfSameName=TRUE){
+         loadSegTrack(private$session, private$id, trackName, tbl, deleteTracksOfSameName)
+         }
 
      ) # public
   ) # class

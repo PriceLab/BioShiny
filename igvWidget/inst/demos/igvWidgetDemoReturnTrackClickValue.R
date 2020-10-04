@@ -3,7 +3,7 @@ library(shiny)
 library(shinyBS)
 library(VariantAnnotation)
 library(igvWidget)
-library(shinyModules)  # for messageBox, until it becomes a biocShiny widget
+library(msgBoxWidget)
 #----------------------------------------------------------------------------------------------------
 addResourcePath("tracks", "tracks")
 #----------------------------------------------------------------------------------------------------
@@ -25,15 +25,17 @@ igvDemoApp = R6Class("app",
     public = list(
         igv = NULL,
         msgBox = NULL,
+        clickData = NULL,
         #------------------------------------------------------------
         initialize = function(){
             self$igv = igvWidget$new("igv01",
                                          genome="hg38",
                                          locus="APOE",
-                                         width=1000,
-                                         height=400,
+                                         width="100%",
+                                         height="800",
                                          border="1px solid purple; border-radius: 5px;")
             private$current.igv.instance <- self$igv
+            self$msgBox = msgBoxWidget$new(id="box1", title="msg")
             },
 
         #------------------------------------------------------------
@@ -47,9 +49,10 @@ igvDemoApp = R6Class("app",
                   column(1, actionButton("loadBedGraphTrackButton", label="Bedgraph", style=buttonStyle)),
                   column(1, actionButton("loadVcfTrackButton", label="VCF", style=buttonStyle)),
                   #column(1, actionButton("loadSegTrackButton", label="SEG", style=buttonStyle)),
-                  column(1, actionButton("loadGwasTrackButton", label="GWAS", style=buttonStyle))
+                  column(1, actionButton("loadGwasTrackButton", label="GWAS", style=buttonStyle)),
+                  column(1, actionButton("popupButton", label="Popup", style=buttonStyle))
                   )),
-               messageBoxUI(id="messageBox.1", title="Track Click Entity"),
+               div(self$msgBox$ui(), style="margin: 10px;"),
                self$igv$ui()
             )},
 
@@ -58,43 +61,22 @@ igvDemoApp = R6Class("app",
 
             self$igv$server(input, output, session)
 
-            messageBox1.contents <- messageBoxServer("messageBox.1",
-                                                     newContent=self$igv$trackClickResult)
+            observe({
+                x <- self$igv$trackClickResult();
+                printf("igvWdgetDemoReturnTrackClickValue sees click")
+                print(x)
+                printf("clickData class: %s", class(x))
+                printf("         length: %d", length(x))
+                save(x, file="~/tmp/click.RData")
+                self$clickData <- x
+                showModal(modalDialog(renderTable(x, rownames=TRUE), title="track click"))
+                })
 
             observeEvent(input$newLocusButton, {
                index = sample(seq_len(length(private$loci.miscellany)), 1)
                newLocus = private$loci.miscellany[index]
                private$current.igv.instance$setLocus(newLocus)
                })
-
-           # observeEvent(input$trackClick, {
-           #    x <- input$trackClick
-           #    printf("--- clackTrick")
-           #    print(x)
-           #    name.indices <- grep("name", names(x))
-           #    value.indices <- grep("value", names(x))
-           #    printf("=== name indices:")
-           #    print(name.indices)
-           #    printf("=== value indices:")
-           #    print(value.indices)
-           #    entity <- "no entity found"
-           #    if(length(name.indices) == length(value.indices)){
-           #       clickData <- as.character(x[value.indices])
-           #       names(clickData) <- as.character(x[name.indices])
-           #                            # use grep so that "name" and "Name" and "NAME" are all equally discoverable
-           #       printf("=== extracted clickData")
-           #       print(clickData)
-           #       nameVariable <- grep("name", names(clickData), ignore.case=TRUE, value=TRUE)
-           #       printf("=== nameVariable")
-           #       print(nameVariable)
-           #       if(nchar(nameVariable) == 4){
-           #          entity <- clickData[[nameVariable]]
-           #          printf("you clicked on entity '%s'", entity)
-           #          } # there is a name field
-           #    } # the data structure returned from javascript has #name = #value fields
-           #    printf("returning selected entity")
-           #    print(entity)
-           #    })
 
             observeEvent(input$getLocusButton, {
                printf("--- locus button event")
@@ -130,26 +112,32 @@ igvDemoApp = R6Class("app",
                                                                  trackHeight=30)
                })
             observeEvent(input$loadVcfTrackButton, {
-               file <- system.file(package="shinyModules", "extdata", "inpp5d.fragment.vcf")
+               file <- system.file(package="igvWidget", "extdata", "inpp5d.fragment.vcf")
                printf("exists? %s: %s", file.exists(file), file)
                private$current.igv.instance$setLocus("chr2:232,984,561-233,283,684")
                vcfData <- readVcf(file)
                private$current.igv.instance$displayVcfTrack("vcf", vcfData)
                })
-            #observeEvent(input$loadSegTrackButton, {
-            #   file <- system.file(package="shinyModules", "extdata", "GBM-TP.seg")
-            #   printf("exists? %s: %s", file.exists(file), file)
-            #   tbl.seg <- read.table(file, sep="\t", as.is=TRUE, header=TRUE)[-1,]
-            #   private$current.igv.instance$displaySegTrack("SEG", tbl.seg)
-            #   })
+            observeEvent(input$loadSegTrackButton, {
+               file <- system.file(package="igvWidget", "extdata", "GBM-TP.seg")
+
+               printf("exists? %s: %s", file.exists(file), file)
+               tbl.seg <- read.table(file, sep="\t", as.is=TRUE, header=TRUE)[-1,]
+               private$current.igv.instance$displaySegTrack("SEG", tbl.seg)
+               })
             observeEvent(input$loadGwasTrackButton, {
-               file <- system.file(package="shinyModules", "extdata", "gwas.RData")
+               file <- system.file(package="igvWidget", "extdata", "gwas.RData")
                printf("exists? %s: %s", file.exists(file), file)
                tbl.gwas <- get(load(file))
                printf("tbl.gwas, nrow: %d", nrow(tbl.gwas))
                private$current.igv.instance$setLocus("chr19:45,316,064-45,472,399")
                private$current.igv.instance$displayGwasTrack("GWAS", tbl.gwas)
                })
+
+            observeEvent(input$popupButton, {
+                showModal(modalDialog(renderTable(mtcars[1:5, 1:5], title="fubar")))
+                })
+
 
             } # server
         #------------------------------------------------------------
