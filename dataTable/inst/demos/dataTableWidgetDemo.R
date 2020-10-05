@@ -31,7 +31,7 @@ DataTableDemoApp = R6Class("app",
               wellPanel(style="width: 1000px;",
                 private$msgBox$ui()),
                 sliderInput("maxMpgSlider", "Max MPG:",  min=10, max=35, value=35),
-                sliderInput("maxDispSlider", "Max MPG:",  min=70, max=500, value=500),
+                sliderInput("maxDispSlider", "Max Displacement:",  min=70, max=500, value=500),
                 private$dtw$ui()
               )},
 

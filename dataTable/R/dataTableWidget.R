@@ -26,7 +26,8 @@ dataTableWidget = R6Class("dataTableWidget",
         border = NULL,
         pageLength = NULL,
         lengthMenu = NULL,
-        selectionPolicy = NULL,
+        selectionPolicy = NULL,      # single, multiple, none
+        selectionTarget = NULL,      # row, column, cell
         wrapLongTextInCells = NULL,
         searchString = NULL,
         rownames.to.display = NULL,
@@ -61,7 +62,9 @@ dataTableWidget = R6Class("dataTableWidget",
        tableSelection = NULL,   # a reactive value, see server() below
 
        initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10,
-                             wrapLines=FALSE, selectionMode="single", lengthMenu=c(5,10,25,50)){
+                             wrapLines=FALSE,
+                             selectionMode="single", selectionTarget="row",
+                             lengthMenu=c(5,10,25,50)){
           printf("entering dataTableWidget::initialize")
           private$id = id;
           private$tbl = tbl;
@@ -80,7 +83,7 @@ dataTableWidget = R6Class("dataTableWidget",
           private$DTclass = "display"
           if(!wrapLines)
               private$DTclass = paste0(private$DTclass, " nowrap")
-          private$selectionOption = list(mode=selectionMode, selected=NULL)
+          private$selectionOption = list(mode=selectionMode, target=selectionTarget, selected=NULL)
           },
 
         #' @description
@@ -109,6 +112,7 @@ dataTableWidget = R6Class("dataTableWidget",
          if(!is.null(private$tbl)) self$setTable(private$tbl)
 
          self$tableSelection = reactiveVal()
+
          observeEvent(input[[sprintf("%s_rows_selected", private$id)]], ignoreInit=TRUE, ignoreNULL=FALSE, {
             row.numbers <- input[[sprintf("%s_rows_selected", private$id)]]
             #print("--- widget row selection made")
@@ -118,6 +122,25 @@ dataTableWidget = R6Class("dataTableWidget",
             else
                newValue <- row.numbers
             #printf("returning these row names: %s", paste(newValue, collapse=","))
+            self$tableSelection(newValue)
+            })
+
+         observeEvent(input[[sprintf("%s_cells_selected", private$id)]], ignoreInit=TRUE, ignoreNULL=FALSE, {
+            cell.numbers <- input[[sprintf("%s_cells_selected", private$id)]]
+            if(all(is.null(cell.numbers)))
+               newValue <- integer(0)
+            else
+               newValue <- cell.numbers
+            #printf("returning these row names: %s", paste(newValue, collapse=","))
+            self$tableSelection(newValue)
+            })
+
+         observeEvent(input[[sprintf("%s_columns_selected", private$id)]], ignoreInit=TRUE, ignoreNULL=FALSE, {
+            column.numbers <- input[[sprintf("%s_columns_selected", private$id)]]
+            if(all(is.null(column.numbers)))
+               newValue <- integer(0)
+            else
+               newValue <- column.numbers
             self$tableSelection(newValue)
             })
 
@@ -146,6 +169,11 @@ dataTableWidget = R6Class("dataTableWidget",
 
       clearSelection = function(){
          selectRows(private$dataTableProxy, NULL)
+         }, # selectRows
+
+      selectColumns = function(colNumbers){
+         printf("dataTableWidget::selectColumns")
+         selectColumns(private$dataTableProxy, 1:3, ignore.selectable=TRUE)
          } # selectRows
 
      ) # public
