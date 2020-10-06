@@ -26,6 +26,7 @@ dataTableWidget = R6Class("dataTableWidget",
         border = NULL,
         pageLength = NULL,
         lengthMenu = NULL,
+        columnWidths = NULL,
         selectionPolicy = NULL,      # single, multiple, none
         selectionTarget = NULL,      # row, column, cell
         wrapLongTextInCells = NULL,
@@ -55,6 +56,8 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param wrapLines logical, FALSE by default, gives more rows on screen
         #' @param selectionMode character, "single", "none", or "multiple", "single" by default
         #' @param lengthMenu integers specifies page length options (# of rows onscreen). default (5,10,25,50)
+        #' @param columnWidths integer vector, widths in pixels, NULL default, applies all
+        #'        supplied, default for the remainder
         #' @return A new `dataTableWidget` object.
 
    public = list(
@@ -64,7 +67,8 @@ dataTableWidget = R6Class("dataTableWidget",
        initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10,
                              wrapLines=FALSE,
                              selectionMode="single", selectionTarget="row",
-                             lengthMenu=c(5,10,25,50)){
+                             lengthMenu=c(5,10,25,50),
+                             columnWidths=NULL){
           printf("entering dataTableWidget::initialize")
           private$id = id;
           private$tbl = tbl;
@@ -79,6 +83,7 @@ dataTableWidget = R6Class("dataTableWidget",
 
           private$pageLength = pageLength
           private$lengthMenu = lengthMenu
+          private$columnWidths = columnWidths
           private$searchOptions = list();
           private$DTclass = "display"
           if(!wrapLines)
@@ -147,6 +152,14 @@ dataTableWidget = R6Class("dataTableWidget",
          }, # server
 
       setTable = function(tbl){
+          widths <- private$columnWidths
+          column.widths <- list() # add values, or leave empty.  DT accepts both
+          if(!is.null(widths[1])){
+            for(i in seq_len(length(widths)))
+               column.widths[[length(column.widths)+1]] <- list(width=widths[i], targets=i)
+            } # is columnWidths provided
+          printf("--- columnWidths")
+          print(column.widths)
           private$output[[private$id]] <- DT::renderDataTable({
               DT::datatable(tbl,
                             rownames=TRUE,
@@ -156,6 +169,8 @@ dataTableWidget = R6Class("dataTableWidget",
                                          search=private$searchOptions,
                                          lengthMenu = private$lengthMenu,
                                          pageLength = private$pageLength,
+                                         autoWidth=TRUE,
+                                         columnDefs = column.widths,
                                          paging=TRUE),
                             selection=private$selectionOption)
           })  # renderDataTable

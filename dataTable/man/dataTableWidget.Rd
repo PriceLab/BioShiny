@@ -23,6 +23,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-setTable}{\code{dataTableWidget$setTable()}}
 \item \href{#method-selectRows}{\code{dataTableWidget$selectRows()}}
 \item \href{#method-clearSelection}{\code{dataTableWidget$clearSelection()}}
+\item \href{#method-selectColumns}{\code{dataTableWidget$selectColumns()}}
 \item \href{#method-clone}{\code{dataTableWidget$clone()}}
 }
 }
@@ -41,7 +42,9 @@ Create a new dataTableWidget
   pageLength = 10,
   wrapLines = FALSE,
   selectionMode = "single",
-  lengthMenu = c(5, 10, 25, 50)
+  selectionTarget = "row",
+  lengthMenu = c(5, 10, 25, 50),
+  columnWidths = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -65,6 +68,9 @@ Create a new dataTableWidget
 \item{\code{selectionMode}}{character, "single", "none", or "multiple", "single" by default}
 
 \item{\code{lengthMenu}}{integers specifies page length options (# of rows onscreen). default (5,10,25,50)}
+
+\item{\code{columnWidths}}{integer vector, widths in pixels, NULL default, applies all
+supplied, default for the remainder}
 }
 \if{html}{\out{</div>}}
 }
@@ -127,6 +133,15 @@ defines the event handlers used with the ui
 \subsection{Method \code{clearSelection()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$clearSelection()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-selectColumns"></a>}}
+\if{latex}{\out{\hypertarget{method-selectColumns}{}}}
+\subsection{Method \code{selectColumns()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectColumns(colNumbers)}\if{html}{\out{</div>}}
 }
 
 }
