@@ -1,8 +1,8 @@
 Package: TextInputWidget
 Type: Package
 Title: TextInputWidget
-Version: 1.0.0
-Date: 2020-09-27
+Version: 1.0.2
+Date: 2020-10-07
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6

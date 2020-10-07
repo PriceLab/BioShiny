@@ -29,7 +29,7 @@ TextInputWidgetDemoApp = R6Class("app",
            fluidPage(
               wellPanel(style="width: 1000px; height=150px;",
                 actionButton("getTextButton", label= "Get Text", style="margin-top: 10px; margin-left: 20px;"),
-                actionButton("setTextButton", label= "Set Text (broken)", style="margin-top: 10px; margin-left: 20px;")
+                actionButton("setTextButton", label= "Set Text", style="margin-top: 10px; margin-left: 20px;")
                 ),
               div(private$textBox$ui(), style="margin: 50px;"),
               div(private$msgBox$ui(),  style="margin: 50px;")
@@ -49,7 +49,7 @@ TextInputWidgetDemoApp = R6Class("app",
                })
 
             observeEvent(input$setTextButton, ignoreInit=TRUE, {
-               private$textBox$setText("foo")
+               private$textBox$setText(paste(sample(letters, size=10, replace=TRUE), collapse=""))
                })
 
             } # server

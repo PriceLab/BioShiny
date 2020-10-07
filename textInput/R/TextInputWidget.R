@@ -1,3 +1,5 @@
+printf <- function(...) print(noquote(sprintf(...)))
+
 #' R6 Class representing a simple text display widget
 #'
 #' @title TextInputWidget
@@ -61,12 +63,8 @@ TextInputWidget = R6Class("TextInputWidget",
         #' defines the html structure of this widget
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
-          div(textInput(inputId=private$id, label=private$title, value=private$initialValue,
-                        placeholder=private$placeholder),
-             style=sprintf("text-align: left; background-color: %s; padding-left: 0px; width: %dpx; height: %dpx; font-size:%dpx; color: %s",
-                           private$backgroundColor, private$boxWidth, private$boxHeight,
-                           private$fontSize, private$fontColor)
-            ) # div
+          textInput(inputId=private$id, label=private$title, value=private$initialValue,
+                    placeholder=private$placeholder)
          }, # ui
 
         #' @description
@@ -82,17 +80,11 @@ TextInputWidget = R6Class("TextInputWidget",
 
          observeEvent(input[[private$id]], ignoreInit=TRUE, {
             private$currentText <- input[[private$id]]
-            printf("---new text: %s", private$currentText)
             })
          }, # server
 
-         # does not work
       setText = function(newText){
-         printf("about to set this text: '%s'", newText)
-         printf("private$id: %s", private$id)
-         print("private$input: %s")
-         print(private$input)
-         updateTextInput(private$session, private$input[[private$id]], value="foo")
+         updateTextInput(private$session, inputId=private$id, label=NULL, value=newText)
          },
 
       getText = function(newText){

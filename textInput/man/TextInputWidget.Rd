@@ -20,6 +20,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-new}{\code{TextInputWidget$new()}}
 \item \href{#method-ui}{\code{TextInputWidget$ui()}}
 \item \href{#method-server}{\code{TextInputWidget$server()}}
+\item \href{#method-setText}{\code{TextInputWidget$setText()}}
 \item \href{#method-getText}{\code{TextInputWidget$getText()}}
 \item \href{#method-clone}{\code{TextInputWidget$clone()}}
 }
@@ -33,6 +34,8 @@ Create a new TextInputWidget
 \if{html}{\out{<div class="r">}}\preformatted{TextInputWidget$new(
   id,
   title,
+  initialValue = "",
+  placeholder = "",
   boxWidth = 200,
   boxHeight = 30,
   fontSize = 20,
@@ -47,6 +50,10 @@ Create a new TextInputWidget
 \item{\code{id}}{the html document div id}
 
 \item{\code{title}}{character}
+
+\item{\code{initialValue}}{character, default ""}
+
+\item{\code{placeholder}}{character, provides hint to user}
 
 \item{\code{boxWidth}}{integer, 200 by default}
 
@@ -94,6 +101,15 @@ defines the event handlers used with the ui
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-setText"></a>}}
+\if{latex}{\out{\hypertarget{method-setText}{}}}
+\subsection{Method \code{setText()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TextInputWidget$setText(newText)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-getText"></a>}}
