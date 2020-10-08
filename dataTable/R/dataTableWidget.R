@@ -158,8 +158,8 @@ dataTableWidget = R6Class("dataTableWidget",
             for(i in seq_len(length(widths)))
                column.widths[[length(column.widths)+1]] <- list(width=widths[i], targets=i)
             } # is columnWidths provided
-          printf("--- columnWidths")
-          print(column.widths)
+          #printf("--- columnWidths")
+          #print(column.widths)
           private$output[[private$id]] <- DT::renderDataTable({
               DT::datatable(tbl,
                             rownames=TRUE,
