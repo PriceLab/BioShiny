@@ -64,7 +64,8 @@ TextInputWidget = R6Class("TextInputWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
           textInput(inputId=private$id, label=private$title, value=private$initialValue,
-                    placeholder=private$placeholder)
+                    placeholder=private$placeholder,
+                    width=sprintf("%dpx", private$boxWidth))
          }, # ui
 
         #' @description
