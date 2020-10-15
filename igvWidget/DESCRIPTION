@@ -1,8 +1,8 @@
 Package: igvWidget
 Type: Package
 Title: igvWidget
-Version: 1.0.4
-Date: 2020-10-03
+Version: 1.0.5
+Date: 2020-10-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), GenomicRanges,  GenomicAlignments, igvShiny (>= 1.0.1)

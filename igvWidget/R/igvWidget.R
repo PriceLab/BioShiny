@@ -204,6 +204,11 @@ igvWidget = R6Class("igvWidget",
       displayBedGraphTrack = function(trackName, tbl.bg, color, trackHeight,
                                       autoscale, min=NA_real_, max=NA_real_,
                                  deleteTracksOfSameName=TRUE, quiet=TRUE){
+          printf("=== igvWidget, displayBedGraphTrack")
+          print(head(tbl.bg))
+          printf("==================")
+          print(lapply(tbl.bg, class))
+          colnames(tbl.bg)[4] <- "score"
           loadBedGraphTrack(private$session, private$id,
                             trackName, tbl.bg, color, autoscale, min, max, trackHeight=50,
                             deleteTracksOfSameName, quiet)

@@ -116,24 +116,24 @@ igvDemoApp = R6Class("app",
                private$current.igv.instance$displayBedGraphTrack("bedGraph", tbl.bg,
                                                                  color="random",
                                                                  autoscale=TRUE,
-                                                                 min=-2, max=10,
+                                                                 #min=-2, max=10,
                                                                  trackHeight=30)
                })
             observeEvent(input$loadVcfTrackButton, {
-               file <- system.file(package="shinyModules", "extdata", "inpp5d.fragment.vcf")
+               file <- system.file(package="igvWidget", "extdata", "inpp5d.fragment.vcf")
                printf("exists? %s: %s", file.exists(file), file)
                private$current.igv.instance$setLocus("chr2:232,984,561-233,283,684")
                vcfData <- readVcf(file)
                private$current.igv.instance$displayVcfTrack("vcf", vcfData)
                })
             #observeEvent(input$loadSegTrackButton, {
-            #   file <- system.file(package="shinyModules", "extdata", "GBM-TP.seg")
+            #   file <- system.file(package="igvWidget", "extdata", "GBM-TP.seg")
             #   printf("exists? %s: %s", file.exists(file), file)
             #   tbl.seg <- read.table(file, sep="\t", as.is=TRUE, header=TRUE)[-1,]
             #   private$current.igv.instance$displaySegTrack("SEG", tbl.seg)
             #   })
             observeEvent(input$loadGwasTrackButton, {
-               file <- system.file(package="shinyModules", "extdata", "gwas.RData")
+               file <- system.file(package="igvWidget", "extdata", "gwas.RData")
                printf("exists? %s: %s", file.exists(file), file)
                tbl.gwas <- get(load(file))
                printf("tbl.gwas, nrow: %d", nrow(tbl.gwas))

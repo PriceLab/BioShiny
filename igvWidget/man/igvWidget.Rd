@@ -44,6 +44,7 @@ This class provides the igv.js genome browser in a classic object-oriented-progr
 \item \href{#method-displayBedGraphTrack}{\code{igvWidget$displayBedGraphTrack()}}
 \item \href{#method-displayVcfTrack}{\code{igvWidget$displayVcfTrack()}}
 \item \href{#method-displayGwasTrack}{\code{igvWidget$displayGwasTrack()}}
+\item \href{#method-displaySegTrack}{\code{igvWidget$displaySegTrack()}}
 \item \href{#method-clone}{\code{igvWidget$clone()}}
 }
 }
@@ -269,6 +270,15 @@ the GWAS file format has these columns; two example lines follow
               SNPS      cptid CHR_ID  CHR_POS EA NEA  EAF    Beta     SE   P.VALUE Effective_N
  14517  rs79350681  1:5330646      1  5330646  a   g 0.02 -0.7356 0.1875 8.770e-05        2902
  14527 rs187641513  1:5331868      1  5331868  a   g 0.02 -0.7424 0.1889 8.493e-05        2902
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-displaySegTrack"></a>}}
+\if{latex}{\out{\hypertarget{method-displaySegTrack}{}}}
+\subsection{Method \code{displaySegTrack()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{igvWidget$displaySegTrack(trackName, tbl, deleteTracksOfSameName = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
