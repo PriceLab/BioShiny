@@ -19,9 +19,9 @@ DataTableDemoApp = R6Class("app",
         initialize = function(){
             printf("initializing demo")
             private$msgBox =  msgBoxWidget$new(id="box1", title="table selection", boxWidth=600)
-            private$tbl = mtcars
+            private$tbl = cbind(mtcars, mtcars)
             private$dtw = dataTableWidget$new(id="tbl.1", private$tbl,
-                                              width="90%", height="500px",
+                                              width="98%", height="500px",
                                               border="1px blue solid; border-radius: 10px;",
                                               columnWidths=c(50,60,70,80,90,100,110,120))
             },
@@ -46,8 +46,8 @@ DataTableDemoApp = R6Class("app",
             observe({
                mpg.max <- input$maxMpgSlider
                disp.max <- input$maxDispSlider
-               tbl.sub <- subset(mtcars, mpg <= mpg.max & disp <= disp.max)
-               printf("tbl.sub, %d rows", nrow(tbl.sub))
+               tbl.sub <- subset(private$tbl, mpg <= mpg.max & disp <= disp.max)
+               printf("tbl.sub, %d rows, %d cals", nrow(tbl.sub), ncol(tbl.sub))
                private$dtw$setTable(tbl.sub)
                })
 

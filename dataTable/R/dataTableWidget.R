@@ -96,10 +96,10 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
          tagList(
-            div(
-               DT::DTOutput(private$id),
-               style=sprintf("width: %s; height: %s; padding: 20px; border: %s; overflow: auto; background-color: white;",
-                             private$width, private$height, private$border))
+            #div(
+               DT::DTOutput(private$id)
+               #style=sprintf("width: %s; height: %s; padding: 10px; margin: 3px; border: %s; overflow: auto; background-color: white;",
+               #              private$width, private$height, private$border))
              )
           }, # ui
 
