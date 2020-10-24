@@ -1,0 +1,44 @@
+library(shiny)
+library(R6)
+#----------------------------------------------------------------------------------------------------
+buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
+
+DemoApp = R6Class("DemoApp",
+
+    #--------------------------------------------------------------------------------
+    private = list(
+                   ),
+
+    #--------------------------------------------------------------------------------
+    public = list(
+
+        initialize = function(){
+            printf("initializing demo")
+            },
+
+        #------------------------------------------------------------
+        ui = function(){
+           fluidPage(
+              wellPanel(style="width: 1000px;",
+                actionButton("randomTextButton", label= "Generate random Text",
+                             style="margin-top: 40px; margin-left: 200px;")),
+            )},
+
+        #------------------------------------------------------------
+        server = function(input, output, session){
+
+            printf("entering server")
+
+            observeEvent(input$randomTextButton, ignoreInit=TRUE, {
+              randomText <- paste(sample(c(LETTERS, letters), 10, replace=TRUE), collapse="")
+              printf(randomText)
+              })
+            } # server
+
+       ) # public
+    ) # class
+#--------------------------------------------------------------------------------
+app <- DemoApp$new()
+x <- shinyApp(app$ui, app$server)
+runApp(x, port=1156)
+
