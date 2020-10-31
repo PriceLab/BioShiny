@@ -2,7 +2,8 @@ default:
 	@echo "targets:"
 	@echo "   roxy: build roxygen documentation and NAMESPACE"
 	@echo "   install"
-	@echo "   demo"
+	@echo "   demo1 - with mtcars"
+	@echo "   demo2"
 	@echo "   all: all of the above"
 
 all: roxy install demo
@@ -13,6 +14,9 @@ roxy:
 install:
 	R CMD INSTALL .
 
-demo:
-	(cd inst/demos; R -f HeatmapWidgetDemo.R)
+demo1:
+	(cd inst/demos; R -f HeatmapWidgetDemo1.R)
+
+demo2:
+	(cd inst/demos; R -f HeatmapWidgetDemo2.R)
 
