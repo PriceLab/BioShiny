@@ -22,6 +22,8 @@ HeatmapWidget = R6Class("HeatmapWidget",
         id = NULL,
         title = NULL,
         mtx = NULL,
+        width = NULL,
+        height = NULL,
         input = NULL,
         output = NULL,
         session = NULL,
@@ -37,13 +39,15 @@ HeatmapWidget = R6Class("HeatmapWidget",
         #' @return A new `HeatmapWidget` object.
 
    public = list(
-       initialize = function(id, title, mtx){
+       initialize = function(id, title, mtx, width=600, height=600){
 
           printf("entering HeatmapWidget::initialize")
           private$id = id;
           private$title = title;
           private$mtx = mtx;
-          private$ht_list = Heatmap(as.matrix(mtx), name="fubar")
+          private$width = width;
+          private$height = height;
+          private$ht_list = Heatmap(as.matrix(mtx), name="title")
           private$shiny_env = new.env()
           },
 
@@ -92,7 +96,6 @@ HeatmapWidget = R6Class("HeatmapWidget",
                                     }); // sub_heatmap_wrap
                                 }); // function
                              ')),
-                    # tags$style(paste(readLines(system.file("app", "jquery-ui.css", package = "ComplexHeatmap")), collapse = "\n")),
                     tags$style(
                         "#heatmap_wrap, #sub_heatmap_wrap {
                            float:left;
@@ -108,19 +111,22 @@ HeatmapWidget = R6Class("HeatmapWidget",
                           }
                         ") # tags$style
                     ), # tags$head
-          div(plotOutput("heatmap", height = 346, width = 396,
+          #div(plotOutput("heatmap", height = 346, width = 396,
+          div(plotOutput("heatmap", height = private$height, width = private$width,
                          brush = "heatmap_brush",
                          click = "heatmap_click"
                          ),
-              style = "width:400px;height:350px;position:relative;border:1px solid grey;",
-                id = "heatmap_wrap"
+              style = "position:relative;border:1px solid grey;",
+              #style = "width:400px;height:350px;position:relative;border:1px solid grey;",
+              id = "heatmap_wrap"
               ),
-          div(plotOutput("sub_heatmap", height = 296, width = 296),
-              style = "width:300px;height:300px;position:relative;;border:1px solid grey;",
+          div(plotOutput("sub_heatmap", height=private$height, width=private$width),
+              style = "position:relative;border:1px solid grey;",
+              #style = "width:300px;height:300px;position:relative;border:1px solid grey;",
               id = "sub_heatmap_wrap"
               ),
           div(style = "clear: both;"),
-          htmlOutput("click_info")
+          #htmlOutput("click_info")
           ) # fluidPage
           }, # ui
 
@@ -139,7 +145,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
              width = session$clientData$output_heatmap_width
              height = session$clientData$output_heatmap_height
 
-             showNotification("Making the original heatmap.", duration = 1, type = "message")
+             showNotification("Making the original heatmap.", duration = 5, type = "message")
 
              private$shiny_env$ht_list = draw(private$ht_list)
              private$shiny_env$ht_pos = ht_pos_on_device(private$shiny_env$ht_list)

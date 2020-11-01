@@ -15,7 +15,11 @@ HeatmapDemoApp = R6Class("app",
 
         initialize = function(){
             printf("initializing demo")
-            private$heatmap = HeatmapWidget$new(id="box1", title="random mixed text", mtcars)
+            private$heatmap = HeatmapWidget$new(id="box1",
+                                                title="mtcars",
+                                                mtcars,
+                                                width=1000,
+                                                height=800)
             },
 
         #------------------------------------------------------------

@@ -33,7 +33,7 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new HeatmapWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$new(id, title, mtx)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$new(id, title, mtx, width = 600, height = 600)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
