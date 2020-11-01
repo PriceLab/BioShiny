@@ -53,74 +53,67 @@ HeatmapWidget = R6Class("HeatmapWidget",
       ui = function(){
           fluidPage(
               tags$head(
-                       tags$script(HTML(paste(readLines(system.file("app", "jquery-ui.js", package = "ComplexHeatmap"), warn = FALSE), collapse = "\n"))),
-
-                       tags$script(HTML(
-                                '$(function() {
-                                     $("#heatmap_wrap").resizable({
-                                        stop: function( event, ui ) {
-                                    document.getElementById("mask").remove();
-                                    $("#heatmap_brush").remove();
-                                    $("#heatmap").height(ui.size.height-4);
-                                    $("#heatmap").width(ui.size.width-4);
-                                    },
-                                    start: function(event, ui) {
-                                    var mask = document.createElement("div");
-                                    mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
-                                    mask.setAttribute("id", "mask");
-                                    $("#heatmap_wrap").append(mask);
-                                    },
-                                    resize: function(event, ui) {
-                                    $("#mask").width(ui.size.width);
-                                    $("#mask").height(ui.size.height);
-                                    }
-                                    });
-
-                                    $("#sub_heatmap_wrap").resizable({
+                   tags$script(HTML(
+                            '$(function() {
+                                 $("#heatmap_wrap").resizable({
                                     stop: function( event, ui ) {
-                                    document.getElementById("mask2").remove();
-                                    $("#sub_heatmap").height(ui.size.height-4);
-                                    $("#sub_heatmap").width(ui.size.width-4);
-                                    },
-                                    start: function(event, ui) {
+                                document.getElementById("mask").remove();
+                                $("#heatmap_brush").remove();
+                                $("#heatmap").height(ui.size.height-4);
+                                $("#heatmap").width(ui.size.width-4);
+                                },
+                                start: function(event, ui) {
+                                var mask = document.createElement("div");
+                                mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
+                                mask.setAttribute("id", "mask");
+                                $("#heatmap_wrap").append(mask);
+                                },
+                                resize: function(event, ui) {
+                                $("#mask").width(ui.size.width);
+                                $("#mask").height(ui.size.height);
+                                }
+                                });
+                                $("#sub_heatmap_wrap").resizable({
+                                   stop: function( event, ui ) {
+                                     document.getElementById("mask2").remove();
+                                     $("#sub_heatmap").height(ui.size.height-4);
+                                     $("#sub_heatmap").width(ui.size.width-4);
+                                     },
+                                  start: function(event, ui) {
                                     var mask = document.createElement("div");
                                     mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
                                     mask.setAttribute("id", "mask2");
                                     $("#sub_heatmap_wrap").append(mask);
                                     },
-                                    resize: function(event, ui) {
+                                  resize: function(event, ui) {
                                     $("#mask2").width(ui.size.width);
                                     $("#mask2").height(ui.size.height);
                                     }
-                                    });
-                                    });
-                                    ')),
-                                    tags$style(paste(readLines(system.file("app", "jquery-ui.css", package = "ComplexHeatmap")), collapse = "\n")),
-                                    tags$style(
-                                        "#heatmap_wrap, #sub_heatmap_wrap {
-                                           float:left;
-                                           margin-bottom: 10px;
-                                           }
-                                        #heatmap_wrap {
-                                          margin-right: 10px;
-                                          }
-                                        #heatmap, #sub_heatmap {
-                                          display: block;
-                                          margin: auto;
-                                          margin: auto;
-                                          }
-                                        ") # tags$style
-                                    ), # tags$head
-
-          titlePanel("ComplexHeatmap Shiny App"),
-          p("You can click or select an area from the heatmap. The original heatmap and the selected sub-heatmap can be resized by dragging from the bottom right. If the heatmap is too huge or you resize the heatmap too frequently, the heatmap might not be correctly updated. You can just need to slightly resize the heatmap again and wait for several seconds."),
-          hr(),
+                                  });
+                                });
+                             ')),
+                    tags$style(paste(readLines(system.file("app", "jquery-ui.css", package = "ComplexHeatmap")), collapse = "\n")),
+                    tags$style(
+                        "#heatmap_wrap, #sub_heatmap_wrap {
+                           float:left;
+                           margin-bottom: 10px;
+                           }
+                        #heatmap_wrap {
+                          margin-right: 10px;
+                          }
+                        #heatmap, #sub_heatmap {
+                          display: block;
+                          margin: auto;
+                          margin: auto;
+                          }
+                        ") # tags$style
+                    ), # tags$head
           div(plotOutput("heatmap", height = 346, width = 396,
                          brush = "heatmap_brush",
                          click = "heatmap_click"
                          ),
-		style = "width:400px;height:350px;position:relative;border:1px solid grey;",
-		id = "heatmap_wrap"
+              style = "width:400px;height:350px;position:relative;border:1px solid grey;",
+                id = "heatmap_wrap"
               ),
           div(plotOutput("sub_heatmap", height = 296, width = 296),
               style = "width:300px;height:300px;position:relative;;border:1px solid grey;",
@@ -233,50 +226,56 @@ HeatmapWidget = R6Class("HeatmapWidget",
 
              output$click_info = renderUI({
                  selected = private$shiny_env$selected
+                 printf("--- new selection: ")
+                 print(selected)
                  if(is.null(selected)) {
                      HTML(paste("<pre>",
                                 "Selected area should overlap to heatmap bodies.",
                                 "</pre>",
                                 sep = "\n"))
                  } else {
+                     #print("a")
                      n_ht = length(unique(selected$heatmap))
-
+                     #print("b")
                      private$ht_list = private$shiny_env$ht_list
+                     #print("c")
                      if(private$ht_list@direction == "horizontal") {
-                         l1 = !duplicated(selected$row_slice)
-                         nr = length(unlist(selected$row_index[l1]))
-
-                         l2 = !duplicated(paste0(selected$heatmap, selected$column_slice))
-                         nc = length(unlist(selected$column_index[l2]))
+                        #print("e")
+                        l1 = !duplicated(selected$row_slice)
+                        nr = length(unlist(selected$row_index[l1]))
+                        l2 = !duplicated(paste0(selected$heatmap, selected$column_slice))
+                        nc = length(unlist(selected$column_index[l2]))
+                        print("f")
                      } else {
+                         #print("g")
                          l1 = !duplicated(paste0(selected$heatmap, selected$row_slice))
                          nr = length(unlist(selected$row_index[l1]))
-
+                         #print("h")
                          l2 = !duplicated(selected$column_slice)
                          nc = length(unlist(selected$column_index[l2]))
-                     }
+                         #print("i")
+                         }
 
-                     selected_df = as.data.frame(selected)
-                     con = textConnection("dump_txt", "w")
-                     dump("selected_df", file = con)
-                     close(con)
-                     dump_txt = dump_txt[-1]
-                     dump_txt = paste(dump_txt, collapse = "\n")
-                     HTML(paste("<pre>",
-                                qq("Selected over @{n_ht} heatmap@{ifelse(n_ht > 1, 's', '')} with @{nr} row@{ifelse(nr > 1, 's', '')} and @{nc} column@{ifelse(nc > 1, 's', '')}"),
-                                "You can get the row and column indices by copying following code: ",
-                                "</pre>",
-                                "<p><input id='show_code' type='button' value='show/hide code' /></p>",
-                                "<pre id='code'>",
-                                dump_txt,
-                                "</pre>",
-                                "<script>",
-                                "$('#code').hide();",
-                                "$('#show_code').click(function(){ $('#code').toggle(); });",
-                                "</script>",
-
-                                sep = "\n"))
-                 }
+                     #selected_df = as.data.frame(selected)
+                     #con = textConnection("dump_txt", "w")
+                     #dump("selected_df", file = con)
+                     #close(con)
+                     #dump_txt = dump_txt[-1]
+                     #dump_txt = paste(dump_txt, collapse = "\n")
+                     #HTML(paste("<pre>",
+                     #           qq("Selected over @{n_ht} heatmap@{ifelse(n_ht > 1, 's', '')} with @{nr} row@{ifelse(nr > 1, 's', '')} and @{nc} column@{ifelse(nc > 1, 's', '')}"),
+                     #           "You can get the row and column indices by copying following code: ",
+                     #           "</pre>",
+                     #           "<p><input id='show_code' type='button' value='show/hide code' /></p>",
+                     #           "<pre id='code'>",
+                     #           dump_txt,
+                     #           "</pre>",
+                     #           "<script>",
+                     #           "$('#code').hide();",
+                     #           "$('#show_code').click(function(){ $('#code').toggle(); });",
+                     #           "</script>",
+                     #sep = "\n"))
+                 } # else: something seleted
              })
 
          })
@@ -285,37 +284,37 @@ HeatmapWidget = R6Class("HeatmapWidget",
              output$click_info = renderUI({
                  showNotification("Click on the heatmap.", duration = 1, type = "message")
                  pos1 = ComplexHeatmap:::get_pos_from_click(input$heatmap_click)
-                 print(1)
+                 #print(1)
                  private$ht_list = private$shiny_env$ht_list
-                 print(2)
+                 #print(2)
                  pos = selectPosition(private$ht_list, mark = FALSE, pos = pos1, verbose = FALSE, ht_pos = private$shiny_env$ht_pos)
-                 print(3)
+                 #print(3)
                  if(is.null(pos)) {
                      HTML(paste("<pre>",
                                 "You did not select inside the heatmap.",
                                 "</pre>",
                                 sep = "\n"))
                  } else {
-                     print(4)
+                     #print(4)
                      ht_name = pos[1, "heatmap"]
-                     print(5)
+                     #print(5)
                      slice_name = pos[1, "slice"]
-                     print(6)
+                     #print(6)
 
                      row_index = pos[1, "row_index"][[1]]
-                     print(7)
+                     #print(7)
                      column_index = pos[1, "column_index"][[1]]
-                     print(8)
+                     #print(8)
                      m = private$ht_list@ht_list[[ht_name]]@matrix
-                     print(9)
+                     #print(9)
                      v = m[row_index, column_index]
-                     print(10)
+                     #print(10)
                      col = map_to_colors(private$ht_list@ht_list[[ht_name]]@matrix_color_mapping, v)
-                     print(12)
+                     #print(12)
                      row_label = rownames(m)[row_index]
-                     print(13)
+                     #print(13)
                      column_label = colnames(m)[column_index]
-                     print(14)
+                     #print(14)
                      if(is.null(row_label)) {
                          row_label = "NULL"
                      } else {
@@ -327,7 +326,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
                          # column_label = paste0("'", column_label, "'")
                      }
 
-                     print(4)
+                     #print(4)
                      message(qq("[@{Sys.time()}] click on the heatmap @{slice_name}."))
 
                      HTML(paste("<pre>",
@@ -341,8 +340,8 @@ HeatmapWidget = R6Class("HeatmapWidget",
                                 "</pre>",
                                 sep = "\n"))
                  } # else
-		}) # renderUI
-	}) # observeEvent
+                }) # renderUI
+        }) # observeEvent
       } # server
 
      ) # public

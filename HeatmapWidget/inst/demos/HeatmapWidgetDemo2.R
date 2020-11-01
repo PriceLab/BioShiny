@@ -16,7 +16,7 @@ HeatmapDemoApp = R6Class("app",
             printf("initializing demo")
             mtx.file.1 <- "genesByScoredCandidateTFs.mtx.16x113.RData"
             mtx.file.2 <- "genesByScoredCandidateTFs.mtx.22x340.RData"
-            mtx <- get(load(system.file(package="HeatmapWidget", "extdata", mtx.file.1)))
+            mtx <- get(load(system.file(package="HeatmapWidget", "extdata", mtx.file.2)))
             private$heatmap = HeatmapWidget$new(id="box1", title="random mixed text", mtx)
             },
 

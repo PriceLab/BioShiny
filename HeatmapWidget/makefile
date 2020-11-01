@@ -6,7 +6,7 @@ default:
 	@echo "   demo2"
 	@echo "   all: all of the above"
 
-all: roxy install demo
+all: roxy install demo1
 
 roxy:
 	R -e "devtools::document()"

@@ -1,6 +1,7 @@
 library(R6)
 library(shiny)
-library(heatmapWidget)
+library(HeatmapWidget)
+options(warn=2)
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
 
