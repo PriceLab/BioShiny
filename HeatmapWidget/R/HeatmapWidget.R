@@ -54,45 +54,45 @@ HeatmapWidget = R6Class("HeatmapWidget",
           fluidPage(
               tags$head(
                    tags$script(HTML(
-                            '$(function() {
+                            '$(function(){
                                  $("#heatmap_wrap").resizable({
+                                    stop: function( event, ui ){
+                                      document.getElementById("mask").remove();
+                                      $("#heatmap_brush").remove();
+                                      $("#heatmap").height(ui.size.height-4);
+                                      $("#heatmap").width(ui.size.width-4);
+                                      },
+                                    start: function(event, ui) {
+                                      var mask = document.createElement("div");
+                                      mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
+                                      mask.setAttribute("id", "mask");
+                                      $("#heatmap_wrap").append(mask);
+                                      },
+                                    resize: function(event, ui) {
+                                      $("#mask").width(ui.size.width);
+                                      $("#mask").height(ui.size.height);
+                                      }
+                                   }); // heatmap_wrap
+                                 $("#sub_heatmap_wrap").resizable({
                                     stop: function( event, ui ) {
-                                document.getElementById("mask").remove();
-                                $("#heatmap_brush").remove();
-                                $("#heatmap").height(ui.size.height-4);
-                                $("#heatmap").width(ui.size.width-4);
-                                },
-                                start: function(event, ui) {
-                                var mask = document.createElement("div");
-                                mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
-                                mask.setAttribute("id", "mask");
-                                $("#heatmap_wrap").append(mask);
-                                },
-                                resize: function(event, ui) {
-                                $("#mask").width(ui.size.width);
-                                $("#mask").height(ui.size.height);
-                                }
-                                });
-                                $("#sub_heatmap_wrap").resizable({
-                                   stop: function( event, ui ) {
-                                     document.getElementById("mask2").remove();
-                                     $("#sub_heatmap").height(ui.size.height-4);
-                                     $("#sub_heatmap").width(ui.size.width-4);
-                                     },
-                                  start: function(event, ui) {
-                                    var mask = document.createElement("div");
-                                    mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
-                                    mask.setAttribute("id", "mask2");
-                                    $("#sub_heatmap_wrap").append(mask);
-                                    },
-                                  resize: function(event, ui) {
-                                    $("#mask2").width(ui.size.width);
-                                    $("#mask2").height(ui.size.height);
-                                    }
-                                  });
-                                });
+                                       document.getElementById("mask2").remove();
+                                       $("#sub_heatmap").height(ui.size.height-4);
+                                       $("#sub_heatmap").width(ui.size.width-4);
+                                       },
+                                    start: function(event, ui){
+                                       var mask = document.createElement("div");
+                                       mask.setAttribute("style", "position:absolute;top:0;background-color:rgba(255, 255, 0, 0.5)");
+                                       mask.setAttribute("id", "mask2");
+                                       $("#sub_heatmap_wrap").append(mask);
+                                       },
+                                    resize: function(event, ui) {
+                                       $("#mask2").width(ui.size.width);
+                                       $("#mask2").height(ui.size.height);
+                                       }
+                                    }); // sub_heatmap_wrap
+                                }); // function
                              ')),
-                    tags$style(paste(readLines(system.file("app", "jquery-ui.css", package = "ComplexHeatmap")), collapse = "\n")),
+                    # tags$style(paste(readLines(system.file("app", "jquery-ui.css", package = "ComplexHeatmap")), collapse = "\n")),
                     tags$style(
                         "#heatmap_wrap, #sub_heatmap_wrap {
                            float:left;
@@ -245,16 +245,17 @@ HeatmapWidget = R6Class("HeatmapWidget",
                         nr = length(unlist(selected$row_index[l1]))
                         l2 = !duplicated(paste0(selected$heatmap, selected$column_slice))
                         nc = length(unlist(selected$column_index[l2]))
-                        print("f")
+                        HTML("horizontal direction")
                      } else {
-                         #print("g")
-                         l1 = !duplicated(paste0(selected$heatmap, selected$row_slice))
-                         nr = length(unlist(selected$row_index[l1]))
-                         #print("h")
-                         l2 = !duplicated(selected$column_slice)
-                         nc = length(unlist(selected$column_index[l2]))
-                         #print("i")
-                         }
+                        #print("g")
+                        l1 = !duplicated(paste0(selected$heatmap, selected$row_slice))
+                        nr = length(unlist(selected$row_index[l1]))
+                        #print("h")
+                        l2 = !duplicated(selected$column_slice)
+                        nc = length(unlist(selected$column_index[l2]))
+                        HTML("not horizontal direction")
+                        #print("i")
+                        }
 
                      #selected_df = as.data.frame(selected)
                      #con = textConnection("dump_txt", "w")
