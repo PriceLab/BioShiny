@@ -24,6 +24,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
         mtx = NULL,
         width = NULL,
         height = NULL,
+        quiet = NULL,
         input = NULL,
         output = NULL,
         session = NULL,
@@ -36,19 +37,37 @@ HeatmapWidget = R6Class("HeatmapWidget",
         #' @param id the html document div id
         #' @param title character
         #' @param mtx a numeric matrix
+        #' @param width numeric, pixels, default 600
+        #' @param height numeric, pixels, default 600
+        #' @param quiet logical silent or verbose?  default TRUE
+        #'
         #' @return A new `HeatmapWidget` object.
 
    public = list(
-       initialize = function(id, title, mtx, width=600, height=600){
+       initialize = function(id, title, mtx, width=600, height=600, quiet=TRUE){
 
-          printf("entering HeatmapWidget::initialize")
+          if(!quiet) message("entering HeatmapWidget::initialize")
           private$id = id;
           private$title = title;
           private$mtx = mtx;
           private$width = width;
           private$height = height;
+          private$quiet = quiet
           private$ht_list = Heatmap(as.matrix(mtx), name="title")
           private$shiny_env = new.env()
+          },
+
+        #' @description
+        #' translates a mouse click into usable information
+        #' @returns useful information
+        #  @export
+
+      clickEventAsPosition = function(event){
+          pos1 = ComplexHeatmap:::get_pos_from_click(event)
+          private$ht_list = private$shiny_env$ht_list
+          pos = selectPosition(private$ht_list, mark = FALSE, pos = pos1, verbose = FALSE,
+                               ht_pos = private$shiny_env$ht_pos)
+          return(pos)
           },
 
         #' @description
@@ -145,12 +164,13 @@ HeatmapWidget = R6Class("HeatmapWidget",
              width = session$clientData$output_heatmap_width
              height = session$clientData$output_heatmap_height
 
-             showNotification("Making the original heatmap.", duration = 5, type = "message")
+             #showNotification("Making the original heatmap.", duration = 5, type = "message")
 
              private$shiny_env$ht_list = draw(private$ht_list)
              private$shiny_env$ht_pos = ht_pos_on_device(private$shiny_env$ht_list)
 
-             message(qq("[@{Sys.time()}] make the original heatmap and calculate positions (device size: @{width}x@{height} px)."))
+             if(!private$quiet)
+                 message(qq("[@{Sys.time()}] make the original heatmap and calculate positions (device size: @{width}x@{height} px)."))
              })
 
         # default
@@ -172,7 +192,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
                      grid.newpage()
                      grid.text("No area on the heatmap is selected.", 0.5, 0.5)
                  } else {
-                     showNotification("Making the selected sub-heatmap.", duration = 1, type = "message")
+                     #showNotification("Making the selected sub-heatmap.", duration = 1, type = "message")
                      lt = ComplexHeatmap:::get_pos_from_brush(input$heatmap_brush)
                      pos1 = lt[[1]]
                      pos2 = lt[[2]]
@@ -225,15 +245,16 @@ HeatmapWidget = R6Class("HeatmapWidget",
                              draw(ht_select)
                          }
 
-                         message(qq("[@{Sys.time()}] make the sub-heatmap (device size: @{width}x@{height} px)."))
+                         if(!private$quiet)
+                            message(qq("[@{Sys.time()}] make the sub-heatmap (device size: @{width}x@{height} px)."))
                      }
                  }
              })
 
              output$click_info = renderUI({
                  selected = private$shiny_env$selected
-                 printf("--- new selection: ")
-                 print(selected)
+                 #printf("--- new selection: ")
+                 #print(selected)
                  if(is.null(selected)) {
                      HTML(paste("<pre>",
                                 "Selected area should overlap to heatmap bodies.",
@@ -287,68 +308,6 @@ HeatmapWidget = R6Class("HeatmapWidget",
 
          })
 
-         observeEvent(input$heatmap_click, {
-             output$click_info = renderUI({
-                 showNotification("Click on the heatmap.", duration = 1, type = "message")
-                 pos1 = ComplexHeatmap:::get_pos_from_click(input$heatmap_click)
-                 #print(1)
-                 private$ht_list = private$shiny_env$ht_list
-                 #print(2)
-                 pos = selectPosition(private$ht_list, mark = FALSE, pos = pos1, verbose = FALSE, ht_pos = private$shiny_env$ht_pos)
-                 #print(3)
-                 if(is.null(pos)) {
-                     HTML(paste("<pre>",
-                                "You did not select inside the heatmap.",
-                                "</pre>",
-                                sep = "\n"))
-                 } else {
-                     #print(4)
-                     ht_name = pos[1, "heatmap"]
-                     #print(5)
-                     slice_name = pos[1, "slice"]
-                     #print(6)
-
-                     row_index = pos[1, "row_index"][[1]]
-                     #print(7)
-                     column_index = pos[1, "column_index"][[1]]
-                     #print(8)
-                     m = private$ht_list@ht_list[[ht_name]]@matrix
-                     #print(9)
-                     v = m[row_index, column_index]
-                     #print(10)
-                     col = map_to_colors(private$ht_list@ht_list[[ht_name]]@matrix_color_mapping, v)
-                     #print(12)
-                     row_label = rownames(m)[row_index]
-                     #print(13)
-                     column_label = colnames(m)[column_index]
-                     #print(14)
-                     if(is.null(row_label)) {
-                         row_label = "NULL"
-                     } else {
-                         # row_label = paste0("'", row_label, "'")
-                     }
-                     if(is.null(column_label)) {
-                         column_label = "NULL"
-                     } else {
-                         # column_label = paste0("'", column_label, "'")
-                     }
-
-                     #print(4)
-                     message(qq("[@{Sys.time()}] click on the heatmap @{slice_name}."))
-
-                     HTML(paste("<pre>",
-                                qq("heatmap: @{ht_name}"),
-                                qq("heatmap slice: @{slice_name}"),
-                                qq("row index: @{row_index}"),
-                                qq("row label: @{row_label}"),
-                                qq("column index: @{column_index}"),
-                                qq("column_label: @{column_label}"),
-                                qq("value: @{v} <span style='background-color:@{col};width=10px;'>    </span>"),
-                                "</pre>",
-                                sep = "\n"))
-                 } # else
-                }) # renderUI
-        }) # observeEvent
       } # server
 
      ) # public

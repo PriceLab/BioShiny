@@ -20,3 +20,6 @@ demo1:
 demo2:
 	(cd inst/demos; R -f HeatmapWidgetDemo2.R)
 
+demo3:
+	(cd inst/demos; R -f HeatmapWidgetDemo3.R)
+
