@@ -1,0 +1,18 @@
+Package: GOEnrichmentWidget
+Type: Package
+Title: GOEnrichmentWidget
+Version: 1.0.1
+Date: 2020-11-04
+Author: Paul Shannon
+Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
+Depends: R (>= 3.5.0), shiny, R6
+Suggests: RUnit, BiocStyle, knitr, rmarkdown
+Description: a BioShiny R6 class for a simple text display box
+License: MIT + file LICENSE
+LazyLoad: yes
+NeedsCompilation: no
+Packaged: 2018-03-22 20:02:10 UTC; paul
+VignetteBuilder:
+  knitr
+Encoding: UTF-8
+RoxygenNote: 7.1.1
