@@ -15,6 +15,7 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
 
         initialize = function(geneSymbols){
             printf("initializing demo")
+            private$genes <- geneSymbols
             private$goWidget = GOEnrichmentWidget$new(id="goWidget.1", title="GO Enrichment",
                                                       geneSymbols=geneSymbols)
             },
@@ -22,6 +23,9 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
         #------------------------------------------------------------
         ui = function(){
            fluidPage(
+               wellPanel(
+                  actionButton("subsetGenesButton", "Subset")
+                   ),
               private$goWidget$ui()
             )},
 
@@ -31,8 +35,11 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
             printf("entering GOEnricmentWidgetDemo::server")
             private$goWidget$server(input, output, session)
 
-            observeEvent(input$randomTextButton, ignoreInit=TRUE, {
-              randomText <- paste(sample(c(LETTERS, letters), 10, replace=TRUE), collapse="")
+            observeEvent(input$subsetGenesButton, ignoreInit=TRUE, {
+              gene.subset <- sample(private$genes, size=5)
+              private$goWidget$setGenes(gene.subset)
+              private$goWidget$run(gene.subset)
+
               })
             } # server
 

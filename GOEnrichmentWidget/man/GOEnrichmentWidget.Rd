@@ -24,6 +24,8 @@ R6 Class representing a simple text display widget
 \item \href{#method-new}{\code{GOEnrichmentWidget$new()}}
 \item \href{#method-ui}{\code{GOEnrichmentWidget$ui()}}
 \item \href{#method-server}{\code{GOEnrichmentWidget$server()}}
+\item \href{#method-setGenes}{\code{GOEnrichmentWidget$setGenes()}}
+\item \href{#method-run}{\code{GOEnrichmentWidget$run()}}
 \item \href{#method-clone}{\code{GOEnrichmentWidget$clone()}}
 }
 }
@@ -81,6 +83,24 @@ defines the event handlers used with the ui
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-setGenes"></a>}}
+\if{latex}{\out{\hypertarget{method-setGenes}{}}}
+\subsection{Method \code{setGenes()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GOEnrichmentWidget$setGenes(genes)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-run"></a>}}
+\if{latex}{\out{\hypertarget{method-run}{}}}
+\subsection{Method \code{run()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GOEnrichmentWidget$run(genes)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

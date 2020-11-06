@@ -218,7 +218,20 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
             remove_modal_spinner()
             private$dtw$setTable(tbl.go[, coi])
             })
-         } # server
+         }, # server
+      setGenes = function(genes){
+         private$geneSymbols <- genes
+         },
+
+      run = function(genes){
+         private$geneSymbols <- genes
+         show_modal_spinner(spin="dots", text="GO enrichment calculation takes about a minute.")
+         tbl.go <- goEnrich(genes, maxRows=-1, paste.character=" ")
+         tbl.go$Pvalue <- format(tbl.go$Pvalue, digits=3)
+         coi <- c("genes", "Term", "Count", "Size", "Pvalue")
+         remove_modal_spinner()
+         private$dtw$setTable(tbl.go[, coi])
+         }
 
      ) # public
   ) # class
