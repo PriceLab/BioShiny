@@ -1,9 +1,9 @@
 #----------------------------------------------------------------------------------------------------
 library(org.Hs.eg.db)
-library(GSEABase)
+#library(GSEABase)
 library(GOstats)
-library(GO.db)
-library(Category)
+#library(GO.db)
+#library(Category)
 #----------------------------------------------------------------------------------------------------
 assignGeneIDs <- function(symbols)
 {

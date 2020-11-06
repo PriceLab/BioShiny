@@ -1,8 +1,8 @@
 Package: GOEnrichmentWidget
 Type: Package
 Title: GOEnrichmentWidget
-Version: 1.0.1
-Date: 2020-11-04
+Version: 1.0.2
+Date: 2020-11-05
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6
