@@ -38,8 +38,7 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
             observeEvent(input$subsetGenesButton, ignoreInit=TRUE, {
               gene.subset <- sample(private$genes, size=5)
               private$goWidget$setGenes(gene.subset)
-              private$goWidget$run(gene.subset)
-
+              #private$goWidget$run(gene.subset)
               })
             } # server
 

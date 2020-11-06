@@ -178,7 +178,7 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
                            choices = sort(unique(private$geneSymbols)),
                            options = list(`actions-box`=TRUE, size=20,
                                           `selected-text-format`="count > 4"),
-                            multiple = TRUE),
+                           multiple = TRUE),
                          actionButton("calculateEnrichmentButton", "Calculate"),
                          width=3
                         ), # sidebarPanel
@@ -221,6 +221,7 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
          }, # server
       setGenes = function(genes){
          private$geneSymbols <- genes
+         updatePickerInput(private$session, "genePicker", choices=genes, selected=genes)
          },
 
       run = function(genes){
