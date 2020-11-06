@@ -157,7 +157,7 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
           private$title = title;
           private$geneSymbols = geneSymbols;
           private$tbl <- data.frame()
-          private$dtw = dataTableWidget$new(id="dt",
+          private$dtw = dataTableWidget$new(id="goEnrichmentDT",
                                             private$tbl,
                                             pageLength=20,
                                             lengthMenu=c(4, 10, 15, 20, 25, 30, 50),

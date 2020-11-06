@@ -1,7 +1,7 @@
 Package: GOEnrichmentWidget
 Type: Package
 Title: GOEnrichmentWidget
-Version: 1.0.2
+Version: 1.0.3
 Date: 2020-11-05
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
