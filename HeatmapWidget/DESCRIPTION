@@ -1,11 +1,11 @@
 Package: HeatmapWidget
 Type: Package
 Title: HeatmapWidget
-Version: 1.0.3
-Date: 2020-11-03
+Version: 2.0.1
+Date: 2020-11-09
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
-Depends: R (>= 3.5.0), shiny, R6
+Depends: R (>= 3.5.0), shiny, R6, iheatmapr
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 Description: a BioShiny R6 class for a simple text display box
 License: MIT + file LICENSE

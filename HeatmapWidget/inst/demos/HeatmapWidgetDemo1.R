@@ -1,6 +1,7 @@
 library(R6)
 library(shiny)
 library(HeatmapWidget)
+library(shinyWidgets)
 options(warn=2)
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
@@ -17,7 +18,9 @@ HeatmapDemoApp = R6Class("app",
             printf("initializing demo")
             private$heatmap = HeatmapWidget$new(id="box1",
                                                 title="mtcars",
-                                                mtcars,
+                                                mtx=as.matrix(mtcars),
+                                                rowTitle="model",
+                                                columnTitle="attributes",
                                                 width=1000,
                                                 height=800)
             },
@@ -25,9 +28,6 @@ HeatmapDemoApp = R6Class("app",
         #------------------------------------------------------------
         ui = function(){
            fluidPage(
-              wellPanel(style="width: 1000px;",
-                actionButton("randomTextButton", label= "Generate random Text",
-                             style="margin-top: 40px; margin-left: 200px;")),
                 private$heatmap$ui(),
             )},
 

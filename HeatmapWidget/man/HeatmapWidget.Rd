@@ -13,7 +13,7 @@ shiny code which, wnen invoked (almost always by the shinyApp function, returns 
 nothing
 }
 \description{
-an R6 class providing clean access to a simple html message box
+an R6 class providing clean access to iheatmapr
 }
 \details{
 R6 Class representing a simple text display widget
@@ -24,6 +24,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-new}{\code{HeatmapWidget$new()}}
 \item \href{#method-ui}{\code{HeatmapWidget$ui()}}
 \item \href{#method-server}{\code{HeatmapWidget$server()}}
+\item \href{#method-setHeatmap}{\code{HeatmapWidget$setHeatmap()}}
 \item \href{#method-clone}{\code{HeatmapWidget$clone()}}
 }
 }
@@ -33,7 +34,18 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new HeatmapWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$new(id, title, mtx, width = 600, height = 600)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$new(
+  id,
+  title,
+  mtx,
+  rowTitle,
+  columnTitle,
+  rowClusters = 5,
+  colClusters = 5,
+  width = 600,
+  height = 600,
+  quiet = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -44,6 +56,20 @@ Create a new HeatmapWidget
 \item{\code{title}}{character}
 
 \item{\code{mtx}}{a numeric matrix}
+
+\item{\code{rowTitle}}{character, displayed on far left of the plot}
+
+\item{\code{rowClusters}}{integer, the number of k-means row clusters desired, default 5}
+
+\item{\code{colClusters}}{integer, the number of k-means column clusters desired, default 5}
+
+\item{\code{width}}{numeric, pixels, default 600}
+
+\item{\code{height}}{numeric, pixels, default 600}
+
+\item{\code{quiet}}{logical silent or verbose?  default TRUE}
+
+\item{\code{colTitle}}{character, displayed at the bottom}
 }
 \if{html}{\out{</div>}}
 }
@@ -78,6 +104,23 @@ defines the event handlers used with the ui
 \item{\code{output}}{list, managed by Shiny}
 
 \item{\code{session}}{list (environment?) managed by Shiny}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-setHeatmap"></a>}}
+\if{latex}{\out{\hypertarget{method-setHeatmap}{}}}
+\subsection{Method \code{setHeatmap()}}{
+new heatmap displayed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$setHeatmap(mtx)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{input}}{list, managed by Shiny}
 }
 \if{html}{\out{</div>}}
 }
