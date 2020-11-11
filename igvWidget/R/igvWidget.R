@@ -81,7 +81,7 @@ igvWidget = R6Class("igvWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
           tagList(
-             div(
+             div(id=sprintf("%s-container", private$id),
                igvShinyOutput(private$id, private$width, private$height),
                style=sprintf("width: %s; height: %s; border: %s; overflow: scroll; background-color: white;",
                              private$width, private$height, private$border))
@@ -155,7 +155,6 @@ igvWidget = R6Class("igvWidget",
 
 
       setLocus = function(newLocus){
-          printf("--- entering igvWidget [%s] setLocus: '%s'", private$id, newLocus)
           showGenomicRegion(private$session, private$id, newLocus)
           },
 
