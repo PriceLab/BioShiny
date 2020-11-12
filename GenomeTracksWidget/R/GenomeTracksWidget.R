@@ -78,9 +78,10 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
                          width=2
                         ), # sidebarPanel
                     mainPanel(
-                        div(id="tracksContainer"), #, div(id="tracksWrapper")),
-                      width=10
-                      )
+                        tabsetPanel(id="igvTabs"),
+                                    #tabPanel("Hello", "This is the hello tab")),
+                       width=10
+                       )
               ) # sidebarLayout
             ) # fluidPage
           }, # ui
@@ -109,14 +110,19 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
                                             height="500",
                                             border="")
             private$trackList[[targetGene]] <- newTrackWidget
-            insertUI(selector="#tracksContainer", where="beforeEnd",
-                     newTrackWidget$ui(), immediate=TRUE)
+            removeTab(inputId="igvTabs", target=targetGene)
+            insertTab(inputId="igvTabs", position="after",
+                      tabPanel(targetGene, newTrackWidget$ui()),
+                      select=TRUE, target=NULL)
             newTrackWidget$server(input, output, session)
+            later(function(){
+                self$addAllRelevantTracks(targetGene, newTrackWidget, trackHeight=30)}, 3)
+            #insertUI(selector="#tracksContainer", where="beforeEnd",
+            #         newTrackWidget$ui(), immediate=TRUE)
+            #newTrackWidget$server(input, output, session)
             # updatePickerInput(session, inputId="trackDestroyer",
             #                  choices=c(names(private$trackList)))
-            printf("--- about to call addAllRelevantTracks")
-            later(function(){
-                self$addAllRelevantTracks(targetGene, newTrackWidget, trackHeight=30)}, 5)
+            #printf("--- about to call addAllRelevantTracks")
             }) # addTrackButton
 
          observeEvent(input$removeTrackButton, ignoreInit=TRUE, {
