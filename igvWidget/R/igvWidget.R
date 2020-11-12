@@ -3,6 +3,8 @@
 #' @import igvShiny
 #' @import rtracklayer
 #' @import VariantAnnotation
+#' @import org.Hs.eg.db
+#' @import TxDb.Hsapiens.UCSC.hg38.knownGene
 #'
 #' @title igvWidget
 #' @description an R6 class providing clean access to the igvShiny package
@@ -161,11 +163,17 @@ igvWidget = R6Class("igvWidget",
 
         #' @description
         #' queries for the currently visible locus in the genome browser
+        #'   TODO: need defensive programmer here, different genomes (pshannon, 11 nov 2020)
         #' @returns a "chrom:start-end" string (or, in rare circumstances, a geneSymbol)
       getLocus = function(){
           locusString <- private$currentGenomicRegion
-          if(!grepl("^chr", locusString, ignore.case=TRUE, fixed=FALSE))
-             return(locusString)
+          if(!grepl("^chr", locusString, ignore.case=TRUE, fixed=FALSE)){ # lookup up chr:start-end
+             db <- org.Hs.eg.db
+             txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
+             geneID <- select(db, keys=locusString, keytype="SYMBOL", columns=c("ENTREZID"))$ENTREZID
+             tbl.loc <- select(txdb, keys=geneID, keytype="GENEID", columns=c("TXCHROM", "TXSTART", "TXEND"))
+             locusString <- with(tbl.loc, sprintf("%s:%d-%d", TXCHROM[1], min(TXSTART) - 1000, max(TXEND) + 1000))
+             }
           printf("=== getLocus, locusString: ")
           print(locusString)
           x = parseChromLocString(locusString)
