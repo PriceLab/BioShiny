@@ -22,6 +22,7 @@ R6 Class representing one or more igv genome tracks, from tf/targetGene data
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{GenomeTracksWidget$new()}}
+\item \href{#method-setTable}{\code{GenomeTracksWidget$setTable()}}
 \item \href{#method-ui}{\code{GenomeTracksWidget$ui()}}
 \item \href{#method-server}{\code{GenomeTracksWidget$server()}}
 \item \href{#method-addAllRelevantTracks}{\code{GenomeTracksWidget$addAllRelevantTracks()}}
@@ -34,7 +35,7 @@ R6 Class representing one or more igv genome tracks, from tf/targetGene data
 \subsection{Method \code{new()}}{
 Create a new GenomeTracksWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GenomeTracksWidget$new(id, title, tbl)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GenomeTracksWidget$new(id, title)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,6 +52,15 @@ Create a new GenomeTracksWidget
 \subsection{Returns}{
 A new `GenomeTracksWidget` object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-setTable"></a>}}
+\if{latex}{\out{\hypertarget{method-setTable}{}}}
+\subsection{Method \code{setTable()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{GenomeTracksWidget$setTable(tbl)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ui"></a>}}
@@ -88,7 +98,7 @@ defines the event handlers used with the ui
 \if{latex}{\out{\hypertarget{method-addAllRelevantTracks}{}}}
 \subsection{Method \code{addAllRelevantTracks()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GenomeTracksWidget$addAllRelevantTracks(gene, newTrackWidget)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GenomeTracksWidget$addAllRelevantTracks(gene, newTrackWidget, trackHeight)}\if{html}{\out{</div>}}
 }
 
 }

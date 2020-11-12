@@ -3,6 +3,7 @@
 #' @import R6
 #' @import shiny
 #' @import shinyWidgets
+#' @import shinyjs
 #' @import igvWidget
 #' @import shinybusy
 #' @import later
@@ -63,7 +64,7 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
       ui = function(){
           fluidPage(
                 sidebarLayout(
-                     sidebarPanel(
+                    sidebarPanel(
                          pickerInput(inputId = "genomeTrackGenePicker",
                                      label = "Target Genes",
                                      choices = private$targetGenes,
@@ -102,12 +103,14 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
             targetGene <- isolate(input$genomeTrackGenePicker)
             #igvWidgetID <- sprintf("igv-%s-%d", targetGene, sample(1:1000000, size=1))
             igvWidgetID <- sprintf("igv-%s", targetGene)
+
+            removeUI(selector=sprintf("%s .igv-root", igvWidgetID), immediate=TRUE)
             printf("--- GenomeTracksWidget creating new igv with id %s", igvWidgetID)
             newTrackWidget <- igvWidget$new(igvWidgetID,
                                             genome="hg38",
                                             locus=targetGene,
                                             width="100%",
-                                            height="500",
+                                            height="800",
                                             border="")
             private$trackList[[targetGene]] <- newTrackWidget
             removeTab(inputId="igvTabs", target=targetGene)
@@ -116,7 +119,7 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
                       select=TRUE, target=NULL)
             newTrackWidget$server(input, output, session)
             later(function(){
-                self$addAllRelevantTracks(targetGene, newTrackWidget, trackHeight=30)}, 3)
+                self$addAllRelevantTracks(targetGene, newTrackWidget, trackHeight=30)}, 5)
             #insertUI(selector="#tracksContainer", where="beforeEnd",
             #         newTrackWidget$ui(), immediate=TRUE)
             #newTrackWidget$server(input, output, session)
