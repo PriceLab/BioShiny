@@ -17,7 +17,8 @@ GenomeTracksWidgetDemoApp = R6Class("app",
         initialize = function(tbl){
             printf("initializing demo")
             private$tbl <- tbl
-            private$gtw <- GenomeTracksWidget$new("gtw1", "Genome Tracks", tbl)
+            private$gtw <- GenomeTracksWidget$new("gtw1", "Genome Tracks")
+            private$gtw$setTable(tbl)
             },
 
         #------------------------------------------------------------
@@ -38,6 +39,8 @@ GenomeTracksWidgetDemoApp = R6Class("app",
 #--------------------------------------------------------------------------------
 #filename <- "~/github/TrenaProjectErythropoiesis/inst/extdata/genomicRegions/tbl.3.0.250000.500000.RData"
 filename <- "../extdata/tbl-79.rows.RData"
+filename <- "../extdata/tbl-21.rows.RData"
+filename <- "../extdata/tbl-66.rows.RData"
 tbl <- get(load(filename))
 
 
