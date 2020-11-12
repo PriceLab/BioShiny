@@ -184,7 +184,7 @@ igvWidget = R6Class("igvWidget",
       displayBedTrack = function(trackName, tbl.bed, color, trackHeight,
                                  deleteTracksOfSameName=TRUE, quiet=TRUE){
           loadBedTrack(private$session, private$id,
-                       trackName, tbl.bed, color, trackHeight=50, deleteTracksOfSameName, quiet)
+                       trackName, tbl.bed, color, trackHeight=trackHeight, deleteTracksOfSameName, quiet)
           },
 
         #' @description
@@ -209,7 +209,7 @@ igvWidget = R6Class("igvWidget",
           print(lapply(tbl.bg, class))
           colnames(tbl.bg)[4] <- "score"
           loadBedGraphTrack(private$session, private$id,
-                            trackName, tbl.bg, color, autoscale, min, max, trackHeight=50,
+                            trackName, tbl.bg, color, autoscale, min, max, trackHeight=trackHeight,
                             deleteTracksOfSameName, quiet)
           },
 
