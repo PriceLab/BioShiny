@@ -40,6 +40,7 @@ Create a new HeatmapWidget
   mtx,
   rowTitle,
   columnTitle,
+  clusteringMethod = "hclust",
   rowClusters = 5,
   colClusters = 5,
   width = 600,
@@ -114,7 +115,12 @@ defines the event handlers used with the ui
 \subsection{Method \code{setHeatmap()}}{
 new heatmap displayed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$setHeatmap(mtx)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HeatmapWidget$setHeatmap(
+  mtx,
+  clusteringMethod = "hclust",
+  rowClusters = 5,
+  colClusters = 5
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

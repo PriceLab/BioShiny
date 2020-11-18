@@ -79,7 +79,7 @@ goEnrich <- function(geneSymbols, maxRows=10, paste.character=",")
 
   go.params <- new("GOHyperGParams", geneIds=unique(tbl.map$id),
                    universeGeneIds = gene.universe, annotation = "org.Hs.eg.db",
-                   ontology = 'BP', pvalueCutoff = 0.05, conditional = FALSE,
+                   ontology = 'BP', pvalueCutoff = 0.2, conditional = FALSE,
                    testDirection = "over")
 
   go.bp.hgr <- hyperGTest(go.params)
@@ -170,7 +170,6 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
       ui = function(){
           fluidPage(
-              titlePanel("Gene Ontology Enrichment for Biological Process"),
                 sidebarLayout(
                      sidebarPanel(
                          pickerInput(inputId = "genePicker",

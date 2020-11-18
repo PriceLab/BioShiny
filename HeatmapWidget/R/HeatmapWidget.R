@@ -9,10 +9,6 @@
 #'
 printf <- function(...) print(noquote(sprintf(...)))
 
-library(R6)
-library(grid)
-library(ComplexHeatmap)
-
 #' @export
 HeatmapWidget = R6Class("HeatmapWidget",
 
@@ -22,6 +18,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
         mtx = NULL,
         rowTitle = NULL,
         columnTitle = NULL,
+        clusteringMethod = NULL,
         rowClusters = NULL,
         colClusters = NULL,
         width = NULL,
@@ -51,6 +48,7 @@ HeatmapWidget = R6Class("HeatmapWidget",
 
    public = list(
        initialize = function(id, title, mtx, rowTitle, columnTitle,
+                             clusteringMethod="hclust",
                              rowClusters=5, colClusters=5,
                              width=600, height=600, quiet=TRUE){
 
@@ -59,15 +57,23 @@ HeatmapWidget = R6Class("HeatmapWidget",
           private$title = title;
           private$mtx = mtx;
           private$rowTitle = rowTitle
+          private$clusteringMethod = clusteringMethod
           private$columnTitle = columnTitle
           private$rowClusters = rowClusters
           private$colClusters = colClusters
           private$width = width;
           private$height = height;
           private$quiet = quiet
-          hm <- hm <- main_heatmap(mtx)
-          hm <- add_col_clustering(hm, k=colClusters, show_colorbar=FALSE)
-          hm <- add_row_clustering(hm, k=rowClusters, show_colorbar=FALSE)
+          #public$setHeatmap(mtx)
+          printf("--- HeatmapWidget ctor, checking rows")
+          if(nrow(mtx) == 1)   # hclust needs at least two rows.
+              mtx <- rbind(mtx, mtx)
+          if(ncol(mtx) == 1)   # hclust needs at least two rows.
+              mtx <- cbind(mtx, mtx)
+          printf("ctor calls main_heatmap, mtx rows: %d", nrow(mtx))
+          hm <- main_heatmap(mtx)
+          hm <- add_col_clustering(hm, method="hclust", show_colorbar=FALSE)
+          hm <- add_row_clustering(hm, method="hclust")
           hm <- add_col_labels(hm)
           hm <- add_row_labels(hm)
           hm <- add_row_title(hm, rowTitle)
@@ -118,13 +124,30 @@ HeatmapWidget = R6Class("HeatmapWidget",
         #' new heatmap displayed
         #' @param input list, managed by Shiny
         #' @export
-      setHeatmap = function(mtx, rowClusters=5, colClusters=5){
+      setHeatmap = function(mtx, clusteringMethod="hclust", rowClusters=5, colClusters=5){
+         print(-2)
          private$mtx <- mtx
+         print(-1)
+         if(nrow(private$mtx) == 1)   # hclust needs at least two rows.
+             private$mtx <- rbind(private$mtx, private$mtx)
+         if(ncol(private$mtx) == 1)   # hclust needs at least two cols
+             private$mtx <- cbind(private$mtx, private$mtx)
+         print(1)
+         printf("incoming row: %d, adjusted rows: %d", nrow(mtx), nrow(private$mtx))
+         private$clusteringMethod <- clusteringMethod
+         print(2)
          private$rowClusters <- rowClusters
+         print(3)
+         if(private$rowClusters > nrow(private$mtx))
+             private$rowClusters <- 2
+         print(4)
          private$colClusters <- colClusters
-         hm <- main_heatmap(mtx)
-         hm <- add_col_clustering(hm, k=private$colClusters, show_colorbar=FALSE)
-         hm <- add_row_clustering(hm, k=private$rowClusters, show_colorbar=FALSE)
+         hm <- main_heatmap(private$mtx)
+         hm <- add_col_clustering(hm, method="hclust", show_colorbar=FALSE)
+         hm <- add_row_clustering(hm, method="hclust", show_colorbar=FALSE)
+         #hm <- add_col_clustering(hm, method=private$clusteringMethod, k=private$colClusters, show_colorbar=FALSE)
+         #hm <- add_row_clustering(hm, method=private$clusteringMethod, k=private$rowClusters, show_colorbar=FALSE)
+
          hm <- add_col_labels(hm)
          hm <- add_row_labels(hm)
          hm <- add_row_title(hm, private$rowTitle)

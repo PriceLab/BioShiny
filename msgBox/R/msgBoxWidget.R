@@ -4,6 +4,8 @@
 #' @description an R6 class providing clean access to a simple html message box
 #' @name msgBoxWidget
 #'
+printf <- function(...) print(noquote(sprintf(...)))
+
 library(R6)
 
 #' @export
@@ -34,6 +36,7 @@ msgBoxWidget = R6Class("msgBoxWidget",
         #' @return A new `msgBoxWidget` object.
 
    public = list(
+       currentText = NULL,
 
        initialize = function(id, title, boxWidth=200, boxHeight=30, fontSize=20,
                              fontColor="black", backgroundColor="beige"){
@@ -75,10 +78,16 @@ msgBoxWidget = R6Class("msgBoxWidget",
          private$session = session;
          private$input = input
          private$output = output
+         self$currentText = reactiveVal("")
          }, # server
 
       setText = function(newText){
          private$output[[private$id]] <- renderText(newText)
+         self$currentText(newText)
+         },
+
+      getText = function(){
+         self$currentText()
          }
 
      ) # public

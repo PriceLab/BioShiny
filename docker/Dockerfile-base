@@ -1,0 +1,7 @@
+FROM bioconductor/bioconductor_docker
+#WORKDIR /home/shiny
+
+RUN sudo apt-get install -y libbz2-dev liblzma-dev
+RUN sudo apt-get install -y libv8-dev
+COPY ./installPrerequisitesBase.R .
+RUN R -f ./installPrerequisitesBase.R .

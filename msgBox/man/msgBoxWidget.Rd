@@ -2,7 +2,11 @@
 % Please edit documentation in R/msgBoxWidget.R
 \name{msgBoxWidget}
 \alias{msgBoxWidget}
+\alias{printf}
 \title{msgBoxWidget}
+\usage{
+printf(...)
+}
 \value{
 shiny code which, wnen invoked (almost always by the shinyApp function, returns html
 

@@ -101,8 +101,10 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
 
          observeEvent(input$addTrackButton, ignoreInit=TRUE, {
             targetGene <- isolate(input$genomeTrackGenePicker)
-            #igvWidgetID <- sprintf("igv-%s-%d", targetGene, sample(1:1000000, size=1))
-            igvWidgetID <- sprintf("igv-%s", targetGene)
+               # generate a unique tag, avoiding a lingering igv-div
+               # (which is checked for, and deleted, in igvShiny.js, just in case)
+            igvWidgetID <- sprintf("igv-%s-%d", targetGene, sample(1:1000000, size=1))
+            #igvWidgetID <- sprintf("igv-%s", targetGene)
 
             removeUI(selector=sprintf("%s .igv-root", igvWidgetID), immediate=TRUE)
             printf("--- GenomeTracksWidget creating new igv with id %s", igvWidgetID)

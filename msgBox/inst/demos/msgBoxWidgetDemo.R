@@ -9,7 +9,8 @@ MsgBoxDemoApp = R6Class("app",
     #--------------------------------------------------------------------------------
     private = list(msgBox1 = NULL,
                    msgBox2 = NULL,
-                   randomTextButton = NULL),
+                   randomTextButton = NULL,
+                   getTextButton = NULL),
 
     #--------------------------------------------------------------------------------
     public = list(
@@ -26,6 +27,8 @@ MsgBoxDemoApp = R6Class("app",
            fluidPage(
               wellPanel(style="width: 1000px;",
                 actionButton("randomTextButton", label= "Generate random Text",
+                             style="margin-top: 40px; margin-left: 200px;"),
+                actionButton("getTextButton", label= "Get Text",
                              style="margin-top: 40px; margin-left: 200px;")),
                 private$msgBox1$ui(),
                 private$msgBox2$ui()
@@ -42,7 +45,14 @@ MsgBoxDemoApp = R6Class("app",
               randomText <- paste(sample(c(LETTERS, letters), 10, replace=TRUE), collapse="")
               private$msgBox1$setText(randomText)
               private$msgBox2$setText(tolower(randomText))
+              private$msgBox1$getText() == randomText
+              private$msgBox2$getText() == tolower(randomText)
               })
+
+            observeEvent(input$getTextButton, ignoreInit=TRUE, {
+              print(private$msgBox1$getText())
+              })
+
             } # server
 
        ) # public

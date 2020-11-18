@@ -10,6 +10,9 @@ HeatmapDemoApp = R6Class("app",
     #--------------------------------------------------------------------------------
      private = list(heatmapWidget = NULL,
                     mtx=NULL,
+                    geneCount=NULL,           # unique genes in mtx sent to heatmap, to test limits
+                    trimmed.mtx=NULL,
+                    clusteringMethod=NULL,
                     k.row.clusters=NULL,
                     k.column.clusters=NULL),
 
@@ -22,6 +25,9 @@ HeatmapDemoApp = R6Class("app",
             mtx.file.2 <- "genesByScoredCandidateTFs.mtx.22x340.RData"
             mtx <- get(load(system.file(package="HeatmapWidget", "extdata", mtx.file.2)))
             private$mtx <- mtx
+            private$trimmed.mtx <- mtx
+            private$geneCount <- 10
+            private$clusteringMethod <- "hclust"
             private$k.row.clusters <- 3
             private$k.column.clusters <- 3
             private$heatmapWidget = HeatmapWidget$new(id="box1",
@@ -39,16 +45,28 @@ HeatmapDemoApp = R6Class("app",
         ui = function(){
            fluidPage(
               titlePanel("Coordinate regulation of early hematopoiesis genes"),
-              fluidRow(column(width=3, pickerInput(inputId = "rowClusterPicker",
+              fluidRow(column(width=2, pickerInput(inputId = "geneCountPicker",
+                                                   label = "gene count",
+                                                   choices = as.character(1:10),
+                                                   selected = "10",
+                                                   multiple = FALSE
+                                                   )),
+                       column(width=2, pickerInput(inputId = "methodPicker",
+                                                   label = "method",
+                                                   choices = c("hclust", "kmeans"),   # groups?
+                                                   selected = "hclust",
+                                                   multiple = FALSE
+                                                   )),
+                       column(width=2, pickerInput(inputId = "rowClusterPicker",
                                                    label = "K Row Clusters",
-                                                   choices = as.character(2:10),
+                                                   choices = as.character(1:10),
                                                    selected = as.character(private$k.row.clusters),
                                                    options = list(`actions-box`=TRUE, size=5,`selected-text-format`="count > 3"),
                                                    multiple = FALSE
                                                    )),
-                       column(width=3, pickerInput(inputId = "columnClusterPicker",
+                       column(width=2, pickerInput(inputId = "columnClusterPicker",
                                                    label = "K Column Clusters",
-                                                   choices = as.character(2:10),
+                                                   choices = as.character(1:10),
                                                    selected = as.character(private$k.column.clusters),
                                                    options = list(`actions-box`=TRUE, size=5,`selected-text-format`="count > 3"),
                                                    multiple = FALSE
@@ -80,26 +98,39 @@ HeatmapDemoApp = R6Class("app",
                 print(x)
                 })
 
-            observeEvent(input$matrixTransformChooser, ignoreInit=TRUE, {
-               newTransform <- input$matrixTransformChooser
-               printf("new transform: %s", newTransform)
-               mtx.transformed <- switch(newTransform,
-                                         "asinh" = asinh(private$mtx),
-                                         "none"  = private$mtx,
-                                         "log10" = log10(private$mtx + 0.0001))
-               private$heatmapWidget$setHeatmap(mtx.transformed, )
+            observeEvent(input$geneCountPicker, ignoreInit=TRUE, {
+               newCount <- as.numeric(input$geneCountPicker)
+               printf("new count: %s", newCount)
+               if(newCount < 10)
+                  private$trimmed.mtx <- private$mtx[1:newCount,,drop=FALSE]
+               private$heatmapWidget$setHeatmap(private$trimmed.mtx,
+                                                clusteringMethod=private$clusteringMethod,
+                                                rowClusters=private$k.row.clusters,
+                                                colClusters=private$k.column.clusters)
+               })
+
+
+            observeEvent(input$methodPicker, ignoreInit=TRUE, {
+               private$clusteringMethod <- input$methodPicker
+               printf("new method: %s", private$clusteringMethod)
+               private$heatmapWidget$setHeatmap(private$trimmed.mtx,
+                                                clusteringMethod=private$clusteringMethod,
+                                                rowClusters=private$k.row.clusters,
+                                                colClusters=private$k.column.clusters)
                })
 
             observeEvent(input$rowClusterPicker, ignoreInit=TRUE, {
                private$k.row.clusters <- input$rowClusterPicker
-               private$heatmapWidget$setHeatmap(private$mtx,
+               private$heatmapWidget$setHeatmap(private$trimmed.mtx,
+                                                clusteringMethod=private$clusteringMethod,
                                                 rowClusters=private$k.row.clusters,
                                                 colClusters=private$k.column.clusters)
                })
 
             observeEvent(input$columnClusterPicker, ignoreInit=TRUE, {
                private$k.column.clusters <- input$columClusterPicker
-               private$heatmapWidget$setHeatmap(private$mtx,
+               private$heatmapWidget$setHeatmap(private$trimmed.mtx,
+                                                clusteringMethod=private$clusteringMethod,
                                                 rowClusters=private$k.row.clusters,
                                                 colClusters=private$k.column.clusters)
                })
