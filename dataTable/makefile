@@ -16,6 +16,9 @@ demo1:
 demo2:
 	(cd inst/demos; R -f dtwDemo2.R)
 
+misalignedColumnsDemo:
+	(cd inst/demos; R -f dtwMisalignedColumnTitles.R)
+
 studio.1:
 	open -na RStudio inst/demos/dataTableWidgetDemo.R
 
