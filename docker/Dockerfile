@@ -17,5 +17,5 @@ RUN R CMD INSTALL pkgs/dataTableWidget_1.0.10.tar.gz
 RUN R CMD INSTALL pkgs/GOEnrichmentWidget_1.0.5.tar.gz
 RUN R CMD INSTALL pkgs/HeatmapWidget_2.0.2.tar.gz
 RUN R CMD INSTALL pkgs/igvShiny_1.2.6.tar.gz
-RUN R CMD INSTALL pkgs/igvWidget_1.0.9.tar.gz
+RUN R CMD INSTALL pkgs/igvWidget_1.0.10.tar.gz
 RUN R CMD INSTALL pkgs/GenomeTracksWidget_1.0.3.tar.gz
