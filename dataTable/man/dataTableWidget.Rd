@@ -7,6 +7,14 @@
 shiny code which, wnen invoked (almost always by the shinyApp function, returns html
 
 nothing
+
+nothing
+
+nothing
+
+nothing
+
+nothing
 }
 \description{
 an R6 class providing clean access to a simple html message box
@@ -24,6 +32,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-selectRows}{\code{dataTableWidget$selectRows()}}
 \item \href{#method-clearSelection}{\code{dataTableWidget$clearSelection()}}
 \item \href{#method-selectColumns}{\code{dataTableWidget$selectColumns()}}
+\item \href{#method-setWrapLinesOption}{\code{dataTableWidget$setWrapLinesOption()}}
 \item \href{#method-clone}{\code{dataTableWidget$clone()}}
 }
 }
@@ -113,24 +122,41 @@ defines the event handlers used with the ui
 \if{html}{\out{<a id="method-setTable"></a>}}
 \if{latex}{\out{\hypertarget{method-setTable}{}}}
 \subsection{Method \code{setTable()}}{
+installs a new data.frame
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$setTable(tbl)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tbl}}{a data.frame}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-selectRows"></a>}}
 \if{latex}{\out{\hypertarget{method-selectRows}{}}}
 \subsection{Method \code{selectRows()}}{
+highlight the rows, described by their ordingal number
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectRows(rowNumbers)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rowNumbers}}{an integer vector}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clearSelection"></a>}}
 \if{latex}{\out{\hypertarget{method-clearSelection}{}}}
 \subsection{Method \code{clearSelection()}}{
+clears the current selection, if any
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$clearSelection()}\if{html}{\out{</div>}}
 }
@@ -144,6 +170,23 @@ defines the event handlers used with the ui
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectColumns(colNumbers)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-setWrapLinesOption"></a>}}
+\if{latex}{\out{\hypertarget{method-setWrapLinesOption}{}}}
+\subsection{Method \code{setWrapLinesOption()}}{
+display each cell in each row as a single line of text, or multiple
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$setWrapLinesOption(wrapLines)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{wrapLines}}{logical, TRUE or FALSE}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -151,6 +151,10 @@ dataTableWidget = R6Class("dataTableWidget",
 
          }, # server
 
+        #' @description
+        #' installs a new data.frame
+        #' @param tbl a data.frame
+        #' @returns nothing
       setTable = function(tbl){
           widths <- private$columnWidths
           column.widths <- list() # add values, or leave empty.  DT accepts both
@@ -178,11 +182,18 @@ dataTableWidget = R6Class("dataTableWidget",
          private$dataTableProxy <- dataTableProxy(private$id)
          }, # setTable
 
+        #' @description
+        #' highlight the rows, described by their ordingal number
+        #' @param rowNumbers an integer vector
+        #' @returns nothing
       selectRows = function(rowNumbers){
          printf("DTW::selectRows: %s", paste(rowNumbers, collapse=","))
          selectRows(private$dataTableProxy, rowNumbers, ignore.selectable = TRUE)
          }, # selectRows
 
+        #' @description
+        #' clears the current selection, if any
+        #' @returns nothing
       clearSelection = function(){
          selectRows(private$dataTableProxy, NULL)
          }, # selectRows
@@ -190,7 +201,19 @@ dataTableWidget = R6Class("dataTableWidget",
       selectColumns = function(colNumbers){
          printf("dataTableWidget::selectColumns")
          selectColumns(private$dataTableProxy, 1:3, ignore.selectable=TRUE)
-         } # selectRows
+         }, # selectRows
+
+        #' @description
+        #' display each cell in each row as a single line of text, or multiple
+        #' @param wrapLines logical, TRUE or FALSE
+        #' @returns nothing
+      setWrapLinesOption = function(wrapLines){
+         printf("dataTableWidget::setWrapLinesOption: %s", wrapLines)
+         private$DTclass = "display"
+         if(!wrapLines)
+              private$DTclass = paste0(private$DTclass, " nowrap")
+         self$setTable(private$tbl)
+         } # setWrapLinesOption
 
      ) # public
 #----------------------------------------------------------------------------------------------------
