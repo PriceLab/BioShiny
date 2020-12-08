@@ -208,10 +208,9 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param wrapLines logical, TRUE or FALSE
         #' @returns nothing
       setWrapLinesOption = function(wrapLines){
-         printf("dataTableWidget::setWrapLinesOption: %s", wrapLines)
          private$DTclass = "display"
          if(!wrapLines)
-              private$DTclass = paste0(private$DTclass, " nowrap")
+            private$DTclass = paste0(private$DTclass, " nowrap")
          self$setTable(private$tbl)
          } # setWrapLinesOption
 
