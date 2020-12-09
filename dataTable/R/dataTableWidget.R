@@ -3,7 +3,7 @@ printf <- function(...) print(noquote(sprintf(...)))
 #' R6 Class representing a simple text display widget
 #'
 #' @title dataTableWidget
-#' @description an R6 class providing clean access to a simple html message box
+#' @description an R6 class providing clean access to a simple html message box.
 #' @name dataTableWidget
 #'
 #' @import R6
@@ -46,7 +46,8 @@ dataTableWidget = R6Class("dataTableWidget",
         ),
 
         #' @description
-        #' Create a new dataTableWidget
+        #' Create a new dataTableWidget.
+        #'
         #' @param id the html document div id
         #' @param tbl data.frame
         #' @param width character, "800px;" by default.  "100%;" can be useful.
@@ -55,6 +56,7 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param pageLength integer, 10 by default
         #' @param wrapLines logical, FALSE by default, gives more rows on screen
         #' @param selectionMode character, "single", "none", or "multiple", "single" by default
+        #' @param selectionTarget character, "row" or "column" or "cell"
         #' @param lengthMenu integers specifies page length options (# of rows onscreen). default (5,10,25,50)
         #' @param columnWidths integer vector, widths in pixels, NULL default, applies all
         #'        supplied, default for the remainder
@@ -66,7 +68,8 @@ dataTableWidget = R6Class("dataTableWidget",
 
        initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10,
                              wrapLines=FALSE,
-                             selectionMode="single", selectionTarget="row",
+                             selectionMode="single",
+                             selectionTarget="row",
                              lengthMenu=c(5,10,25,50),
                              columnWidths=NULL){
           printf("entering dataTableWidget::initialize")
@@ -105,6 +108,7 @@ dataTableWidget = R6Class("dataTableWidget",
 
         #' @description
         #' defines the event handlers used with the ui
+        #'
         #' @param input list, managed by Shiny
         #' @param output  list, managed by Shiny
         #' @param session  list (environment?) managed by Shiny
@@ -152,7 +156,8 @@ dataTableWidget = R6Class("dataTableWidget",
          }, # server
 
         #' @description
-        #' installs a new data.frame
+        #' installs a new data.frame.
+        #'
         #' @param tbl a data.frame
         #' @returns nothing
       setTable = function(tbl){
@@ -183,7 +188,8 @@ dataTableWidget = R6Class("dataTableWidget",
          }, # setTable
 
         #' @description
-        #' highlight the rows, described by their ordingal number
+        #' highlight the rows, described by their ordingal number.
+        #'
         #' @param rowNumbers an integer vector
         #' @returns nothing
       selectRows = function(rowNumbers){
@@ -193,18 +199,24 @@ dataTableWidget = R6Class("dataTableWidget",
 
         #' @description
         #' clears the current selection, if any
+        #'
         #' @returns nothing
       clearSelection = function(){
          selectRows(private$dataTableProxy, NULL)
          }, # selectRows
 
+        #' @description
+        #' select columns in the table.
+        #' @param colnumbers numeric vector, which columns to select
+        #' @returns nothing
       selectColumns = function(colNumbers){
          printf("dataTableWidget::selectColumns")
          selectColumns(private$dataTableProxy, 1:3, ignore.selectable=TRUE)
          }, # selectRows
 
-        #' @description
+# @description
         #' display each cell in each row as a single line of text, or multiple
+        #'
         #' @param wrapLines logical, TRUE or FALSE
         #' @returns nothing
       setWrapLinesOption = function(wrapLines){

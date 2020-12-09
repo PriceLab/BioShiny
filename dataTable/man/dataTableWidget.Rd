@@ -15,9 +15,12 @@ nothing
 nothing
 
 nothing
+display each cell in each row as a single line of text, or multiple
+
+nothing
 }
 \description{
-an R6 class providing clean access to a simple html message box
+an R6 class providing clean access to a simple html message box.
 }
 \details{
 R6 Class representing a simple text display widget
@@ -40,7 +43,7 @@ R6 Class representing a simple text display widget
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new dataTableWidget
+Create a new dataTableWidget.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$new(
   id,
@@ -75,6 +78,8 @@ Create a new dataTableWidget
 \item{\code{wrapLines}}{logical, FALSE by default, gives more rows on screen}
 
 \item{\code{selectionMode}}{character, "single", "none", or "multiple", "single" by default}
+
+\item{\code{selectionTarget}}{character, "row" or "column" or "cell"}
 
 \item{\code{lengthMenu}}{integers specifies page length options (# of rows onscreen). default (5,10,25,50)}
 
@@ -122,7 +127,7 @@ defines the event handlers used with the ui
 \if{html}{\out{<a id="method-setTable"></a>}}
 \if{latex}{\out{\hypertarget{method-setTable}{}}}
 \subsection{Method \code{setTable()}}{
-installs a new data.frame
+installs a new data.frame.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$setTable(tbl)}\if{html}{\out{</div>}}
 }
@@ -139,7 +144,7 @@ installs a new data.frame
 \if{html}{\out{<a id="method-selectRows"></a>}}
 \if{latex}{\out{\hypertarget{method-selectRows}{}}}
 \subsection{Method \code{selectRows()}}{
-highlight the rows, described by their ordingal number
+highlight the rows, described by their ordingal number.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectRows(rowNumbers)}\if{html}{\out{</div>}}
 }
@@ -166,16 +171,23 @@ clears the current selection, if any
 \if{html}{\out{<a id="method-selectColumns"></a>}}
 \if{latex}{\out{\hypertarget{method-selectColumns}{}}}
 \subsection{Method \code{selectColumns()}}{
+select columns in the table.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$selectColumns(colNumbers)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colnumbers}}{numeric vector, which columns to select}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setWrapLinesOption"></a>}}
 \if{latex}{\out{\hypertarget{method-setWrapLinesOption}{}}}
 \subsection{Method \code{setWrapLinesOption()}}{
-display each cell in each row as a single line of text, or multiple
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{dataTableWidget$setWrapLinesOption(wrapLines)}\if{html}{\out{</div>}}
 }
