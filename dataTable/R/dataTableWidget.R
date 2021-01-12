@@ -57,7 +57,7 @@ dataTableWidget = R6Class("dataTableWidget",
         #' @param wrapLines logical, FALSE by default, gives more rows on screen
         #' @param selectionMode character, "single", "none", or "multiple", "single" by default
         #' @param selectionTarget character, "row" or "column" or "cell"
-        #' @param lengthMenu integers specifies page length options (\# of rows onscreen). default (5,10,25,50)
+        #' @param lengthMenu integers specifies page length options (number of rows onscreen). default (5,10,25,50)
         #' @param columnWidths integer vector, widths in pixels, NULL default, applies all
         #'        supplied, default for the remainder
         #' @return A new `dataTableWidget` object.

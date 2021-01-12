@@ -81,7 +81,7 @@ Create a new dataTableWidget.
 
 \item{\code{selectionTarget}}{character, "row" or "column" or "cell"}
 
-\item{\code{lengthMenu}}{integers specifies page length options (\# of rows onscreen). default (5,10,25,50)}
+\item{\code{lengthMenu}}{integers specifies page length options (number of rows onscreen). default (5,10,25,50)}
 
 \item{\code{columnWidths}}{integer vector, widths in pixels, NULL default, applies all
 supplied, default for the remainder}
