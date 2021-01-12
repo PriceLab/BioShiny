@@ -50,14 +50,14 @@ dataTableWidget = R6Class("dataTableWidget",
         #'
         #' @param id the html document div id
         #' @param tbl data.frame
-        #' @param width character, "800px;" by default.  "100%;" can be useful.
+        #' @param width character, "800px;" by default.  "100\%;" can be useful.
         #' @param height integer, "600px;" by default, percentage heights do not work.
         #' @param border string, "0px;" by default, "1px blue solid; border-radius: 5px;" useful.
         #' @param pageLength integer, 10 by default
         #' @param wrapLines logical, FALSE by default, gives more rows on screen
         #' @param selectionMode character, "single", "none", or "multiple", "single" by default
         #' @param selectionTarget character, "row" or "column" or "cell"
-        #' @param lengthMenu integers specifies page length options (# of rows onscreen). default (5,10,25,50)
+        #' @param lengthMenu integers specifies page length options (\# of rows onscreen). default (5,10,25,50)
         #' @param columnWidths integer vector, widths in pixels, NULL default, applies all
         #'        supplied, default for the remainder
         #' @return A new `dataTableWidget` object.
