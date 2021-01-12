@@ -67,7 +67,7 @@ Create a new dataTableWidget.
 
 \item{\code{tbl}}{data.frame}
 
-\item{\code{width}}{character, "800px;" by default.  "100%;" can be useful.}
+\item{\code{width}}{character, "800px;" by default.  "100\%;" can be useful.}
 
 \item{\code{height}}{integer, "600px;" by default, percentage heights do not work.}
 
@@ -81,7 +81,7 @@ Create a new dataTableWidget.
 
 \item{\code{selectionTarget}}{character, "row" or "column" or "cell"}
 
-\item{\code{lengthMenu}}{integers specifies page length options (# of rows onscreen). default (5,10,25,50)}
+\item{\code{lengthMenu}}{integers specifies page length options (\# of rows onscreen). default (5,10,25,50)}
 
 \item{\code{columnWidths}}{integer vector, widths in pixels, NULL default, applies all
 supplied, default for the remainder}
