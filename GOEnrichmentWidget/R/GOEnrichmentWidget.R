@@ -212,12 +212,13 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
                goi <- selected.genes
             show_modal_spinner(spin="dots", text="GO enrichment calculation takes about a minute.")
             tbl.go <- goEnrich(goi, maxRows=-1, paste.character=" ")
-            tbl.go$Pvalue <- format(tbl.go$Pvalue, digits=3)
-            coi <- c("genes", "Term", "Count", "Size", "Pvalue")
+            tbl.go$pScore <- round(-log10(tbl.go$Pvalue), digits=2)
+            coi <- c("Term", "Count", "Size", "pScore", "genes")
             remove_modal_spinner()
             private$dtw$setTable(tbl.go[, coi])
             })
          }, # server
+
       setGenes = function(genes){
          private$geneSymbols <- genes
          updatePickerInput(private$session, "genePicker", choices=genes, selected=genes)
@@ -227,8 +228,9 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
          private$geneSymbols <- genes
          show_modal_spinner(spin="dots", text="GO enrichment calculation takes about a minute.")
          tbl.go <- goEnrich(genes, maxRows=-1, paste.character=" ")
-         tbl.go$Pvalue <- format(tbl.go$Pvalue, digits=3)
-         coi <- c("genes", "Term", "Count", "Size", "Pvalue")
+         #tbl.go$Pvalue <- format(tbl.go$Pvalue, digits=3)
+         tbl.go$pScore <- round(-log10(tbl.go$Pvalue), digits=2)
+         coi <- c("Term", "Count", "Size", "pScore", "genes")
          remove_modal_spinner()
          private$dtw$setTable(tbl.go[, coi])
          }
