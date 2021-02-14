@@ -15,7 +15,7 @@ HeatmapDemoApp = R6Class("app",
     public = list(
 
         initialize = function(){
-            printf("initializing demo")
+           message(sprintf("initializing demo"))
             private$heatmap = HeatmapWidget$new(id="box1",
                                                 title="mtcars",
                                                 mtx=as.matrix(mtcars),
@@ -34,9 +34,9 @@ HeatmapDemoApp = R6Class("app",
         #------------------------------------------------------------
         server = function(input, output, session){
 
-            printf("entering heatmapWidgetDemo::server")
-            private$heatmap$server(input, output, session)
-            } # server
+           message(sprintf("entering heatmapWidgetDemo::server"))
+           private$heatmap$server(input, output, session)
+           } # server
 
        ) # public
     ) # class
