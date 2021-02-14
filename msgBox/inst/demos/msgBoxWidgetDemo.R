@@ -16,7 +16,7 @@ MsgBoxDemoApp = R6Class("app",
     public = list(
 
         initialize = function(){
-            printf("initializing demo")
+            message(sprintf("initializing demo"))
             private$msgBox1 = msgBoxWidget$new(id="box1", title="random mixed text")
             private$msgBox2 = msgBoxWidget$new(id="box2", title="lower case", boxWidth=400, boxHeight=50,
                  fontSize=30, backgroundColor="lightgray")
@@ -48,7 +48,7 @@ MsgBoxDemoApp = R6Class("app",
         #------------------------------------------------------------
         server = function(input, output, session){
 
-            printf("entering msgBoxWidgetDemo::server")
+            message(sprintf("entering msgBoxWidgetDemo::server"))
             private$msgBox1$server(input, output, session)
             private$msgBox2$server(input, output, session)
 
@@ -96,6 +96,6 @@ app <- MsgBoxDemoApp$new()
 if(grepl("hagfish", Sys.info()[["nodename"]]) & !interactive()){
    runApp(shinyApp(app$ui(), app$server), port=1112)
    } else {
-   shinyApp(ui, server)
+   shinyApp(app$ui(), app$server)
    }
 
