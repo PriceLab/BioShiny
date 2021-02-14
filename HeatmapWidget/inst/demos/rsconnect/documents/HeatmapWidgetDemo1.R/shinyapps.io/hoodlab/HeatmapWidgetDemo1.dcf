@@ -1,0 +1,10 @@
+name: HeatmapWidgetDemo1
+title: Heatmap shiny widget, built upon iheatmap
+username:
+account: hoodlab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3636476
+bundleId: 4222911
+url: https://hoodlab.shinyapps.io/HeatmapWidgetDemo1/
+when: 1613342961.94238
