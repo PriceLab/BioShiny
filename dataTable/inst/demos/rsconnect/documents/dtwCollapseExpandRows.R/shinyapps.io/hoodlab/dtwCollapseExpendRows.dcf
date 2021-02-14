@@ -1,0 +1,10 @@
+name: dtwCollapseExpendRows
+title: dataTableWidget collapse/exapnd rows
+username:
+account: hoodlab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3636329
+bundleId: 4222798
+url: https://hoodlab.shinyapps.io/dtwCollapseExpendRows/
+when: 1613340560.64958

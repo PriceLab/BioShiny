@@ -17,9 +17,10 @@ DataTableDemoApp = R6Class("app",
     public = list(
 
         initialize = function(){
-            printf("initializing demo")
+           message(sprintf("initializing demo"))
             private$msgBox =  msgBoxWidget$new(id="box1", title="table selection", boxWidth=600)
-            private$tbl = get(load("../extdata/tableWithVoluminousCellText.RData"))
+            private$tbl = get(load(system.file(package="dataTableWidget", "extdata",
+                                               "tableWithVoluminousCellText.RData")))
             private$dtw = dataTableWidget$new(id="tbl.1",
                                               private$tbl,
                                               width="98%", height="500px",
@@ -45,12 +46,12 @@ DataTableDemoApp = R6Class("app",
         #------------------------------------------------------------
         server = function(input, output, session){
 
-            printf("entering dataTableWidgetDemo::server")
+           message(sprintf("entering dataTableWidgetDemo::server"))
             private$msgBox$server(input, output, session)
             private$dtw$server(input, output, session)
 
             observeEvent(input$rowWrappedStateButtons, ignoreInit=TRUE, {
-               printf("button click")
+              message(sprintf("button click"))
                newValue <- input$rowWrappedStateButtons
                private$dtw$setWrapLinesOption(newValue == "Yes")
                })
@@ -65,7 +66,33 @@ DataTableDemoApp = R6Class("app",
        ) # public
     ) # class
 #--------------------------------------------------------------------------------
-app <- DataTableDemoApp$new()
-#x <- shinyApp(app$ui, app$server)a
-runApp(shinyApp(app$ui, app$server), port=1112)
+# needs this first
+deploy <- function()
+{
+   require(rsconnect)
+   #rsconnect::setAccountInfo(name='hoodlab',
+   #                          token='41E779ABC50F6A98036C95AEEA1A92F7',
+   #                          secret='PDVweDhzJa8ST3fu5zihMEKVcPH0cssByz7Q6rsL')
+   setRepositories(addURLs=c(BioCsoft="https://bioconductor.org/packages/3.12/bioc",
+                             BioCann="https://bioconductor.org/packages/3.12/data/annotation",
+                             BioCexp="https://bioconductor.org/packages/3.12/data/experiment",
+                             BioC="https://bioconductor.org/packages/3.12/bioc",
+                             CRAN="https://cran.microsoft.com"),
+                   graphics=FALSE)
 
+   deployApp(account="hoodlab",
+              appName="dtwCollapseExpendRows",
+              appTitle="dataTableWidget collapse/exapnd rows",
+              appFiles=c("dtwCollapseExpandRows.R"),
+              appPrimaryDoc="dtwCollapseExpandRows.R"
+              )
+
+
+} # deploy
+#--------------------------------------------------------------------------------
+app <- DataTableDemoApp$new()
+if(grepl("hagfish", Sys.info()[["nodename"]]) & !interactive()){
+   runApp(shinyApp(app$ui(), app$server), port=1113)
+   } else {
+   shinyApp(app$ui(), app$server)
+   }

@@ -182,8 +182,9 @@ dataTableWidget = R6Class("dataTableWidget",
                                          #columnDefs = list(list(className='dt-center', targets= "_all")),
                                          columnDefs = column.widths,
                                          paging=TRUE),
-                            selection=private$selectionOption)
-          })  # renderDataTable
+                            selection=private$selectionOption)},
+              server=TRUE     # keep the bulk of data in R, not in the browser
+              )  # renderDataTable
          private$dataTableProxy <- dataTableProxy(private$id)
          }, # setTable
 
