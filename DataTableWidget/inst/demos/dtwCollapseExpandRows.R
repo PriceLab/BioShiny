@@ -19,7 +19,7 @@ DataTableDemoApp = R6Class("app",
         initialize = function(){
            message(sprintf("initializing demo"))
             private$msgBox =  msgBoxWidget$new(id="box1", title="table selection", boxWidth=600)
-            private$tbl = get(load(system.file(package="dataTableWidget", "extdata",
+            private$tbl = get(load(system.file(package="DataTableWidget", "extdata",
                                                "tableWithVoluminousCellText.RData")))
             private$dtw = dataTableWidget$new(id="tbl.1",
                                               private$tbl,
