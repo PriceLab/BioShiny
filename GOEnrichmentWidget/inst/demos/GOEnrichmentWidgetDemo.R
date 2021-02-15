@@ -14,7 +14,7 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
     public = list(
 
         initialize = function(geneSymbols){
-            printf("initializing demo")
+            message(sprintf("initializing demo"))
             private$genes <- geneSymbols
             private$goWidget = GOEnrichmentWidget$new(id="goWidget.1", title="GO Enrichment",
                                                       geneSymbols=geneSymbols)
@@ -32,7 +32,7 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
         #------------------------------------------------------------
         server = function(input, output, session){
 
-            printf("entering GOEnricmentWidgetDemo::server")
+            message(sprintf("entering GOEnricmentWidgetDemo::server"))
             private$goWidget$server(input, output, session)
 
             observeEvent(input$subsetGenesButton, ignoreInit=TRUE, {
