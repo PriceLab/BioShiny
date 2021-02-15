@@ -151,21 +151,31 @@ GenomeTracksWidget = R6Class("GenomeTracksWidget",
          }, # server
 
       addAllRelevantTracks = function(gene, newTrackWidget, trackHeight){
-         tbl.oc <- subset(private$tbl, targetGene==gene)[, c("chrom", "start", "end", "tf")]
+         printf("--- addAllRelevantTracks for %s, trackHeight: %d", gene, trackHeight)
+         tbl.oc <- subset(private$tbl, targetGene==gene) # [, c("chrom", "start", "end", "tf", ")]
+         printf("----------- tfs before filter: %d", length(unique(tbl.oc$tf)))
+         tbl.oc <- subset(tbl.oc, gh > 1 & abs(cor) > 0.4 & chip)
+         printf("----------- tfs after filter: %d", length(unique(tbl.oc$tf)))
          current.locus <- newTrackWidget$getLocus()
          printf("--- current.locus")
          print(current.locus)
-         shoulder <- 5000
-         trackMin <- min(tbl.oc$start) - shoulder
-         trackMax <- max(tbl.oc$end) + shoulder
-         overall.min <- min(current.locus$start, trackMin)
-         overall.max <- max(current.locus$end,   trackMax)
+         shoulder <- 10000
+         data.min <- min(tbl.oc$start)
+         data.max <- max(tbl.oc$end)
+         overall.min <- min(current.locus$start, data.min)
+         overall.max <- max(current.locus$end,   data.max)
+         overall.min <- overall.min - shoulder
+         overall.max <- overall.max + shoulder
          newTrackWidget$setLocus(sprintf("%s:%d-%d", tbl.oc$chrom[1], overall.min, overall.max))
          printf("oc for %s: %d", gene, nrow(tbl.oc))
          tfs <- sort(unique(tbl.oc$tf))
+         printf("--- tf count for this target gene: %d", length(tfs))
          for(this.tf in tfs){
-             newTrackWidget$displayBedTrack(this.tf, subset(tbl.oc, tf==this.tf), color="random",
-                                            trackHeight=trackHeight)
+            #printf("---- tf: %s", this.tf)
+            tbl.tf <- subset(tbl.oc, tf == this.tf)
+            #printf("adding bed track, tf is %s, %d regions", this.tf, nrow(tbl.tf))
+            newTrackWidget$displayBedTrack(this.tf, tbl.tf, color="random",
+                                           trackHeight=trackHeight)
             } # for tf
          } # addAllRelevantTracks
 

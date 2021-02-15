@@ -1,8 +1,8 @@
 Package: GenomeTracksWidget
 Type: Package
 Title: GenomeTracksWidget
-Version: 1.0.3
-Date: 2020-11-12
+Version: 1.0.4
+Date: 2021-02-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6

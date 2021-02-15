@@ -37,10 +37,10 @@ GenomeTracksWidgetDemoApp = R6Class("app",
        ) # public
     ) # class
 #--------------------------------------------------------------------------------
-#filename <- "~/github/TrenaProjectErythropoiesis/inst/extdata/genomicRegions/tbl.3.0.250000.500000.RData"
-filename <- "../extdata/tbl-79.rows.RData"
-filename <- "../extdata/tbl-21.rows.RData"
-filename <- "../extdata/tbl-66.rows.RData"
+filename <- "~/github/TrenaProjectErythropoiesis/inst/extdata/genomicRegions/tbl.3.0.250000.500000.RData"
+#filename <- "../extdata/tbl-79.rows.RData"
+#filename <- "../extdata/tbl-21.rows.RData"
+#filename <- "../extdata/tbl-66.rows.RData"
 tbl <- get(load(filename))
 
 
