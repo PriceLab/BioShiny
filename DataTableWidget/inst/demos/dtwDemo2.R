@@ -1,7 +1,7 @@
 library(R6)
 library(shiny)
-library(dataTableWidget)
-library(msgBoxWidget)
+library(DataTableWidget)
+library(MsgBoxWidget)
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
 
