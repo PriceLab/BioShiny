@@ -1,12 +1,12 @@
 Package: GOEnrichmentWidget
 Type: Package
 Title: GOEnrichmentWidget
-Version: 1.0.11
+Version: 1.0.12
 Date: 2021-02-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6, GO.db, GOstats, DataTableWidget
-Imports: org.Hs.eg.db
+Imports: org.Hs.eg.db, shinybusy, shinyWidgets
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 Description: a BioShiny R6 class for a simple text display box
 License: MIT + file LICENSE
