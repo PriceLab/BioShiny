@@ -142,6 +142,7 @@ directs the igv browser to display, and zoom in on, the specified locus
 \if{latex}{\out{\hypertarget{method-getLocus}{}}}
 \subsection{Method \code{getLocus()}}{
 queries for the currently visible locus in the genome browser
+  TODO: need defensive programmer here, different genomes (pshannon, 11 nov 2020)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{igvWidget$getLocus()}\if{html}{\out{</div>}}
 }

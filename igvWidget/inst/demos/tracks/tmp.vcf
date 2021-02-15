@@ -1,5 +1,5 @@
 ##fileformat=VCFv4.2
-##fileDate=20201015
+##fileDate=20210215
 ##reference=file:///data/NYGC/Resources/Indexes/bwa/human_g1k_v37.fasta
 ##source=SelectVariants
 ##FILTER=<ID=PASS,Description="All filters passed">
