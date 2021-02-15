@@ -7,8 +7,8 @@ printf <- function(...) print(noquote(sprintf(...)))
 #' @name dataTableWidget
 #'
 #' @import R6
-#' @import DT
 #' @import shiny
+#' @import DT
 #'
 #' @export
 dataTableWidget = R6Class("dataTableWidget",
