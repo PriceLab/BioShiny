@@ -3,7 +3,7 @@
 #' @import R6
 #' @import shiny
 #' @import shinyWidgets
-#' @import dataTableWidget
+#' @import DataTableWidget
 #' @import GOstats
 #' @import GO.db
 #' @import org.Hs.eg.db
