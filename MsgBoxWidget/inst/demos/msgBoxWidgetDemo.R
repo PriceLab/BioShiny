@@ -1,6 +1,6 @@
 library(R6)
 library(shiny)
-library(msgBoxWidget)
+library(MsgBoxWidget)
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
 
@@ -71,16 +71,9 @@ MsgBoxDemoApp = R6Class("app",
 #--------------------------------------------------------------------------------
 deploy <-function()
 {
+   require(devtools)
+   install_github("PriceLab/BioShiny/MsgBoxWidget")
    require(rsconnect)
-   #rsconnect::setAccountInfo(name='hoodlab',
-   #                          token='41E779ABC50F6A98036C95AEEA1A92F7',
-   #                          secret='')
-   setRepositories(addURLs=c(BioCsoft="https://bioconductor.org/packages/3.12/bioc",
-                             BioCann="https://bioconductor.org/packages/3.12/data/annotation",
-                             BioCexp="https://bioconductor.org/packages/3.12/data/experiment",
-                             BioC="https://bioconductor.org/packages/3.12/bioc",
-                             CRAN="https://cran.microsoft.com"),
-                   graphics=FALSE)
 
    deployApp(account="hoodlab",
               appName="msgBoxDemo",

@@ -1,6 +1,6 @@
 library(R6)
 library(shiny)
-library(msgBoxWidget)
+library(MsgBoxWidget)
 library(RUnit)
 library(later)
 #----------------------------------------------------------------------------------------------------

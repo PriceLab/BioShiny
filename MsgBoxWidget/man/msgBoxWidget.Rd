@@ -25,6 +25,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-ui}{\code{msgBoxWidget$ui()}}
 \item \href{#method-server}{\code{msgBoxWidget$server()}}
 \item \href{#method-setText}{\code{msgBoxWidget$setText()}}
+\item \href{#method-getText}{\code{msgBoxWidget$getText()}}
 \item \href{#method-clone}{\code{msgBoxWidget$clone()}}
 }
 }
@@ -105,6 +106,15 @@ defines the event handlers used with the ui
 \subsection{Method \code{setText()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{msgBoxWidget$setText(newText)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-getText"></a>}}
+\if{latex}{\out{\hypertarget{method-getText}{}}}
+\subsection{Method \code{getText()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{msgBoxWidget$getText()}\if{html}{\out{</div>}}
 }
 
 }
