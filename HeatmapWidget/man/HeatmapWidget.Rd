@@ -60,6 +60,10 @@ Create a new HeatmapWidget
 
 \item{\code{rowTitle}}{character, displayed on far left of the plot}
 
+\item{\code{columnTitle}}{character, displayed at the bottom}
+
+\item{\code{clusteringMethod}}{character, "hclust" (the default), or "kmeans"}
+
 \item{\code{rowClusters}}{integer, the number of k-means row clusters desired, default 5}
 
 \item{\code{colClusters}}{integer, the number of k-means column clusters desired, default 5}
@@ -69,8 +73,6 @@ Create a new HeatmapWidget
 \item{\code{height}}{numeric, pixels, default 600}
 
 \item{\code{quiet}}{logical silent or verbose?  default TRUE}
-
-\item{\code{colTitle}}{character, displayed at the bottom}
 }
 \if{html}{\out{</div>}}
 }
@@ -126,7 +128,13 @@ new heatmap displayed
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{input}}{list, managed by Shiny}
+\item{\code{mtx}}{numeric matrix}
+
+\item{\code{clusteringMethod}}{character, "hclust" by default}
+
+\item{\code{rowClusters}}{numeric, 5 by default}
+
+\item{\code{colClusters}}{numeric, 5 by default}
 }
 \if{html}{\out{</div>}}
 }

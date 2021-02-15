@@ -37,7 +37,8 @@ HeatmapWidget = R6Class("HeatmapWidget",
         #' @param title character
         #' @param mtx a numeric matrix
         #' @param rowTitle character, displayed on far left of the plot
-        #' @param colTitle character, displayed at the bottom
+        #' @param columnTitle character, displayed at the bottom
+        #' @param clusteringMethod character, "hclust" (the default), or "kmeans"
         #' @param rowClusters integer, the number of k-means row clusters desired, default 5
         #' @param colClusters integer, the number of k-means column clusters desired, default 5
         #' @param width numeric, pixels, default 600
@@ -122,7 +123,10 @@ HeatmapWidget = R6Class("HeatmapWidget",
 
         #' @description
         #' new heatmap displayed
-        #' @param input list, managed by Shiny
+        #' @param mtx numeric matrix
+        #' @param clusteringMethod character, "hclust" by default
+        #' @param rowClusters numeric, 5 by default
+        #' @param colClusters numeric, 5 by default
         #' @export
       setHeatmap = function(mtx, clusteringMethod="hclust", rowClusters=5, colClusters=5){
          print(-2)
