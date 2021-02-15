@@ -1,12 +1,13 @@
 Package: DataTableWidget
 Type: Package
 Title: DataTableWidget
-Version: 1.0.22
+Version: 1.0.23
 Date: 2021-02-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
+Imports: DT
 Description: a BioShiny R6 class for a simple text display box
 License: MIT + file LICENSE
 LazyLoad: yes

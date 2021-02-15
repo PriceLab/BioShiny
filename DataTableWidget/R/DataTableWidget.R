@@ -5,10 +5,15 @@ printf <- function(...) print(noquote(sprintf(...)))
 #' @title dataTableWidget
 #' @description an R6 class providing clean access to a simple html message box.
 #' @name dataTableWidget
-#'
+#
+#  yihui (4 dec 2016) If you have used DT::dataTableOutput and DT::renderDataTable in your
+#  package, there is no need to import(DT) or importFrom(DT, ...) in
+#  NAMESPACE. All you need to do is put DT in the Imports field of
+#  DESCRIPTION.
+
 #' @import R6
+##  @import DT
 #' @import shiny
-#' @import DT
 #'
 #' @export
 dataTableWidget = R6Class("dataTableWidget",
@@ -64,7 +69,8 @@ dataTableWidget = R6Class("dataTableWidget",
 
    public = list(
 
-       tableSelection = NULL,   # a reactive value, see server() below
+       #' @field tableSelection a reactive value, see server() below
+       tableSelection = NULL,
 
        initialize = function(id, tbl, width="95%", height="500px", border="0px;", pageLength=10,
                              wrapLines=FALSE,
@@ -100,7 +106,7 @@ dataTableWidget = R6Class("dataTableWidget",
       ui = function(){
          tagList(
             #div(
-               DT::DTOutput(private$id)
+               DT::dataTableOutput(private$id)
                #style=sprintf("width: %s; height: %s; padding: 10px; margin: 3px; border: %s; overflow: auto; background-color: white;",
                #              private$width, private$height, private$border))
              )
@@ -169,8 +175,8 @@ dataTableWidget = R6Class("dataTableWidget",
             } # is columnWidths provided
           #printf("--- columnWidths")
           #print(column.widths)
-          private$output[[private$id]] <- DT::renderDataTable({
-              DT::datatable(tbl,
+          private$output[[private$id]] <- DT::renderDataTable(
+                            tbl,
                             rownames=TRUE,
                             class=private$DTclass,
                             options=list(dom='<lfip<t>>',
@@ -182,10 +188,8 @@ dataTableWidget = R6Class("dataTableWidget",
                                          #columnDefs = list(list(className='dt-center', targets= "_all")),
                                          columnDefs = column.widths,
                                          paging=TRUE),
-                            selection=private$selectionOption)},
-              server=TRUE     # keep the bulk of data in R, not in the browser
-              )  # renderDataTable
-         private$dataTableProxy <- dataTableProxy(private$id)
+                            selection=private$selectionOption) # renderDataTable
+         private$dataTableProxy <- DT::dataTableProxy(private$id)
          }, # setTable
 
         #' @description
@@ -208,7 +212,7 @@ dataTableWidget = R6Class("dataTableWidget",
 
         #' @description
         #' select columns in the table.
-        #' @param colnumbers numeric vector, which columns to select
+        #' @param colNumbers numeric vector, which columns to select
         #' @returns nothing
       selectColumns = function(colNumbers){
          printf("dataTableWidget::selectColumns")

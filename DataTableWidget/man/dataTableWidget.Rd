@@ -25,6 +25,13 @@ an R6 class providing clean access to a simple html message box.
 \details{
 R6 Class representing a simple text display widget
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{tableSelection}}{a reactive value, see server() below}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -179,7 +186,7 @@ select columns in the table.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{colnumbers}}{numeric vector, which columns to select}
+\item{\code{colNumbers}}{numeric vector, which columns to select}
 }
 \if{html}{\out{</div>}}
 }
