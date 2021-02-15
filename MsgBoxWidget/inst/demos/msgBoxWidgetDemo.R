@@ -71,15 +71,23 @@ MsgBoxDemoApp = R6Class("app",
 #--------------------------------------------------------------------------------
 deploy <-function()
 {
+   repos <- options("repos")[[1]]
+   stopifnot(sort(names(repos)) == c("BioCann", "BioCsoft", "CRAN"))
+   stopifnot(repos$BioCann=="https://bioconductor.org/packages/3.12/data/annotation")
+   stopifnot(repos$BioCsoft=="https://bioconductor.org/packages/3.12/bioc")
+   stopifnot(repos$CRAN=="https://cran.microsoft.com")
+
    require(devtools)
-   install_github("PriceLab/BioShiny/MsgBoxWidget")
+   install_github("PriceLab/BioShiny/MsgBoxWidget", force=TRUE)
+
    require(rsconnect)
 
    deployApp(account="hoodlab",
               appName="msgBoxDemo",
               appTitle="msgBox Demo",
               appFiles=c("msgBoxWidgetDemo.R"),
-              appPrimaryDoc="msgBoxWidgetDemo.R"
+              appPrimaryDoc="msgBoxWidgetDemo.R",
+              forceUpdate=TRUE
               )
 
 } # deploy
