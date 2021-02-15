@@ -69,22 +69,24 @@ DataTableDemoApp = R6Class("app",
 # needs this first
 deploy <- function()
 {
+   repos <- options("repos")[[1]]
+   stopifnot(sort(names(repos)) == c("BioCann", "BioCsoft", "CRAN"))
+   stopifnot(repos$BioCann=="https://bioconductor.org/packages/3.12/data/annotation")
+   stopifnot(repos$BioCsoft=="https://bioconductor.org/packages/3.12/bioc")
+   stopifnot(repos$CRAN=="https://cran.microsoft.com")
+
+   require(devtools)
+   install_github("PriceLab/BioShiny/MsgBoxWidget", force=TRUE)
+   install_github("PriceLab/BioShiny/DataTableWidget", force=TRUE)
+
    require(rsconnect)
-   #rsconnect::setAccountInfo(name='hoodlab',
-   #                          token='41E779ABC50F6A98036C95AEEA1A92F7',
-   #                          secret='PDVweDhzJa8ST3fu5zihMEKVcPH0cssByz7Q6rsL')
-   setRepositories(addURLs=c(BioCsoft="https://bioconductor.org/packages/3.12/bioc",
-                             BioCann="https://bioconductor.org/packages/3.12/data/annotation",
-                             BioCexp="https://bioconductor.org/packages/3.12/data/experiment",
-                             BioC="https://bioconductor.org/packages/3.12/bioc",
-                             CRAN="https://cran.microsoft.com"),
-                   graphics=FALSE)
 
    deployApp(account="hoodlab",
               appName="dtwCollapseExpendRows",
               appTitle="dataTableWidget collapse/exapnd rows",
               appFiles=c("dtwCollapseExpandRows.R"),
-              appPrimaryDoc="dtwCollapseExpandRows.R"
+              appPrimaryDoc="dtwCollapseExpandRows.R",
+              forceUpdate=TRUE
               )
 
 
