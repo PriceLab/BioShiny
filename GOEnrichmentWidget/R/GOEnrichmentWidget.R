@@ -219,10 +219,20 @@ GOEnrichmentWidget = R6Class("GOEnrichmentWidget",
             })
          }, # server
 
+        #' @description
+        #' specifies the genes (geneSymbols) to be analyzed for GO biological process
+        #' @param genes character strings, HUGO gene symbols, human expected for now
+        #' @returns nothing
+
       setGenes = function(genes){
          private$geneSymbols <- genes
          updatePickerInput(private$session, "genePicker", choices=genes, selected=genes)
          },
+
+        #' @description
+        #' kicks off the enrichment calculation, with the specified genes, manages ui, displays results
+        #' @param genes character strings, HUGO gene symbols, human expected for now
+        #' @returns nothing
 
       run = function(genes){
          private$geneSymbols <- genes

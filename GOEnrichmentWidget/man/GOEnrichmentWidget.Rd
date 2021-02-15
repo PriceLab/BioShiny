@@ -11,6 +11,10 @@ printf(...)
 shiny code which, wnen invoked (almost always by the shinyApp function, returns html
 
 nothing
+
+nothing
+
+nothing
 }
 \description{
 an R6 class providing clean access to Gene Ontology Enrichment, input & display
@@ -88,19 +92,35 @@ defines the event handlers used with the ui
 \if{html}{\out{<a id="method-setGenes"></a>}}
 \if{latex}{\out{\hypertarget{method-setGenes}{}}}
 \subsection{Method \code{setGenes()}}{
+specifies the genes (geneSymbols) to be analyzed for GO biological process
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GOEnrichmentWidget$setGenes(genes)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{genes}}{character strings, HUGO gene symbols, human expected for now}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-run"></a>}}
 \if{latex}{\out{\hypertarget{method-run}{}}}
 \subsection{Method \code{run()}}{
+kicks off the enrichment calculation, with the specified genes, manages ui, displays results
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{GOEnrichmentWidget$run(genes)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{genes}}{character strings, HUGO gene symbols, human expected for now}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

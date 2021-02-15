@@ -45,41 +45,28 @@ GOEnrichmentWidgetDemoApp = R6Class("app",
        ) # public
     ) # class
 #--------------------------------------------------------------------------------
-# need this first:
-# options("repos")
-#                                                    CRAN
-#                            "https://cran.microsoft.com"
-#                                                 BioCsoft
-#            "https://bioconductor.org/packages/3.11/bioc"
-#                                                 BioCann
-# "https://bioconductor.org/packages/3.11/data/annotation"
-#                                                 BioCsoft
-#            "https://bioconductor.org/packages/3.12/bioc"
-#                                                  BioCann
-# "https://bioconductor.org/packages/3.12/data/annotation"
-
-
 #   BiocManager::valid()
-#   library(devtools)
-#   install_github("PriceLab/BioShiny/GOEnrichmentWidget")
-#   install_github("PriceLab/BioShiny/msgBoxWidget")
-#   install_github("PriceLab/BioShiny/dataTableWidget")
-#   this can help figure out problems:
-#      rsconnect::appDependencies()
-
+#
 deploy <- function()
 {
-   require(rsconnect)
+   repos <- options("repos")[[1]]
+   stopifnot(sort(names(repos)) == c("BioCann", "BioCsoft", "CRAN"))
+   stopifnot(repos$BioCann=="https://bioconductor.org/packages/3.12/data/annotation")
+   stopifnot(repos$BioCsoft=="https://bioconductor.org/packages/3.12/bioc")
+   stopifnot(repos$CRAN=="https://cran.microsoft.com")
 
-  #setRepositories(graphics=FALSE,
-  #                addURLs=c(BioCsoft="https://bioconductor.org/packages/3.12/bioc",
-  #                          BioCann="https://bioconductor.org/packages/3.12/data/annotation"))
+   require(devtools)
+   install_github("PriceLab/BioShiny/DataTableWidget", force=TRUE)
+   install_github("PriceLab/BioShiny/GOEnrichmentWidget", force=TRUE)
+
+   require(rsconnect)
 
    deployApp(account="hoodlab",
              appName="GOEnrichmentWidgetDemo",
              appTitle="GO Enrichment shiny Widget",
              appFiles=c("GOEnrichmentWidgetDemo.R"),
-             appPrimaryDoc="GOEnrichmentWidgetDemo.R"
+             appPrimaryDoc="GOEnrichmentWidgetDemo.R",
+             forceUpdate=TRUE
              )
 
 
