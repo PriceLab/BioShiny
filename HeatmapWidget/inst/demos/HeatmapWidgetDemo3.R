@@ -52,10 +52,12 @@ HeatmapDemoApp = R6Class("app",
              #  mtcars button click handler
              #-------------------------------
            observeEvent(input$mtcarsButton, ignoreInit=TRUE, {
-              private$mtx <- mtcars
+              private$mtx <- as.matrix(mtcars)
               private$heatmap = HeatmapWidget$new(id="box1",
                                                   title="mtcars",
-                                                  mtcars,
+                                                  private$mtx,
+                                                  rowTitle="model",
+                                                  columnTitle="attributes",
                                                   width=500,
                                                   height=500)
               removeUI(selector="#heatmapWrapper", immediate=TRUE)
@@ -71,10 +73,12 @@ HeatmapDemoApp = R6Class("app",
            observeEvent(input$tfGenesButton, ignoreInit=TRUE, {
               mtx.file.2 <- "genesByScoredCandidateTFs.mtx.22x340.RData"
               mtx <- asinh(get(load(system.file(package="HeatmapWidget", "extdata", mtx.file.2))))
-              private$mtx <- mtx
+              private$mtx <- as.matrix(mtx)
               private$heatmap = HeatmapWidget$new(id="box2",
                                                   title="TFs and Targets",
-                                                  mtx,
+                                                  private$mtx,
+                                                  rowTitle="TF",
+                                                  columnTitle="targetGene",
                                                   width=700,
                                                   height=700)
               removeUI(selector="#heatmapWrapper", immediate=TRUE)
@@ -113,5 +117,5 @@ HeatmapDemoApp = R6Class("app",
 #--------------------------------------------------------------------------------
 app <- HeatmapDemoApp$new()
 x <- shinyApp(app$ui, app$server)
-runApp(x, port=1112)
+runApp(x, port=1114)
 

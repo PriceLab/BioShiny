@@ -44,7 +44,7 @@ HeatmapDemoApp = R6Class("app",
         #------------------------------------------------------------
         ui = function(){
            fluidPage(
-              titlePanel("Coordinate regulation of early hematopoiesis genes"),
+              titlePanel("Coordinate regulation of early hematopoiesis genes (not all controls work yet)"),
               fluidRow(column(width=2, pickerInput(inputId = "geneCountPicker",
                                                    label = "gene count",
                                                    choices = as.character(1:10),
@@ -143,5 +143,5 @@ HeatmapDemoApp = R6Class("app",
 #--------------------------------------------------------------------------------
 app <- HeatmapDemoApp$new()
 x <- shinyApp(app$ui, app$server)
-runApp(x, port=1112)
+runApp(x, port=1114)
 
