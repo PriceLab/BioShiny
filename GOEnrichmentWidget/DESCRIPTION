@@ -5,7 +5,7 @@ Version: 1.0.6
 Date: 2021-01-29
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
-Depends: R (>= 3.5.0), shiny, R6
+Depends: R (>= 3.5.0), shiny, R6, GO.db, GOstats
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 Description: a BioShiny R6 class for a simple text display box
 License: MIT + file LICENSE
