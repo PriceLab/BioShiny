@@ -56,17 +56,18 @@ deploy <- function()
    require(rsconnect)
 
    deployApp(account="hoodlab",
-             appName="GOEnrichmentWidgetDemo",
-             appTitle="GO Enrichment shiny Widget",
-             appFiles=c("GOEnrichmentWidgetDemo.R"),
-             appPrimaryDoc="GOEnrichmentWidgetDemo.R",
+             appName="GenomeTracksWidgetDemo",
+             appTitle="tms GenomeTrackWidget Demo",
+             appFiles=c("GenomeTracksWidgetDemo.R",
+                        "tracks/placeHolder.tmp"),
+             appPrimaryDoc="GenomeTracksWidgetDemo.R",
              forceUpdate=TRUE
              )
 
 
 } # deploy
 #--------------------------------------------------------------------------------
-filename <- "~/github/TrenaProjectErythropoiesis/inst/extdata/genomicRegions/tbl.3.0.250000.500000.RData"
+filename <- system.file(package="GenomeTracksWidget", "extdata", "tbl.3.0.250000.500000.RData")
 #filename <- "../extdata/tbl-79.rows.RData"
 #filename <- "../extdata/tbl-21.rows.RData"
 #filename <- "../extdata/tbl-66.rows.RData"
