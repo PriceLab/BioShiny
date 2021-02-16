@@ -3,7 +3,6 @@
 #' @import R6
 #' @import shiny
 #' @import shinyWidgets
-#' @import shinyjs
 #' @import igvWidget
 #' @import shinybusy
 #' @import later

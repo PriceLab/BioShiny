@@ -49,6 +49,8 @@ deploy <- function()
 
    require(devtools)
    Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)
+   install_github("dreamRs/shinyWidgets", force=TRUE)
+   install_github("dreamRs/shinybusy", force=TRUE)
    install_github("paul-shannon/igvShiny", force=TRUE)
    install_github("PriceLab/BioShiny/igvWidget", force=TRUE)
    install_github("PriceLab/BioShiny/GenomeTracksWidget", force=TRUE)
@@ -80,6 +82,5 @@ if(grepl("hagfish", Sys.info()[["nodename"]]) & !interactive()){
    } else {
    shinyApp(app$ui(), app$server)
    }
-
 
 
