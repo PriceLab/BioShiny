@@ -65,10 +65,10 @@ igvDemoApp = R6Class("app",
             self$igv.02$server(input, output, session)
 
             observeEvent(input$igvInstanceChooser, {
-               printf("new instance chosen")
+               message(sprintf("new instance chosen"))
                newValue = input$igvInstanceChooser
                active.widget = as.integer(newValue)
-               printf("active: %d", active.widget)
+               message(sprintf("active: %d", active.widget))
                private$current.igv.instance = self$igv.01
                if(active.widget == 2)
                   private$current.igv.instance = self$igv.02
@@ -82,19 +82,19 @@ igvDemoApp = R6Class("app",
 
             observeEvent(input$trackClick, {
                clickData <- input$trackClick
-               printf("--- clackTrick")
+               message(sprintf("--- clackTrick"))
                print(clickData)
                })
 
             observeEvent(input$getLocusButton, {
-               printf("--- locus button event")
+               message(sprintf("--- locus button event"))
                showModal(modalDialog(private$current.igv.instance$getLocus(),
                                      size=c("s", "m", "l")[1], title="Locus", easyClose=TRUE))
                print(private$current.igv.instance$getLocus())
                })
 
             observeEvent(input$loadBedTrackButton, {
-               printf("--- load bed track")
+               message(sprintf("--- load bed track"))
                private$current.igv.instance$setLocus("APOE") # 44,904,796-44,910,393"
                tbl.bed <- data.frame(chrom=c("chr19", "chr19"),
                                      start=c(44905872, 44905972),
@@ -105,7 +105,7 @@ igvDemoApp = R6Class("app",
                })
 
             observeEvent(input$loadBedGraphTrackButton, {
-               printf("--- load bedGraph track")
+               message(sprintf("--- load bedGraph track"))
                private$current.igv.instance$setLocus("APOE") # 44,904,796-44,910,393"
                scores <- 1:5000
                tbl.bg <- data.frame(chrom=rep("chr19", 5000),
@@ -121,22 +121,22 @@ igvDemoApp = R6Class("app",
                })
             observeEvent(input$loadVcfTrackButton, {
                file <- system.file(package="igvWidget", "extdata", "inpp5d.fragment.vcf")
-               printf("exists? %s: %s", file.exists(file), file)
+               message(sprintf("exists? %s: %s", file.exists(file), file))
                private$current.igv.instance$setLocus("chr2:232,984,561-233,283,684")
                vcfData <- readVcf(file)
                private$current.igv.instance$displayVcfTrack("vcf", vcfData)
                })
             #observeEvent(input$loadSegTrackButton, {
             #   file <- system.file(package="igvWidget", "extdata", "GBM-TP.seg")
-            #   printf("exists? %s: %s", file.exists(file), file)
+            #   message(sprintf("exists? %s: %s", file.exists(file), file))
             #   tbl.seg <- read.table(file, sep="\t", as.is=TRUE, header=TRUE)[-1,]
             #   private$current.igv.instance$displaySegTrack("SEG", tbl.seg)
             #   })
             observeEvent(input$loadGwasTrackButton, {
                file <- system.file(package="igvWidget", "extdata", "gwas.RData")
-               printf("exists? %s: %s", file.exists(file), file)
+               message(sprintf("exists? %s: %s", file.exists(file), file))
                tbl.gwas <- get(load(file))
-               printf("tbl.gwas, nrow: %d", nrow(tbl.gwas))
+               message(sprintf("tbl.gwas, nrow: %d", nrow(tbl.gwas)))
                private$current.igv.instance$setLocus("chr19:45,316,064-45,472,399")
                private$current.igv.instance$displayGwasTrack("GWAS", tbl.gwas)
                })
@@ -166,7 +166,8 @@ deploy <- function()
    deployApp(account="hoodlab",
              appName="igvWidgetDemo",
              appTitle="igv widget demo",
-             appFiles=c("igvWidgetDemo.R"),
+             appFiles=c("igvWidgetDemo.R",
+                        "tracks/placeholder.tmp"),
              appPrimaryDoc="igvWidgetDemo.R",
              forceUpdate=TRUE
              )
