@@ -146,8 +146,40 @@ igvDemoApp = R6Class("app",
        ) # public
     ) # class
 #--------------------------------------------------------------------------------
+#   BiocManager::valid()
+#
+deploy <- function()
+{
+   repos <- options("repos")[[1]]
+   stopifnot(sort(names(repos)) == c("BioCann", "BioCsoft", "CRAN"))
+   stopifnot(repos$BioCann=="https://bioconductor.org/packages/3.12/data/annotation")
+   stopifnot(repos$BioCsoft=="https://bioconductor.org/packages/3.12/bioc")
+   stopifnot(repos$CRAN=="https://cran.microsoft.com")
+
+   require(devtools)
+   Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)
+   install_github("paul-shannon/igvShiny", force=TRUE)
+   install_github("PriceLab/BioShiny/igvWidget", force=TRUE)
+
+   require(rsconnect)
+
+   deployApp(account="hoodlab",
+             appName="igvWidgetDemo",
+             appTitle="igv widget demo",
+             appFiles=c("igvWidgetDemo.R"),
+             appPrimaryDoc="igvWidgetDemo.R",
+             forceUpdate=TRUE
+             )
+
+
+} # deploy
+#--------------------------------------------------------------------------------
 
 app <- igvDemoApp$new()
-x <- shinyApp(app$ui, app$server)
-runApp(x, port=1111)
+
+if(grepl("hagfish", Sys.info()[["nodename"]]) & !interactive()){
+   runApp(shinyApp(app$ui(), app$server), port=1111)
+   } else {
+   shinyApp(app$ui(), app$server)
+   }
 

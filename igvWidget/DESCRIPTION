@@ -6,7 +6,7 @@ Date: 2021-02-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), GenomicRanges,  GenomicAlignments, igvShiny (>= 1.0.1)
-Imports: methods, BiocGenerics, rtracklayer, VariantAnnotation, RColorBrewer
+Imports: methods, BiocGenerics, rtracklayer, VariantAnnotation, RColorBrewer, TxDb.Hsapiens.UCSC.hg38.knownGene
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 Description: a BioShiny R6 class for igv.js, built upon the igvShiny package
 License: MIT + file LICENSE
