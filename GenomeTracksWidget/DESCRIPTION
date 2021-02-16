@@ -1,12 +1,14 @@
 Package: GenomeTracksWidget
 Type: Package
 Title: GenomeTracksWidget
-Version: 1.0.6
+Version: 1.0.7
 Date: 2021-02-15
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6, igvShiny
-Imports: shinyBS, VariantAnnotation, rtracklayer, org.Hs.eg.db, TxDb.Hsapiens.UCSC.hg38.knownGene
+Imports: shinyBS, VariantAnnotation, rtracklayer,
+         org.Hs.eg.db, TxDb.Hsapiens.UCSC.hg38.knownGene,
+	 igvWidget
 Suggests: RUnit, BiocStyle, knitr, rmarkdown
 Description: a BioShiny R6 class for multiple igvShiny tracks
 License: MIT + file LICENSE
