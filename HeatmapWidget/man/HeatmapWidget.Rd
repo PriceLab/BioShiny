@@ -43,6 +43,10 @@ Create a new HeatmapWidget
   clusteringMethod = "hclust",
   rowClusters = 5,
   colClusters = 5,
+  rowGroups = NULL,
+  colGroups = NULL,
+  rowGroupColors = NULL,
+  colGroupColors = NULL,
   width = 600,
   height = 600,
   quiet = TRUE
@@ -67,6 +71,16 @@ Create a new HeatmapWidget
 \item{\code{rowClusters}}{integer, the number of k-means row clusters desired, default 5}
 
 \item{\code{colClusters}}{integer, the number of k-means column clusters desired, default 5}
+
+\item{\code{rowGroups}}{data.frame, each column is a category}
+
+\item{\code{colGroups}}{data.frame, each column is a category}
+
+\item{\code{colGroups}}{data.frame, each column is a category}
+
+\item{\code{rowGroupColors}}{list, one item per group, a palette name}
+
+\item{\code{colGroupColors}}{list, one item per group, a palette name}
 
 \item{\code{width}}{numeric, pixels, default 600}
 

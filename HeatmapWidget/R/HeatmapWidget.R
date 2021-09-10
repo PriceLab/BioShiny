@@ -21,6 +21,8 @@ HeatmapWidget = R6Class("HeatmapWidget",
         clusteringMethod = NULL,
         rowClusters = NULL,
         colClusters = NULL,
+        rowGroups = NULL,
+        colGroups = NULL,
         width = NULL,
         height = NULL,
         quiet = NULL,
@@ -41,6 +43,11 @@ HeatmapWidget = R6Class("HeatmapWidget",
         #' @param clusteringMethod character, "hclust" (the default), or "kmeans"
         #' @param rowClusters integer, the number of k-means row clusters desired, default 5
         #' @param colClusters integer, the number of k-means column clusters desired, default 5
+        #' @param rowGroups data.frame, each column is a category
+        #' @param colGroups data.frame, each column is a category
+        #' @param colGroups data.frame, each column is a category
+        #' @param rowGroupColors list, one item per group, a palette name
+        #' @param colGroupColors list, one item per group, a palette name
         #' @param width numeric, pixels, default 600
         #' @param height numeric, pixels, default 600
         #' @param quiet logical silent or verbose?  default TRUE
@@ -51,6 +58,8 @@ HeatmapWidget = R6Class("HeatmapWidget",
        initialize = function(id, title, mtx, rowTitle, columnTitle,
                              clusteringMethod="hclust",
                              rowClusters=5, colClusters=5,
+                             rowGroups=NULL, colGroups=NULL,
+                             rowGroupColors=NULL, colGroupColors=NULL,
                              width=600, height=600, quiet=TRUE){
 
           if(!quiet) message("entering HeatmapWidget::initialize")
@@ -62,11 +71,16 @@ HeatmapWidget = R6Class("HeatmapWidget",
           private$columnTitle = columnTitle
           private$rowClusters = rowClusters
           private$colClusters = colClusters
+          private$rowGroups = rowGroups
+          private$colGroups = colGroups
+
           private$width = width;
           private$height = height;
           private$quiet = quiet
           #public$setHeatmap(mtx)
           printf("--- HeatmapWidget ctor, checking rows")
+             # sanity check row & col groups and their colors
+
           if(nrow(mtx) == 1)   # hclust needs at least two rows.
               mtx <- rbind(mtx, mtx)
           if(ncol(mtx) == 1)   # hclust needs at least two rows.
@@ -79,6 +93,17 @@ HeatmapWidget = R6Class("HeatmapWidget",
           hm <- add_row_labels(hm)
           hm <- add_row_title(hm, rowTitle)
           hm <- add_col_title(hm, columnTitle)
+          if(!is.null(rowGroups)){
+             if(!is.null(rowGroupColors))
+                stopifnot(all(colnames(rowGroups) == colnames(rowGroupColors)))
+             hm <- add_row_annotation(hm, rowGroups, colors=rowGroupColors)
+             }
+          if(!is.null(colGroups)){
+             if(!is.null(colGroupColors))
+               stopifnot(all(colnames(colGroups) == colnames(colGroupColors)))
+             hm <- add_col_annotation(hm, colGroups, side="bottom",
+                                       colors=colGroupColors)
+             }
           private$heatmap <- hm
           },
 
