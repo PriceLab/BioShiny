@@ -1,0 +1,18 @@
+Package: cyjWidget
+Type: Package
+Title: cyjWidget
+Version: 1.0.0
+Date: 2022-02-01
+Author: Paul Shannon
+Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
+Depends: R (>= 4.0.0), R6, cyjShiny (>= 1.0.1)
+Imports: methods, BiocGenerics
+Suggests: RUnit, BiocStyle, knitr, rmarkdown
+Description: a BioShiny R6 class for cytoscape.js, built upon the cyjShiny package
+License: MIT + file LICENSE
+LazyLoad: yes
+biocViews: Visualization, ThirdPartyClient
+VignetteBuilder:
+  knitr
+Encoding: UTF-8
+RoxygenNote: 7.1.2
