@@ -11,10 +11,6 @@ printf(...)
 shiny code which, wnen invoked (almost always by the shinyApp function, returns html
 
 nothing
-
-nothing
-
-character
 }
 \description{
 an R6 class providing clean access to a simple html message box
@@ -26,10 +22,10 @@ R6 Class representing a simple text display widget
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-ProteomicsFilteringWidget-new}{\code{ProteomicsFilteringWidget$new()}}
+\item \href{#method-ProteomicsFilteringWidget-plotProteins}{\code{ProteomicsFilteringWidget$plotProteins()}}
+\item \href{#method-ProteomicsFilteringWidget-maxOfVectors}{\code{ProteomicsFilteringWidget$maxOfVectors()}}
 \item \href{#method-ProteomicsFilteringWidget-ui}{\code{ProteomicsFilteringWidget$ui()}}
 \item \href{#method-ProteomicsFilteringWidget-server}{\code{ProteomicsFilteringWidget$server()}}
-\item \href{#method-ProteomicsFilteringWidget-setText}{\code{ProteomicsFilteringWidget$setText()}}
-\item \href{#method-ProteomicsFilteringWidget-getText}{\code{ProteomicsFilteringWidget$getText()}}
 \item \href{#method-ProteomicsFilteringWidget-clone}{\code{ProteomicsFilteringWidget$clone()}}
 }
 }
@@ -39,15 +35,7 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new ProteomicsFilteringWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$new(
-  id,
-  title,
-  boxWidth = 200,
-  boxHeight = 30,
-  fontSize = 20,
-  fontColor = "black",
-  backgroundColor = "beige"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$new(id, title = "foo")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -56,21 +44,53 @@ Create a new ProteomicsFilteringWidget
 \item{\code{id}}{the html document div id}
 
 \item{\code{title}}{character}
-
-\item{\code{boxWidth}}{integer, 200 by default}
-
-\item{\code{boxHeight}}{integer, 30 by default}
-
-\item{\code{fontSize}}{integer, 20 by default}
-
-\item{\code{fontColor}}{character, standard CSS rgb or name}
-
-\item{\code{backgroundColor}}{character, standard CSS rgb or name}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `ProteomicsFilteringWidget` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ProteomicsFilteringWidget-plotProteins"></a>}}
+\if{latex}{\out{\hypertarget{method-ProteomicsFilteringWidget-plotProteins}{}}}
+\subsection{Method \code{plotProteins()}}{
+draw a protein vector
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$plotProteins(input, output)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{input}}{the shiny object, access to the ui}
+
+\item{\code{output}}{the shiny object, for drawing}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+nothing
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ProteomicsFilteringWidget-maxOfVectors"></a>}}
+\if{latex}{\out{\hypertarget{method-ProteomicsFilteringWidget-maxOfVectors}{}}}
+\subsection{Method \code{maxOfVectors()}}{
+find the maximum of several vectors
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$maxOfVectors(vectorList)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{vectorList}}{list of numeric vectors}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+numeric
 }
 }
 \if{html}{\out{<hr>}}
@@ -103,33 +123,6 @@ defines the event handlers used with the ui
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ProteomicsFilteringWidget-setText"></a>}}
-\if{latex}{\out{\hypertarget{method-ProteomicsFilteringWidget-setText}{}}}
-\subsection{Method \code{setText()}}{
-registers the specified text
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$setText(newText)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{newText}}{character}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ProteomicsFilteringWidget-getText"></a>}}
-\if{latex}{\out{\hypertarget{method-ProteomicsFilteringWidget-getText}{}}}
-\subsection{Method \code{getText()}}{
-retrieves current text
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$getText()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ProteomicsFilteringWidget-clone"></a>}}

@@ -50,31 +50,19 @@ ProteomicsFilteringDemoApp = R6Class("app",
 
             message(sprintf("entering ProteomicsFilterWidgetDemo::server"))
             private$proteomicsFilter1$server(input, output, session)
-            private$proteomicsFilter2$server(input, output, session)
-
-            observeEvent(input$randomTextButton, ignoreInit=TRUE, {
-              randomText <- paste(sample(c(LETTERS, letters), 10, replace=TRUE), collapse="")
-              private$proteomicsFilter1$setText(randomText)
-              private$proteomicsFilter2$setText(tolower(randomText))
-              private$proteomicsFilter1$getText() == randomText
-              private$proteomicsFilter2$getText() == tolower(randomText)
-              })
-
-            observeEvent(input$getTextButton, ignoreInit=TRUE, {
-              print(private$proteomicsFilter1$getText())
-              })
-
-            } # server
+            #private$proteomicsFilter2$server(input, output, session)
+            }
+          } # server
 
        ) # public
     ) # class
 #--------------------------------------------------------------------------------
 app <- ProteomicsFilteringDemoApp$new()
-
-if(grepl("hagfish", Sys.info()[["nodename"]]) & interactive()){
-   printf("--- on hagfish")
-   runApp(shinyApp(app$ui(), app$server), port=1112)
-   } else {
-   shinyApp(app$ui(), app$server)
-   }
+shinyApp(app$ui(), app$server)
+#if(grepl("hagfish", Sys.info()[["nodename"]]) & interactive()){
+#   printf("--- on hagfish")
+#   runApp(shinyApp(app$ui(), app$server), port=1112)
+#   } else {
+#   shinyApp(app$ui(), app$server)
+#   }
 
