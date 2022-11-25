@@ -1,0 +1,41 @@
+.axis {
+    font: 18px sans-serif;
+}
+
+.line_srm{
+  fill: none;
+  stroke: blue;
+  stroke-width: 3;
+  }
+
+.line_rna{
+  fill: none;
+  stroke: gray;
+  stroke-width: 3;
+  }
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+  }
+
+.dot {
+    fill: black;
+    stroke: #fff;
+  }
+
+.dotrna {
+    fill: red;
+    stroke: #fff;
+  }
+  
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+  }
+
+
+#currentVectorDisplay{
+   font-size: 36;
+   color: blue
+}
