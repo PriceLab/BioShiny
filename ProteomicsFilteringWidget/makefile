@@ -11,5 +11,5 @@ install:
 	R CMD INSTALL .
 
 demo:
-	(cd inst/demos; R -f testProteomicsFiltering.R)
+	(cd inst/demos; R -f demoAppWithTabs.R)
 

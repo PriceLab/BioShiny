@@ -1,8 +1,8 @@
 Package: ProteomicsFilterWidget
 Type: Package
 Title: ProteomicsFilterWidget
-Version: 1.0.3
-Date: 2022-11-25
+Version: 1.0.4
+Date: 2022-11-28
 Author: Paul Shannon
 Maintainer: Paul Shannon <paul.thurmond.shannon@gmail.com>
 Depends: R (>= 3.5.0), shiny, R6, r2d3

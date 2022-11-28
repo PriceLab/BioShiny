@@ -43,5 +43,13 @@ ProteomicsFilteringDemoApp = R6Class("app",
     ) # class
 #--------------------------------------------------------------------------------
 app <- ProteomicsFilteringDemoApp$new()
+# shinyApp(app$ui(), app$server)
+if(grepl("hagfish", Sys.info()[["nodename"]])){ #  & interactive()){
+   printf("--- on hagfish")
+   runApp(shinyApp(app$ui(), app$server), port=1112)
+   } else {
+   shinyApp(app$ui(), app$server)
+   }
+
 
 
