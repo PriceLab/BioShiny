@@ -50,14 +50,14 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
           printf("entering ProteomicsFilteringWidget::initialize, wednesday 11/23 921a")
           private$id <- id
           private$title <- title;
-          f <- "~/github/erythro-dia/viz/v0/tbl.all-11492x14.RData"
+          f <- "tbl.all-11492x14.RData"
           private$tbl.all <- get(load(f))
           private$tbl.current <- private$tbl.all
           max.time.points <- 9
           private$correlationExcludableTimepoints <- grep("^D", colnames(private$tbl.all), value=TRUE)
           private$correlationExcludedTimepoints <- c()
           fraction.names <- sort(unique(tbl.all$fraction))
-          f <- "~/github/erythro-dia/viz/v0/tbl.complexes.RData"
+          f <- "tbl.complexes.RData"
           tbl.complexes <- get(load(f))
           private$tbl.complexes <- tbl.complexes
           private$complexes <- sort(unique(tbl.complexes$complex))
