@@ -41,24 +41,27 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
         #' @description
         #' Create a new ProteomicsFilteringWidget
         #' @param id the html document div id
+        #' @param tbl.data data.frame, idiosyncratic format for DIA data
+        #' @param tbl.complexes data.frame, associates proteins (by gene name) from tbl.data into complexes
         #' @param title character
         #' @return A new `ProteomicsFilteringWidget` object.
 
    public = list(
-       initialize = function(id, title="foo"){
+       initialize = function(id, tbl.data, tbl.complexes, title="foo"){
           private$ns <- NS(id)
           printf("entering ProteomicsFilteringWidget::initialize, wednesday 11/23 921a")
           private$id <- id
           private$title <- title;
-          f <- "tbl.all-11492x14.RData"
-          private$tbl.all <- get(load(f))
+          #f <- "tbl.all-11492x14.RData"
+          #private$tbl.all <- get(load(f))
+          private$tbl.all <- tbl.data
           private$tbl.current <- private$tbl.all
           max.time.points <- 9
           private$correlationExcludableTimepoints <- grep("^D", colnames(private$tbl.all), value=TRUE)
           private$correlationExcludedTimepoints <- c()
           fraction.names <- sort(unique(tbl.all$fraction))
-          f <- "tbl.complexes.RData"
-          tbl.complexes <- get(load(f))
+          #f <- "tbl.complexes.RData"
+          #bl.complexes <- get(load(f))
           private$tbl.complexes <- tbl.complexes
           private$complexes <- sort(unique(tbl.complexes$complex))
           private$fraction.names <- sort(unique(private$tbl.all$fraction))
@@ -177,10 +180,12 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                                     c("+", "-"), inline=TRUE),
                        selectizeInput(inputId=private$ns("timepointExclusionChooser"),
                                       label="Exclude these Timepoints:",
-                                      choices=private$correlationExcludableTimepoints,
+                                      choices=c(private$correlationExcludableTimepoints),
                                       selected=NULL,
                                       multiple=TRUE,
-                                      options=list(maxOptions=length(private$correlationExcludableTimepoints))),
+                                      options=list(maxOptions=length(private$correlationExcludableTimepoints),
+                                                   allowEmptyOption=TRUE,
+                                                   placeholder="Use all timepoints")),
                        sliderInput(inputId=private$ns("correlationThresholdSlider"),
                                    label="",
                                    min=0, max=1, value=0.99, step=0.01),
@@ -332,12 +337,17 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                    } # if a new character string received.  don't clear: leave it displayed
                 })
 
-            observeEvent(private$input$timepointExclusionChooser, ignoreInit=TRUE, {
-               timepoints <- private$input$timepointExclusionChooser
-               printf("entering timepoint exclusion: %s", paste(timepoints, collapse=","))
-               private$correlationExcludedTimepoints <- timepoints
-               printf("exlude %s", paste(timepoints, collapse=","))
-               })
+            #observeEvent(private$input$timepointExclusionChooser, ignoreInit=TRUE, {
+            #   timepoints <- private$input$timepointExclusionChooser
+               #printf("entering timepoint exclusion: %s", paste(timepoints, collapse=","))
+               #if(length(timepoints) == 1 && nchar(timepoints[1]) == 0){
+               #    printf("no timepoints excluded!")
+               #    private$correlationExcludedTimepoints <- c()
+               #} else {
+            #   private$correlationExcludedTimepoints <- timepoints
+               #    }
+            #   printf("exlude %s", paste(timepoints, collapse=","))
+            #   })
 
             observeEvent(private$input$plotCorrelatedButton, ignoreInit=TRUE, {
                printf("--- plot correlated");
@@ -346,7 +356,10 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                target.fraction <- tokens[2]
                threshold <- isolate(private$input$correlationThresholdSlider)
                direction <- isolate(private$input$correlationDirectionChooser)
-               excluded.timepoints <- private$correlationExcludedTimepoints
+               excluded.timepoints <- isolate(private$input$timepointExclusionChooser)
+               printf("---  exclude.timepoints straight from selectize")
+               print(excluded.timepoints)
+               #excluded.timepoints <- private$correlationExcludedTimepoints
                printf("number of exclude timepoints: %d", length(excluded.timepoints))
                  # when looking for correlated proteins, consider all fractions
                # browser()

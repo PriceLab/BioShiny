@@ -35,13 +35,17 @@ R6 Class representing a simple text display widget
 \subsection{Method \code{new()}}{
 Create a new ProteomicsFilteringWidget
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$new(id, title = "foo")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$new(id, tbl.data, tbl.complexes, title = "foo")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{the html document div id}
+
+\item{\code{tbl.data}}{data.frame, idiosyncratic format for DIA data}
+
+\item{\code{tbl.complexes}}{data.frame, associates proteins (by gene name) from tbl.data into complexes}
 
 \item{\code{title}}{character}
 }
@@ -57,7 +61,7 @@ A new `ProteomicsFilteringWidget` object.
 \subsection{Method \code{plotProteins()}}{
 draw a protein vector
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$plotProteins(input, output)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$plotProteins(input, output, mtx)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -66,6 +70,8 @@ draw a protein vector
 \item{\code{input}}{the shiny object, access to the ui}
 
 \item{\code{output}}{the shiny object, for drawing}
+
+\item{\code{mtx}}{extracted from tbl.all, just the Dn timepoint columns, just the selected}
 }
 \if{html}{\out{</div>}}
 }
