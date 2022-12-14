@@ -1,6 +1,10 @@
 #library(R6)
 #library(shiny)
 library(ProteomicsFilterWidget)
+f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.all-11492x14.RData")
+tbl.all <- get(load(f))
+f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.complexes.RData")
+tbl.complexes <- get(load(f))
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"
 
@@ -15,8 +19,8 @@ ProteomicsFilteringDemoApp = R6Class("app",
 
         initialize = function(){
             message(sprintf("initializing demo"))
-            private$proteomicsFilter1 <- ProteomicsFilteringWidget$new(id="d3.foo")
-            private$proteomicsFilter2 <- ProteomicsFilteringWidget$new(id="d3.bar")
+            private$proteomicsFilter1 <- ProteomicsFilteringWidget$new(id="d3.foo", tbl.all, tbl.complexes)
+            private$proteomicsFilter2 <- ProteomicsFilteringWidget$new(id="d3.bar", tbl.all, tbl.complexes)
             },
 
         #------------------------------------------------------------
