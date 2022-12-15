@@ -348,18 +348,6 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                    } # if a new character string received.  don't clear: leave it displayed
                 })
 
-            #observeEvent(private$input$timepointExclusionChooser, ignoreInit=TRUE, {
-            #   timepoints <- private$input$timepointExclusionChooser
-               #printf("entering timepoint exclusion: %s", paste(timepoints, collapse=","))
-               #if(length(timepoints) == 1 && nchar(timepoints[1]) == 0){
-               #    printf("no timepoints excluded!")
-               #    private$correlationExcludedTimepoints <- c()
-               #} else {
-               #private$correlationExcludedTimepoints <- timepoints
-               #    }
-               #   printf("exlude %s", paste(timepoints, collapse=","))
-               #   })
-
             observeEvent(private$input$plotCorrelatedButton, ignoreInit=TRUE, {
                printf("--- plot correlated");
                printf("   tbl.current: %d rows", nrow(private$tbl.current))
@@ -374,6 +362,7 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
 
                   #------------------------------------------------------------
                   # now extract threshold, cor +/- & excluded timpoints
+                  #------------------------------------------------------------
                threshold <- isolate(private$input$correlationThresholdSlider)
                direction <- isolate(private$input$correlationDirectionChooser)
                excluded.timepoints <- isolate(private$input$timepointExclusionChooser)
