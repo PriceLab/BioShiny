@@ -54,16 +54,12 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
           private$ns <- NS(id)
           private$id <- id
           private$title <- title;
-          #f <- "tbl.all-11492x14.RData"
-          #private$tbl.all <- get(load(f))
           private$tbl.all <- tbl.data
           private$tbl.current <- private$tbl.all
           max.time.points <- 9
           private$correlationExcludableTimepoints <- grep("^D", colnames(private$tbl.all), value=TRUE)
           private$correlationExcludedTimepoints <- c()
-          fraction.names <- sort(unique(tbl.all$fraction))
-          #f <- "tbl.complexes.RData"
-          #bl.complexes <- get(load(f))
+          fraction.names <- sort(unique(private$tbl.all$fraction))
           private$tbl.complexes <- tbl.complexes
           private$complexes <- sort(unique(tbl.complexes$complex))
           private$fraction.names <- sort(unique(private$tbl.all$fraction))
