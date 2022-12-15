@@ -11,6 +11,8 @@ printf(...)
 shiny code which, wnen invoked (almost always by the shinyApp function, returns html
 
 nothing
+
+matrix
 }
 \description{
 an R6 class providing clean access to a simple html message box
@@ -26,6 +28,7 @@ R6 Class representing a simple text display widget
 \item \href{#method-ProteomicsFilteringWidget-maxOfVectors}{\code{ProteomicsFilteringWidget$maxOfVectors()}}
 \item \href{#method-ProteomicsFilteringWidget-ui}{\code{ProteomicsFilteringWidget$ui()}}
 \item \href{#method-ProteomicsFilteringWidget-server}{\code{ProteomicsFilteringWidget$server()}}
+\item \href{#method-ProteomicsFilteringWidget-findCorrelations}{\code{ProteomicsFilteringWidget$findCorrelations()}}
 \item \href{#method-ProteomicsFilteringWidget-clone}{\code{ProteomicsFilteringWidget$clone()}}
 }
 }
@@ -126,6 +129,43 @@ defines the event handlers used with the ui
 \item{\code{output}}{list, managed by Shiny}
 
 \item{\code{session}}{list (environment?) managed by Shiny}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ProteomicsFilteringWidget-findCorrelations"></a>}}
+\if{latex}{\out{\hypertarget{method-ProteomicsFilteringWidget-findCorrelations}{}}}
+\subsection{Method \code{findCorrelations()}}{
+finds proteins/genes matching correlation criteria
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ProteomicsFilteringWidget$findCorrelations(
+  target.gene,
+  target.fraction,
+  threshold,
+  direction,
+  method,
+  excluded.timepoints,
+  tbl.current
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{target.gene}}{character}
+
+\item{\code{target.fraction}}{character}
+
+\item{\code{threshold}}{numeric}
+
+\item{\code{direction}}{character}
+
+\item{\code{method}}{character}
+
+\item{\code{excluded.timepoints}}{vector}
+
+\item{\code{tbl.current}}{data.frame}
 }
 \if{html}{\out{</div>}}
 }

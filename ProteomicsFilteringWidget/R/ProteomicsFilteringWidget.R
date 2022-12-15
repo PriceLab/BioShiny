@@ -22,7 +22,6 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
         session = NULL,
         input = NULL,
         output = NULL,
-        proteinCount = NULL,
         tbl.all = data.frame(),
         tbl.current = data.frame(),
         tbl.selected = data.frame(),
@@ -33,7 +32,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
         currentComplexes = c(),
         currentProteins = NULL,
         lastSelectedProtein = NULL,
-        transform = "None",
+        transform = "Normalized",
+        correlationMethod = "spearman",
+        correlationDirection = "+",
         correlationExcludableTimepoints = c(),
         correlationExcludedTimepoints = c(),
         correlationThreshold = 1,
@@ -51,7 +52,6 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
    public = list(
        initialize = function(id, tbl.data, tbl.complexes, title="foo"){
           private$ns <- NS(id)
-          printf("entering ProteomicsFilteringWidget::initialize, wednesday 11/23 921a")
           private$id <- id
           private$title <- title;
           #f <- "tbl.all-11492x14.RData"
@@ -104,10 +104,6 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                          smoothing=lineSmoothing, divID=private$ns("r2d3.pfw"))
             multiplot.script.path <- system.file(package="ProteomicsFilterWidget", "js", "multiplot.js")
             stopifnot(file.exists(multiplot.script.path))
-            #         d3Output(private$d3.id, height="80vh"),
-            # private$output$srm.d3 <- renderD3({
-            #private$output[private$d3.id] <- renderD3({
-            #browser()
             private$output$r2d3.pfw <- renderD3({
                r2d3(data, script = multiplot.script.path)
                })
@@ -147,10 +143,12 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                                         selected = private$fraction.names[1:3],
                                         inline=TRUE),
                      selectizeInput(inputId=private$ns("complexSelector"),
-                                    "Choose Complexes:", private$complexes, selected=NULL,
+                                    label="Choose Complexes:",
+                                    choices=private$complexes,
+                                    selected=NULL,
                                     multiple=TRUE,
                                     options=list(maxOptions=length(private$complexes),
-                                                 placeholder="Use all proteins")),
+                                                 placeholder="Use all proteins, ignoring complexes")),
                      h6("Filtered Set Size:"),
                      verbatimTextOutput(outputId=private$ns("currentCurveCountDisplay")),
                      tags$head(tags$style(HTML("#currentCurveCountDisplay {font-size: 12px;}"))),
@@ -161,12 +159,15 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                                     selected=NULL,
                                     multiple=TRUE,
                                     options=list(maxOptions=nrow(private$tbl.current),
-                                                 placeholder="Use all")),
+                                                 placeholder="Use all in current filtered set")),
                      #verbatimTextOutput(outputId=private$ns("currentSubsetCountDisplay")),
                      actionButton(inputId=private$ns("plotCurrentSelectionButton"), "Plot Current Selection"),
                      br(), br(),
-                     radioButtons(inputId=private$ns("srm.transformChoice"),
-                                  "Desired Data Transform", c("None", "Normalized"), inline=TRUE), # , "Arcsinh")),
+                     radioButtons(inputId=private$ns("transformChoice"),
+                                  "Desired Data Transform",
+                                  c("None", "Normalized"),
+                                  selected="Normalized",
+                                  inline=TRUE), # , "Arcsinh")),
                      div(style=paste("background: lightyellow",
                                      "height: 40px",
                                      "width: 300px",
@@ -179,9 +180,14 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                          textOutput(outputId=private$ns("currentVectorDisplay"))
                          ),
                      wellPanel(style = "background: #E3DFD8",
+                       radioButtons(inputId=private$ns("correlationMethodChooser"),
+                                    label="Find Correlations",
+                                    choices=c("Spearman", "Pearson"),
+                                    inline=TRUE),
                        radioButtons(inputId=private$ns("correlationDirectionChooser"),
-                                    label="Find Spearman Correlations",
-                                    c("+", "-"), inline=TRUE),
+                                    label=NULL,
+                                    choices=c("+", "-"),
+                                    inline=TRUE),
                        selectizeInput(inputId=private$ns("timepointExclusionChooser"),
                                       label="Exclude these Timepoints:",
                                       choices=c(private$correlationExcludableTimepoints),
@@ -193,14 +199,10 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                        sliderInput(inputId=private$ns("correlationThresholdSlider"),
                                    label="",
                                    min=0, max=1, value=0.99, step=0.01),
-                       #radioButtons(inputId=private$ns("correlationTargets"),
-                       #             label="Targets",
-                       #             c("All", "Current Fractions & Complexes"), inline=TRUE),
                        actionButton(inputId=private$ns("plotCorrelatedButton"), "Plot Correlated")
                        ),
                      width=3
                      ),
-                   #  eval(parse(text=sprintf("%s <- '%s'", tolower(as.character(tmp)), names(tmp))))
                  mainPanel(
                      d3Output(outputId=private$ns("r2d3.pfw"), height="80vh", width="100%"),
                      width=9
@@ -217,8 +219,6 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
         #' @returns nothing
       server = function(input, output, session){
          moduleServer(private$id, function(input, output, session){
-            print(noquote(sprintf("entering ProteomicsFilteringWidget server")))
-            print(noquote(sprintf("entering ProteomicsFilteringWidget server %s", "r2d3.pfw")))
             private$session = session;
             private$input = input
             private$output = output
@@ -226,25 +226,47 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
 
 
             #--------------------------------------------------------------------
-            #
+            # spearman or pearson?
+            #--------------------------------------------------------------------
+            observeEvent(private$input$correlationMethodChooser, ignoreInit=FALSE, {
+                newMethod <- private$input$correlationMethodChooser
+                private$correlationMethod <- tolower(newMethod)
+                })
+            #--------------------------------------------------------------------
+            # + or -?
             #--------------------------------------------------------------------
             observeEvent(private$input$correlationDirectionChooser, ignoreInit=TRUE, {
                 newDirection <- private$input$correlationDirectionChooser
-                printf("correlation direction: %s", newDirection)
-                if(!is.null(private$lastSelectedProtein)){
-                   printf("  correlation target: %s", private$lastSelectedProtein)
-                   }
+                private$correlationDirection <- newDirection
+                })
+
+
+            #--------------------------------------------------------------------
+            # leave these timepoints out of the correlation calculation
+            #--------------------------------------------------------------------
+            observeEvent(private$input$timepointExclusionChooser, ignoreInit=TRUE, ignoreNULL=FALSE, {
+                newTimepoints <- private$input$timepointExclusionChooser
+                printf("--- new timepointExclusionChooser action")
+                print(newTimepoints)
+                if(all(is.null(newTimepoints))){
+                    printf("    correcting null newTimepoints")
+                    newTimepoints <- c()
+                    }
+                private$correlationExcludedTimepoints <- newTimepoints
                 })
 
             #--------------------------------------------------------------------
-            #
+            # one or many, or NULL, from the selectize dropdown.
             #--------------------------------------------------------------------
-            observeEvent(private$input$proteinSelector, ignoreInit=FALSE, {
+            observeEvent(private$input$proteinSelector, ignoreInit=FALSE, ignoreNULL=FALSE, {
                 proteins <- private$input$proteinSelector
+                if(is.null(proteins))
+                    proteins <-
+                printf("--- proteinSelector activated")
+                print(proteins)
                 private$currentProteins <- proteins
                 private$tbl.selected <- subset(private$tbl.current, gene %in% proteins)
                 row.count <- nrow(private$tbl.selected)
-
                 })
 
 
@@ -299,18 +321,21 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 }) # currentTable
 
             #--------------------------------------------------------------------
-            #
+            #  triggered by reactive function currentTable()
             #--------------------------------------------------------------------
             observe({
                 row.count <- currentTable()
                 current.proteins <- isolate(private$input$proteinSelector)
                 unique.proteins <- sort(unique(private$tbl.current$gene))
+                if(all(is.null(current.proteins)))
+                    current.proteins <- unique.proteins  # NULL means no selection has been made: use all
                 current.proteins.still.available <- intersect(current.proteins, unique.proteins)
                 printf("    unique.proteins: %d", length(unique.proteins))
+                # unique.proteins <- head(unique.proteins, n=50)
                 updateSelectizeInput(session = private$session,
                                      inputId = "proteinSelector",
                                      choices = unique.proteins,
-                                     selected = current.proteins.still.available,
+                                     # selected = current.proteins.still.available,
                                      server=TRUE
                                      )
                 printf("--- observe, new row count: %d", row.count)
@@ -321,9 +346,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 })
 
             #--------------------------------------------------------------------
-            #
+            #  depends on previously assigned private$currentProteins
             #--------------------------------------------------------------------
-            observeEvent(private$input$plotCurrentSelectionButton, ignoreInit=TRUE, {
+            observeEvent(private$input$plotCurrentSelectionButton, ignoreInit=FALSE, {
                printf("--- plotCurrentSelectionButton")
                printf("plot %d proteins", length(private$currentProteins))
                tbl.sub <- subset(private$tbl.selected, gene %in% private$currentProteins)
@@ -336,14 +361,12 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                self$plotProteins(private$input, private$output, mtx)
                })
 
-            #--------------------------------------------------------------------
-            #
-            #--------------------------------------------------------------------
-            observeEvent(private$input$srm.transformChoice, ignoreInit=TRUE, {
-               new.choice <- private$input$srm.transformChoice
-                                       #printf("--- setting private$transform: %s", new.choice)
+            #----------------------------------------------------------------------------
+            # track data transformation choice, currently just "None" or "Normalized"
+            #----------------------------------------------------------------------------
+            observeEvent(private$input$transformChoice, ignoreInit=TRUE, {
+               new.choice <- private$input$transformChoice
                private$transform <- new.choice
-               #self$plotProteins(private$input, private$output)
                })
 
 
@@ -352,21 +375,16 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
             #--------------------------------------------------------------------
             observeEvent(private$input$currentlySelectedVector, ignoreInit=TRUE, {
                 newValue <- private$input$currentlySelectedVector
-                printf("--- currentlySelectedVector update: '%s'", newValue)
                 if(nchar(newValue) == 0){
                     shinyjs::disable("plotCorrelatedButton")
-               } else {
+                } else {
                    shinyjs::enable("plotCorrelatedButton")
                    tokens <- strsplit(newValue, "-")[[1]]
                    current.gene <- tokens[1]
                    current.fraction <- tokens[2]
-                   printf("  current.gene: '%s'", current.gene)
-                   printf("      fraction: '%s'", current.fraction)
                    peptideCount <- subset(private$tbl.all,
                                           gene==current.gene &
                                           fraction==current.fraction)$peptideCount
-                   printf("   peptideCount: ")
-                   print(peptideCount)
                    newValue <- sprintf("%s-%dp", newValue, peptideCount)
                    private$lastSelectedProtein <- newValue
                    private$output$currentVectorDisplay <- renderText({newValue})
@@ -394,12 +412,14 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                   #------------------------------------------------------------
 
                threshold <- isolate(private$input$correlationThresholdSlider)
-               direction <- isolate(private$input$correlationDirectionChooser)
-               excluded.timepoints <- isolate(private$input$timepointExclusionChooser)
+               direction <- private$correlationDirection
+               method <- private$correlationMethod
+               printf("   %s %s", method, direction)
+               excluded.timepoints <- private$correlationExcludedTimepoints
                tbl.current <- private$tbl.current
                mtx.correlated <- self$findCorrelations(target.gene, target.fraction,
-                                                       threshold, direction, excluded.timepoints,
-                                                       tbl.current)
+                                                       threshold, direction, method,
+                                                       excluded.timepoints, tbl.current)
 
                if(nrow(mtx.correlated) > 0)
                    self$plotProteins(private$input, private$output, mtx.correlated)
@@ -411,10 +431,25 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
        #--------------------------------------------------------------------
        #
        #--------------------------------------------------------------------
-       findCorrelations = function(target.gene, target.fraction, threshold, direction,
-                                   excluded.timepoints, tbl.current){
 
-           printf("---  exclude.timepoints straight from selectize")
+        #' @description finds proteins/genes matching correlation criteria
+        #' @param target.gene character
+        #' @param target.fraction character
+        #' @param threshold numeric
+        #' @param direction character
+        #' @param method character
+        #' @param excluded.timepoints vector
+        #' @param tbl.current data.frame
+        #' @returns matrix
+
+       findCorrelations = function(target.gene, target.fraction, threshold, direction,
+                                   method, excluded.timepoints, tbl.current){
+
+           printf("--- entering findCorrelations")
+           printf("method: %s", method)
+           printf("direction: %s", direction)
+           printf("threshold: %f", threshold)
+           printf("---  excluded.timepoints straight from selectize")
            print(excluded.timepoints)
            printf("number of exclude timepoints: %d", length(excluded.timepoints))
            tbl.target <- subset(private$tbl.all, gene==target.gene & fraction==target.fraction)
@@ -422,16 +457,16 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
            numeric.columns <- grep("^D", colnames(private$tbl.current), ignore.case=TRUE)
            excluded.columns <- c()
            if(length(excluded.timepoints) > 0){
-               excluded.columns <- match(excluded.timepoints, colnames(private$tbl.current))
-           }
+              excluded.columns <- match(excluded.timepoints, colnames(private$tbl.current))
+              }
            numeric.columns <- setdiff(numeric.columns, excluded.columns)
            target.vector <- as.numeric(tbl.target[1, numeric.columns])
            mtx.row.names <- sprintf("%s-%s", tbl.current$gene, tbl.current$fraction)
            dups <- which(duplicated(mtx.row.names))  # todo: make sure this never happens
            if(length(dups) > 0){
-               tbl.current <- tbl.current[-dups,]
-               mtx.row.names <- mtx.row.names[-dups]
-           }
+              tbl.current <- tbl.current[-dups,]
+              mtx.row.names <- mtx.row.names[-dups]
+              }
            mtx <- tbl.current[, numeric.columns]
            rownames(mtx) <- mtx.row.names
            base.vector.name <- sprintf("%s-%s", target.gene, target.fraction)
@@ -445,7 +480,7 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                }
            suppressWarnings(
                correlations <- apply(mtx, 1,
-                           function(row) cor(target.vector, row,  use="complete.obs", method="spearman")))
+                           function(row) cor(target.vector, row,  use="complete.obs", method=method)))
            if(direction == "-")
                result <- names(which(correlations <= (-1 * threshold)))
            else  # must be "+"
