@@ -225,6 +225,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
             shinyjs::disable("plotCorrelatedButton")
 
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$correlationDirectionChooser, ignoreInit=TRUE, {
                 newDirection <- private$input$correlationDirectionChooser
                 printf("correlation direction: %s", newDirection)
@@ -233,17 +236,21 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                    }
                 })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$proteinSelector, ignoreInit=FALSE, {
                 proteins <- private$input$proteinSelector
                 private$currentProteins <- proteins
                 private$tbl.selected <- subset(private$tbl.current, gene %in% proteins)
                 row.count <- nrow(private$tbl.selected)
-                #printf("tbl.selected has %d rows", row.count)
-                #text <- sprintf("%d rows, %d protein/s", row.count, length(proteins))
-                #private$output$currentSubsetCountDisplay <- renderText(text)
+
                 })
 
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$fractionSelector, ignoreInit=TRUE, ignoreNULL=FALSE, {
                 newValue <- private$input$fractionSelector
                 printf("--- new fraction selected")
@@ -251,6 +258,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 private$currentFractions <- newValue
                 })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$complexSelector, ignoreInit=TRUE, ignoreNULL=FALSE, {
                 newValue <- private$input$complexSelector
                 printf("--- new complex selected")
@@ -258,6 +268,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 private$currentComplexes <- newValue
                 })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             currentTable <- reactive({
                 printf("------------------------------------------- entering currentTable()")
                 tbl.tmp <- private$tbl.all
@@ -285,6 +298,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 return(nrow(private$tbl.current))
                 }) # currentTable
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observe({
                 row.count <- currentTable()
                 current.proteins <- isolate(private$input$proteinSelector)
@@ -304,6 +320,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                     renderText(sprintf("%d rows, %d proteins", row.count, length(unique.proteins)))
                 })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$plotCurrentSelectionButton, ignoreInit=TRUE, {
                printf("--- plotCurrentSelectionButton")
                printf("plot %d proteins", length(private$currentProteins))
@@ -317,6 +336,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                self$plotProteins(private$input, private$output, mtx)
                })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$srm.transformChoice, ignoreInit=TRUE, {
                new.choice <- private$input$srm.transformChoice
                                        #printf("--- setting private$transform: %s", new.choice)
@@ -325,6 +347,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                })
 
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$currentlySelectedVector, ignoreInit=TRUE, {
                 newValue <- private$input$currentlySelectedVector
                 printf("--- currentlySelectedVector update: '%s'", newValue)
@@ -348,14 +373,18 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                    } # if a new character string received.  don't clear: leave it displayed
                 })
 
+            #--------------------------------------------------------------------
+            #
+            #--------------------------------------------------------------------
             observeEvent(private$input$plotCorrelatedButton, ignoreInit=TRUE, {
                printf("--- plot correlated");
                printf("   tbl.current: %d rows", nrow(private$tbl.current))
-               tbl.sub <- private$tbl.current
+
                   #------------------------------------------------------------
                   # identify the vector to which we want to find correlates
                   # gene (protein) name & fraction should be unique
                   #------------------------------------------------------------
+
                tokens <- strsplit(private$lastSelectedProtein, "-")[[1]]
                target.gene <- tokens[1]
                target.fraction <- tokens[2]
@@ -363,61 +392,82 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                   #------------------------------------------------------------
                   # now extract threshold, cor +/- & excluded timpoints
                   #------------------------------------------------------------
+
                threshold <- isolate(private$input$correlationThresholdSlider)
                direction <- isolate(private$input$correlationDirectionChooser)
                excluded.timepoints <- isolate(private$input$timepointExclusionChooser)
-               printf("---  exclude.timepoints straight from selectize")
-               print(excluded.timepoints)
-               printf("number of exclude timepoints: %d", length(excluded.timepoints))
-               tbl.target <- subset(private$tbl.all, gene==target.gene & fraction==target.fraction)
-               printf("should be only 1 target row, found %d", nrow(tbl.target))
-               numeric.columns <- grep("^D", colnames(private$tbl.current), ignore.case=TRUE)
-               excluded.columns <- c()
-               if(length(excluded.timepoints) > 0){
-                   excluded.columns <- match(excluded.timepoints, colnames(private$tbl.current))
-                   }
-               numeric.columns <- setdiff(numeric.columns, excluded.columns)
-               target.vector <- as.numeric(tbl.target[1, numeric.columns])
-               mtx.row.names <- sprintf("%s-%s", tbl.sub$gene, tbl.sub$fraction)
-               dups <- which(duplicated(mtx.row.names))  # todo: make sure this never happens
-               if(length(dups) > 0){
-                   tbl.sub <- tbl.sub[-dups,]
-                   mtx.row.names <- mtx.row.names[-dups]
-                   }
-               mtx <- tbl.sub[, numeric.columns]
-               rownames(mtx) <- mtx.row.names
-               base.vector.name <- sprintf("%s-%s", target.gene, target.fraction)
-                   # we always want to display the original target vector. add it in if omitted
-                   # due to looking for correlates in another fraction or complex
-               if(!base.vector.name %in% rownames(mtx)){
-                   mtx.target <- matrix(data=target.vector, nrow=1,
-                                        dimnames=list(base.vector.name, colnames(mtx)))
-                   mtx <- rbind(mtx, mtx.target)
-                   }
-               suppressWarnings(
-                   correlations <- apply(mtx, 1,
-                                         function(row) cor(target.vector, row,  use="complete.obs")))
-               if(direction == "-")
-                  result <- names(which(correlations <= (-1 * threshold)))
-               else  # must be "+"
-                  result <- names(which(correlations >= threshold))
-                  # make sure the target protein-fraction is in the list, needed for negative correlations
-               result <- unique(c(result, base.vector.name))
-               printf("--- rows in mtx.correlated: %d", length(result))
-               printf("    %s", paste(result, collapse=", "))
-               if(length(result) > 0){
-                  mtx.correlated <- mtx[result,]
-                  if(private$transform == "Normalized"){
-                     mtx.correlated <- t(apply(mtx.correlated, 1, function(row) row/max(row)))
-                     }
-                  self$plotProteins(private$input, private$output, mtx.correlated)
-                  } # if some found
+               tbl.current <- private$tbl.current
+               mtx.correlated <- self$findCorrelations(target.gene, target.fraction,
+                                                       threshold, direction, excluded.timepoints,
+                                                       tbl.current)
 
+               if(nrow(mtx.correlated) > 0)
+                   self$plotProteins(private$input, private$output, mtx.correlated)
                }) # observeEvent: plotCorrelatedButton
 
-         }) # moduleServer
-      } # server
+              }) # moduleServer
+           },  # server
+
+       #--------------------------------------------------------------------
+       #
+       #--------------------------------------------------------------------
+       findCorrelations = function(target.gene, target.fraction, threshold, direction,
+                                   excluded.timepoints, tbl.current){
+
+           printf("---  exclude.timepoints straight from selectize")
+           print(excluded.timepoints)
+           printf("number of exclude timepoints: %d", length(excluded.timepoints))
+           tbl.target <- subset(private$tbl.all, gene==target.gene & fraction==target.fraction)
+           printf("should be only 1 target row, found %d", nrow(tbl.target))
+           numeric.columns <- grep("^D", colnames(private$tbl.current), ignore.case=TRUE)
+           excluded.columns <- c()
+           if(length(excluded.timepoints) > 0){
+               excluded.columns <- match(excluded.timepoints, colnames(private$tbl.current))
+           }
+           numeric.columns <- setdiff(numeric.columns, excluded.columns)
+           target.vector <- as.numeric(tbl.target[1, numeric.columns])
+           mtx.row.names <- sprintf("%s-%s", tbl.current$gene, tbl.current$fraction)
+           dups <- which(duplicated(mtx.row.names))  # todo: make sure this never happens
+           if(length(dups) > 0){
+               tbl.current <- tbl.current[-dups,]
+               mtx.row.names <- mtx.row.names[-dups]
+           }
+           mtx <- tbl.current[, numeric.columns]
+           rownames(mtx) <- mtx.row.names
+           base.vector.name <- sprintf("%s-%s", target.gene, target.fraction)
+
+                    # we always want to display the original target vector. add it in if omitted
+                    # due to looking for correlates in another fraction or complex
+           if(!base.vector.name %in% rownames(mtx)){
+               mtx.target <- matrix(data=target.vector, nrow=1,
+                                    dimnames=list(base.vector.name, colnames(mtx)))
+               mtx <- rbind(mtx, mtx.target)
+               }
+           suppressWarnings(
+               correlations <- apply(mtx, 1,
+                           function(row) cor(target.vector, row,  use="complete.obs", method="spearman")))
+           if(direction == "-")
+               result <- names(which(correlations <= (-1 * threshold)))
+           else  # must be "+"
+               result <- names(which(correlations >= threshold))
+              #------------------------------------------------------------
+              # make sure the target protein-fraction is in the list,
+              # needed for negative correlations, and in case the target is
+              # not contained in the current search set, tbl.current
+              #------------------------------------------------------------
+           result <- unique(c(result, base.vector.name))
+           printf("--- rows in mtx.correlated: %d", length(result))
+           printf("    %s", paste(result, collapse=", "))
+           if(length(result) == 0) return(matrix())
+           mtx.correlated <- mtx[result,]
+           if(private$transform == "Normalized"){
+               mtx.correlated <- t(apply(mtx.correlated, 1, function(row) row/max(row)))
+               }
+           invisible(mtx.correlated)
+           } # findCorrelations
+           #----------------------------------------------------------------------
 
      ) # public
+
   ) # class
 
