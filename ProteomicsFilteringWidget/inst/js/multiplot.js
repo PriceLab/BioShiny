@@ -13,7 +13,7 @@ r2d3.onRender(function(data, svg, width, height, options){
    window.divID = divID;   // for use by js code injected from R
    var namespace = divID.split("-")[0]   
 
-   console.log("divID: " + divID)
+   // console.log("divID: " + divID)
    var rnaData = data.rna;
    var srmData = data.srm;
    var xMax = data.xMax;
