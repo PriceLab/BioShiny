@@ -11,7 +11,31 @@
 
 printf <- function(...) print(noquote(sprintf(...)))
 
-library(R6)
+# from https://betterprogramming.pub/heres-why-i-m-replacing-html2canvas-with-html-to-image-in-our-react-app-d8da0b85eadf
+jsCode <- "saveAs = function (blob, fileName){
+               var elem = window.document.createElement('a');
+               elem.href = blob
+               elem.download = fileName;
+               elem.style = 'display:none;';
+               (document.body || document.documentElement).appendChild(elem);
+               if (typeof elem.click === 'function') {
+                   elem.click();
+               } else {
+                   elem.target = '_blank';
+                   elem.dispatchEvent(new MouseEvent('click', {
+                      view: window, bubbles: true, cancelable: true}));
+                   } // else
+                 URL.revokeObjectURL(elem.href);
+                 elem.remove()
+                 }; // saveAs
+            shinyjs.saveCanvasToJPG = function(filename){
+               console.log('save ' + divID + ' to ' + filename);
+               htmlToImage.toJpeg(document.getElementById(divID))
+                 .then(function (dataUrl) {
+                     saveAs(dataUrl, filename);
+                     });
+               }; //saveCanvasToJPG"
+
 
 #' @export
 ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
@@ -129,7 +153,9 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
         #' @returns shiny code which, wnen invoked (almost always by the shinyApp function, returns html
         ui = function(){
           fluidPage(
+             shiny::tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.7.0/html-to-image.js"),
              shinyjs::useShinyjs(),
+             extendShinyjs(text=jsCode, functions=c("saveAs", "saveCanvasToJPG")),
              br(), br(),
              sidebarLayout(
                  sidebarPanel(
@@ -158,6 +184,7 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                                                  placeholder="Use all in current filtered set")),
                      #verbatimTextOutput(outputId=private$ns("currentSubsetCountDisplay")),
                      actionButton(inputId=private$ns("plotCurrentSelectionButton"), "Plot Current Selection"),
+                     actionButton(inputId=private$ns("savePlotButton"), label="Save Plot"),
                      br(), br(),
                      radioButtons(inputId=private$ns("transformChoice"),
                                   "Desired Data Transform",
@@ -339,6 +366,11 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                 private$tbl.selected <- subset(private$tbl.current, gene %in% unique.proteins)
                 private$output$currentCurveCountDisplay <-
                     renderText(sprintf("%d rows, %d proteins", row.count, length(unique.proteins)))
+                })
+
+            observeEvent(private$input$savePlotButton, ignoreInit=TRUE,{
+                printf("--- savePlot");
+                js$saveCanvasToJPG("plot.jpg")
                 })
 
             #--------------------------------------------------------------------
