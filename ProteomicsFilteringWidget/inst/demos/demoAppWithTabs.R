@@ -4,7 +4,8 @@ library(ProteomicsFilterWidget)
 #f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.all-11492x14.RData")
 f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.all-dia-rna.38662-14.RData")
 tbl.all <- get(load(f))
-f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.complexes.RData")
+#f <- system.file(package="ProteomicsFilterWidget", "extdata", "tbl.complexes.RData")
+f <- file.path("~/github/BioShiny/ProteomicsFilteringWidget/inst/extdata", "tbl.complexes-12jan2023.RData")
 tbl.complexes <- get(load(f))
 #----------------------------------------------------------------------------------------------------
 buttonStyle <- "margin: 5px; margin-right: 0px; font-size: 14px;"

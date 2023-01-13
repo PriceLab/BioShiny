@@ -359,6 +359,7 @@ ProteomicsFilteringWidget = R6Class("ProteomicsFilteringWidget",
                                      inputId = "proteinSelector",
                                      choices = unique.proteins,
                                      # selected = current.proteins.still.available,
+                                     #server=FALSE
                                      server=TRUE
                                      )
                 printf("--- observe, new row count: %d", row.count)
